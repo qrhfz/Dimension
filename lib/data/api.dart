@@ -1,17 +1,6 @@
-import 'package:hn_client/data/api.dart';
-import 'package:hn_client/models/item.dart';
+import '../models/item.dart';
 
-import '../data/db.dart';
-
-class Repository {
-  final API api;
-  final DB db;
-
-  const Repository({
-    required this.api,
-    required this.db,
-  });
-
+class API {
   Future<List<int>> getNewStoryIds() {
     throw UnimplementedError();
   }

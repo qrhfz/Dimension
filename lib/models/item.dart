@@ -21,11 +21,11 @@ class Item extends Equatable {
 
   const Item({
     required this.id,
-    required this.isDeleted,
     required this.author,
     required this.createdAt,
-    required this.isDead,
     required this.type,
+    this.isDeleted = false,
+    this.isDead = false,
     this.pollId,
     this.title,
     this.body,
@@ -36,6 +36,27 @@ class Item extends Equatable {
     this.score,
     this.descendantCount,
   });
+
+  factory Item.fromJson(Map<String, dynamic> json) {
+    return Item(
+      id: json["id"],
+      isDeleted: json["deleted"] ?? false,
+      author: json["by"],
+      createdAt:
+          DateTime.fromMillisecondsSinceEpoch(json["time"] * 1000, isUtc: true),
+      body: json["text"],
+      isDead: json["dead"] ?? false,
+      parentId: json["parent"],
+      pollId: json["poll"],
+      childrenIds: json["kids"],
+      url: json["url"],
+      score: json["score"],
+      title: json["title"],
+      pollOptIds: json["parts"],
+      descendantCount: json["descendants"],
+      type: _itemTypeMap[json["type"]]!,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -55,4 +76,12 @@ class Item extends Equatable {
         score,
         descendantCount,
       ];
+
+  static const Map<String, ItemType> _itemTypeMap = {
+    "job": ItemType.job,
+    "story": ItemType.story,
+    "comment": ItemType.comment,
+    "poll": ItemType.poll,
+    "pollopt": ItemType.pollopt
+  };
 }
