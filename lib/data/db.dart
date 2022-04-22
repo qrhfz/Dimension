@@ -1,4 +1,8 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../models/item.dart';
+
+final dbProvider = Provider((_) => DB());
 
 class DB {
   Future<List<int>> getNewStoryIds() {

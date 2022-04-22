@@ -1,31 +1,70 @@
+import 'dart:convert';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/models/user.dart';
+
 import '../models/item.dart';
+import 'package:http/http.dart' as http;
+
+final apiProvider = Provider((_) => API(http.Client()));
 
 class API {
-  Future<List<int>> getNewStoryIds() {
-    throw UnimplementedError();
+  final http.Client client;
+
+  static const authority = 'hacker-news.firebaseio.com';
+
+  API(this.client);
+
+  Future<List<int>> getNewStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/newstories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<List<int>> getTopStoryIds() {
-    throw UnimplementedError();
+  Future<List<int>> getTopStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/topstories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<List<int>> getBestStoryIds() {
-    throw UnimplementedError();
+  Future<List<int>> getBestStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/beststories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<List<int>> getAskStoryIds() {
-    throw UnimplementedError();
+  Future<List<int>> getAskStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/askstories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<List<int>> getShowStoryIds() {
-    throw UnimplementedError();
+  Future<List<int>> getShowStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/showstories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<List<int>> getJobStoryIds() {
-    throw UnimplementedError();
+  Future<List<int>> getJobStoryIds() async {
+    final response =
+        await client.get(Uri.https(API.authority, '/v0/jobstories'));
+    final List<int> ids = List<int>.from(jsonDecode(response.body));
+    return ids;
   }
 
-  Future<Item> getItem(int id) {
+  Future<Item> getItem(int id) async {
+    final response =
+        await client.get(Uri.https(authority, '/v0/item/$id.json'));
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    return Item.fromJson(json);
+  }
+
+  Future<User> getUser(String id) {
     throw UnimplementedError();
   }
 }
