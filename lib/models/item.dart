@@ -1,87 +1,44 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hn_client/common/time_converter.dart';
 
-enum ItemType { job, story, comment, poll, pollopt }
+part 'item.freezed.dart';
+part 'item.g.dart';
 
-class Item extends Equatable {
-  final int id;
-  final bool isDeleted;
-  final String author;
-  final DateTime createdAt;
-  final bool isDead;
-  final ItemType type;
+enum ItemType {
+  @JsonValue('job')
+  job,
+  @JsonValue('story')
+  story,
+  @JsonValue('comment')
+  comment,
+  @JsonValue('poll')
+  poll,
+  @JsonValue('pollopt')
+  pollopt
+}
 
-  final int? pollId;
-  final String? title, body;
-  final List<int>? childrenIds;
-  final List<int>? pollOptIds;
-  final int? parentId;
-  final String? url;
-  final int? score;
-  final int? descendantCount;
+@freezed
+class Item with _$Item {
+  const factory Item({
+    required int id,
+    @JsonKey(name: "by") required String author,
+    // -----
+    @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
+        required DateTime createdAt,
+    // -----
+    required ItemType type,
+    @JsonKey(name: "deleted") bool? isDeleted,
+    @JsonKey(name: "dead") bool? isDead,
+    @JsonKey(name: "poll") int? pollId,
+    String? title,
+    @JsonKey(name: "text") String? body,
+    @JsonKey(name: "kids") List<int>? childrenIds,
+    @JsonKey(name: "parts") List<int>? pollOptIds,
+    @JsonKey(name: "parent") int? parentId,
+    String? url,
+    int? score,
+    @JsonKey(name: "descendants") int? descendantCount,
+  }) = _Item;
 
-  const Item({
-    required this.id,
-    required this.author,
-    required this.createdAt,
-    required this.type,
-    this.isDeleted = false,
-    this.isDead = false,
-    this.pollId,
-    this.title,
-    this.body,
-    this.childrenIds,
-    this.pollOptIds,
-    this.parentId,
-    this.url,
-    this.score,
-    this.descendantCount,
-  });
-
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
-      id: json["id"],
-      isDeleted: json["deleted"] ?? false,
-      author: json["by"],
-      createdAt:
-          DateTime.fromMillisecondsSinceEpoch(json["time"] * 1000, isUtc: true),
-      body: json["text"],
-      isDead: json["dead"] ?? false,
-      parentId: json["parent"],
-      pollId: json["poll"],
-      childrenIds: (json["kids"] as List?)?.map((e) => e as int).toList(),
-      url: json["url"],
-      score: json["score"],
-      title: json["title"],
-      pollOptIds: (json["parts"] as List?)?.map((e) => e as int).toList(),
-      descendantCount: json["descendants"],
-      type: _itemTypeMap[json["type"]]!,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        id,
-        isDeleted,
-        author,
-        createdAt,
-        isDead,
-        type,
-        pollId,
-        title,
-        body,
-        childrenIds,
-        pollOptIds,
-        parentId,
-        url,
-        score,
-        descendantCount,
-      ];
-
-  static const Map<String, ItemType> _itemTypeMap = {
-    "job": ItemType.job,
-    "story": ItemType.story,
-    "comment": ItemType.comment,
-    "poll": ItemType.poll,
-    "pollopt": ItemType.pollopt
-  };
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 }
