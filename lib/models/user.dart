@@ -1,32 +1,24 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User extends Equatable {
-  final String id;
-  final DateTime createdAt;
-  final int karma;
-  final String? about;
-  final List<int> submission;
+import '../common/time_converter.dart';
 
-  const User(
-      {required this.id,
-      required this.createdAt,
-      required this.karma,
-      required this.about,
-      required this.submission});
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json["id"],
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        json["created"] * 1000,
-        isUtc: true,
-      ),
-      karma: json["karma"],
-      about: json["about"],
-      submission: json["submitted"],
-    );
-  }
+@freezed
+class User with _$User {
+  const factory User({
+    required String id,
+    @JsonKey(
+      name: "created",
+      fromJson: secondsFromEpochToDateTime,
+    )
+        required DateTime createdAt,
+    required int karma,
+    required String? about,
+    @JsonKey(name: "submitted")
+        required List<int> submission,
+  }) = _User;
 
-  @override
-  List<Object?> get props => [id, createdAt, karma, about, submission];
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
