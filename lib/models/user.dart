@@ -14,6 +14,19 @@ class User extends Equatable {
       required this.about,
       required this.submission});
 
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json["id"],
+      createdAt: DateTime.fromMillisecondsSinceEpoch(
+        json["created"] * 1000,
+        isUtc: true,
+      ),
+      karma: json["karma"],
+      about: json["about"],
+      submission: json["submitted"],
+    );
+  }
+
   @override
   List<Object?> get props => [id, createdAt, karma, about, submission];
 }

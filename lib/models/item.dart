@@ -48,11 +48,11 @@ class Item extends Equatable {
       isDead: json["dead"] ?? false,
       parentId: json["parent"],
       pollId: json["poll"],
-      childrenIds: json["kids"],
+      childrenIds: (json["kids"] as List?)?.map((e) => e as int).toList(),
       url: json["url"],
       score: json["score"],
       title: json["title"],
-      pollOptIds: json["parts"],
+      pollOptIds: (json["parts"] as List?)?.map((e) => e as int).toList(),
       descendantCount: json["descendants"],
       type: _itemTypeMap[json["type"]]!,
     );
