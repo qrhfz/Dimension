@@ -1,4 +1,5 @@
 import 'package:hn_client/models/item.dart';
+import 'package:hn_client/models/user.dart';
 
 const testJsonStory = {
   "by": "dhouston",
@@ -142,4 +143,22 @@ final testPollOpt = Item(
   score: 335,
   body: "Yes, ban them; I'm tired of seeing Valleywag stories on News.YC.",
   type: ItemType.pollopt,
+);
+
+const testJsonUser = {
+  "about": "This is a test",
+  "created": 1173923446,
+  "delay": 0,
+  "id": "jl",
+  "karma": 2937,
+  "submitted": [8265435, 8168423, 8090946]
+};
+
+final testUser = User(
+  id: "jl",
+  createdAt:
+      DateTime.fromMillisecondsSinceEpoch(1173923446 * 1000, isUtc: true),
+  karma: 2937,
+  about: "This is a test",
+  submission: const [8265435, 8168423, 8090946],
 );
