@@ -17,42 +17,42 @@ class API {
 
   Future<List<int>> getNewStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/newstories'));
+        await client.get(Uri.https(API.authority, '/v0/newstories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
 
   Future<List<int>> getTopStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/topstories'));
+        await client.get(Uri.https(API.authority, '/v0/topstories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
 
   Future<List<int>> getBestStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/beststories'));
+        await client.get(Uri.https(API.authority, '/v0/beststories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
 
   Future<List<int>> getAskStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/askstories'));
+        await client.get(Uri.https(API.authority, '/v0/askstories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
 
   Future<List<int>> getShowStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/showstories'));
+        await client.get(Uri.https(API.authority, '/v0/showstories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
 
   Future<List<int>> getJobStoryIds() async {
     final response =
-        await client.get(Uri.https(API.authority, '/v0/jobstories'));
+        await client.get(Uri.https(API.authority, '/v0/jobstories.json'));
     final List<int> ids = List<int>.from(jsonDecode(response.body));
     return ids;
   }
