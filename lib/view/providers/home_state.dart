@@ -13,3 +13,24 @@ class HomeState with _$HomeState {
 }
 
 enum HomeContentType { top, best, new_, ask, job, show }
+
+extension HomeContentText on HomeContentType {
+  String get name {
+    switch (this) {
+      case HomeContentType.best:
+        return "Best";
+      case HomeContentType.top:
+        return "Top";
+      case HomeContentType.new_:
+        return "New";
+      case HomeContentType.ask:
+        return "AskHN";
+      case HomeContentType.job:
+        return "Job";
+      case HomeContentType.show:
+        return "ShowHN";
+      default:
+        return "unknown";
+    }
+  }
+}

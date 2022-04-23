@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
     final notifier = ref.read(homeNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.contentType.toString()),
+        title: Text(state.contentType.name),
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.category),
