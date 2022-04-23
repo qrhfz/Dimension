@@ -49,7 +49,6 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                   widget.post?.title ?? "",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     Text("${widget.post?.author}"),
@@ -93,25 +92,21 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                           Flexible(
                             child: Text(
                               widget.post?.url ?? "",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: Colors.blue),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: Colors.blue,
-                          )
+                          const Icon(Icons.arrow_forward_ios_rounded)
                         ],
                       ),
                     ),
                   ),
                 if (widget.post?.body != null)
-                  Container(
-                    color: Colors.grey.shade200,
-                    child: Html(data: widget.post?.body ?? ""),
-                  ),
+                  Html(data: widget.post?.body ?? "", style: {
+                    "body": Style(
+                      margin: EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
+                    )
+                  }),
               ]),
             ),
           ),
