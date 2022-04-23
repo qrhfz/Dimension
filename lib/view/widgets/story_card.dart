@@ -34,14 +34,24 @@ class StoryCard extends ConsumerWidget {
           ],
         ),
         onTap: () {
-          GoRouter.of(context).go('/comments/${item.id}', extra: item);
+          final url = item.url;
+          if (url != null) {
+            GoRouter.of(context).go('/browser', extra: url);
+          } else {
+            GoRouter.of(context).go('/comments/${item.id}', extra: item);
+          }
         },
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.chat),
-            Text((item.descendantCount ?? 0).toString()),
-          ],
+        trailing: GestureDetector(
+          onTap: () {
+            GoRouter.of(context).go('/comments/${item.id}', extra: item);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.chat),
+              Text((item.descendantCount ?? 0).toString()),
+            ],
+          ),
         ),
       ),
       error: (message) => Padding(

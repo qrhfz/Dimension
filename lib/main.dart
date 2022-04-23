@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/view/pages/browser_page.dart';
 import 'package:hn_client/view/pages/comments_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
@@ -39,6 +40,13 @@ class MyApp extends StatelessWidget {
               final id = int.parse(state.params['id']!);
               final item = state.extra as Item?;
               return CommentsPage(id, post: item);
+            },
+          ),
+          GoRoute(
+            path: 'browser',
+            builder: (context, state) {
+              final url = state.extra as String;
+              return BrowserPage(url);
             },
           ),
         ],
