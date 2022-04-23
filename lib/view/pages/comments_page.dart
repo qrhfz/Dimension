@@ -86,7 +86,7 @@ class CommentCard extends ConsumerWidget {
     final state = ref.watch(itemFamily(id));
     final commentPageNotifier = ref.read(commentsNotifierProvider.notifier);
 
-    return state.maybeWhen(
+    return state.when(
       data: (item) {
         item.childrenIds?.forEach((element) {
           commentPageNotifier.addNode(Node(element, item.id));
@@ -107,7 +107,8 @@ class CommentCard extends ConsumerWidget {
           ),
         );
       },
-      orElse: () => Container(),
+      loading: () => const SizedBox(height: 64),
+      error: (_) => Container(),
     );
   }
 }
