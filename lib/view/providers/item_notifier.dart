@@ -14,7 +14,9 @@ class ItemNotifier extends StateNotifier<ItemState> {
   ItemNotifier({
     required this.id,
     required this.repository,
-  }) : super(const ItemState.loading());
+  }) : super(const ItemState.loading()) {
+    load();
+  }
 
   void load() async {
     final failureOrItem = await repository.getItem(id);

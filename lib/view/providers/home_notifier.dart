@@ -11,10 +11,12 @@ final homeNotifierProvider =
 class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
 
-  HomeNotifier(this.repository) : super(const HomeState.loading());
+  HomeNotifier(this.repository) : super(const HomeState.loading()) {
+    load();
+  }
 
   void load() async {
-    final failureOrIDs = await repository.getNewStoryIds();
+    final failureOrIDs = await repository.getTopStoryIds();
     state = failureOrIDs.fold(
       (failure) => HomeState.error(failure),
       (ids) => HomeState.data(ids),
