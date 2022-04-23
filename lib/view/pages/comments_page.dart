@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
+import 'package:time_elapsed/time_elapsed.dart';
 
 import '../../models/item.dart';
 import '../providers/item_notifier.dart';
+import '../widgets/comment_card.dart';
 
 class CommentsPage extends ConsumerStatefulWidget {
   final Item? post;
@@ -41,14 +44,33 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                Text(widget.post?.title ?? ""),
-                Text(widget.post?.author ?? ""),
+                Text(
+                  widget.post?.title ?? "",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text("${widget.post?.author}"),
+                    const Icon(
+                      Icons.arrow_drop_up_sharp,
+                      size: 24,
+                      color: Colors.grey,
+                    ),
+                    Text((widget.post?.score ?? 0).toString()),
+                    const SizedBox(width: 8),
+                    Text(
+                      TimeElapsed.fromDateTime(
+                        widget.post?.createdAt ?? DateTime(0),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 8),
                 if (widget.post?.body != null)
                   Container(
-                    padding: const EdgeInsets.all(8),
                     color: Colors.grey.shade200,
-                    child: Text(widget.post?.body ?? ""),
+                    child: Html(data: widget.post?.body ?? ""),
                   ),
               ]),
             ),
@@ -67,48 +89,6 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
           )
         ],
       ),
-    );
-  }
-}
-
-class CommentCard extends ConsumerWidget {
-  const CommentCard({
-    Key? key,
-    required this.id,
-    required this.indent,
-  }) : super(key: key);
-
-  final int id;
-  final int indent;
-
-  @override
-  Widget build(BuildContext context, ref) {
-    final state = ref.watch(itemFamily(id));
-    final commentPageNotifier = ref.read(commentsNotifierProvider.notifier);
-
-    return state.when(
-      data: (item) {
-        item.childrenIds?.forEach((element) {
-          commentPageNotifier.addNode(Node(element, item.id));
-        });
-
-        return Container(
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-          ),
-          padding: EdgeInsets.fromLTRB(8.0 * indent, 8.0, 8.0, 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(item.author),
-              Text(item.body ?? ""),
-            ],
-          ),
-        );
-      },
-      loading: () => const SizedBox(height: 64),
-      error: (_) => Container(),
     );
   }
 }
