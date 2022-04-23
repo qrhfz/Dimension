@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/view/widgets/dot_separator.dart';
+import 'package:time_elapsed/time_elapsed.dart';
 
 import '../providers/comments_notifier.dart';
 import '../providers/item_notifier.dart';
@@ -38,9 +40,17 @@ class CommentCard extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  item.author,
-                  style: Theme.of(context).textTheme.labelLarge,
+                child: Wrap(
+                  children: [
+                    Text(
+                      item.author,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    dotSeparator,
+                    Text(
+                      TimeElapsed.fromDateTime(item.createdAt),
+                    ),
+                  ],
                 ),
               ),
               Html(data: item.body ?? "")

@@ -17,16 +17,16 @@ class HomePage extends ConsumerWidget {
         title: Text(state.contentType.name),
         actions: [
           PopupMenuButton(
-            icon: const Icon(Icons.category),
+            icon: const Icon(Icons.filter_list_rounded),
             initialValue: state.contentType,
             itemBuilder: (ctx) => const [
               PopupMenuItem<HomeContentType>(
-                child: Text("Best"),
-                value: HomeContentType.best,
-              ),
-              PopupMenuItem<HomeContentType>(
                 child: Text("Top"),
                 value: HomeContentType.top,
+              ),
+              PopupMenuItem<HomeContentType>(
+                child: Text("Best"),
+                value: HomeContentType.best,
               ),
               PopupMenuItem<HomeContentType>(
                 child: Text("New"),

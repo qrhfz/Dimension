@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
+import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 
 import '../../models/item.dart';
@@ -58,7 +59,7 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                       color: Colors.grey,
                     ),
                     Text((widget.post?.score ?? 0).toString()),
-                    const SizedBox(width: 8),
+                    dotSeparator,
                     Text(
                       TimeElapsed.fromDateTime(
                         widget.post?.createdAt ?? DateTime(0),

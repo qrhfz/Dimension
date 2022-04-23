@@ -15,8 +15,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
 
   HomeNotifier(this.repository)
-      : super(const HomeState.loading(HomeContentType.best)) {
-    load(HomeContentType.best);
+      : super(const HomeState.loading(HomeContentType.top)) {
+    load(state.contentType);
   }
 
   void load(HomeContentType type) async {
