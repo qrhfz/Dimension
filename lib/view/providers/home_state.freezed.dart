@@ -16,25 +16,27 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
+  HomeContentType get contentType => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(List<int> ids) data,
-    required TResult Function(Failure failure) error,
+    required TResult Function(HomeContentType contentType) loading,
+    required TResult Function(HomeContentType contentType, List<int> ids) data,
+    required TResult Function(HomeContentType contentType, Failure failure)
+        error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,12 +62,17 @@ mixin _$HomeState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $HomeStateCopyWith<HomeState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res>;
+  $Res call({HomeContentType contentType});
 }
 
 /// @nodoc
@@ -75,12 +82,26 @@ class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
   final HomeState _value;
   // ignore: unused_field
   final $Res Function(HomeState) _then;
+
+  @override
+  $Res call({
+    Object? contentType = freezed,
+  }) {
+    return _then(_value.copyWith(
+      contentType: contentType == freezed
+          ? _value.contentType
+          : contentType // ignore: cast_nullable_to_non_nullable
+              as HomeContentType,
+    ));
+  }
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<$Res> {
+abstract class _$LoadingCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
   factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
       __$LoadingCopyWithImpl<$Res>;
+  @override
+  $Res call({HomeContentType contentType});
 }
 
 /// @nodoc
@@ -91,57 +112,82 @@ class __$LoadingCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
 
   @override
   _Loading get _value => super._value as _Loading;
+
+  @override
+  $Res call({
+    Object? contentType = freezed,
+  }) {
+    return _then(_Loading(
+      contentType == freezed
+          ? _value.contentType
+          : contentType // ignore: cast_nullable_to_non_nullable
+              as HomeContentType,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_Loading implements _Loading {
-  const _$_Loading();
+  const _$_Loading(this.contentType);
+
+  @override
+  final HomeContentType contentType;
 
   @override
   String toString() {
-    return 'HomeState.loading()';
+    return 'HomeState.loading(contentType: $contentType)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading);
+        (other.runtimeType == runtimeType &&
+            other is _Loading &&
+            const DeepCollectionEquality()
+                .equals(other.contentType, contentType));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(contentType));
+
+  @JsonKey(ignore: true)
+  @override
+  _$LoadingCopyWith<_Loading> get copyWith =>
+      __$LoadingCopyWithImpl<_Loading>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(List<int> ids) data,
-    required TResult Function(Failure failure) error,
+    required TResult Function(HomeContentType contentType) loading,
+    required TResult Function(HomeContentType contentType, List<int> ids) data,
+    required TResult Function(HomeContentType contentType, Failure failure)
+        error,
   }) {
-    return loading();
+    return loading(contentType);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
   }) {
-    return loading?.call();
+    return loading?.call(contentType);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(contentType);
     }
     return orElse();
   }
@@ -182,14 +228,22 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements HomeState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading(final HomeContentType contentType) = _$_Loading;
+
+  @override
+  HomeContentType get contentType => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$LoadingCopyWith<_Loading> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$DataCopyWith<$Res> {
+abstract class _$DataCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
   factory _$DataCopyWith(_Data value, $Res Function(_Data) then) =
       __$DataCopyWithImpl<$Res>;
-  $Res call({List<int> ids});
+  @override
+  $Res call({HomeContentType contentType, List<int> ids});
 }
 
 /// @nodoc
@@ -203,9 +257,14 @@ class __$DataCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? contentType = freezed,
     Object? ids = freezed,
   }) {
     return _then(_Data(
+      contentType == freezed
+          ? _value.contentType
+          : contentType // ignore: cast_nullable_to_non_nullable
+              as HomeContentType,
       ids == freezed
           ? _value.ids
           : ids // ignore: cast_nullable_to_non_nullable
@@ -217,8 +276,10 @@ class __$DataCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Data implements _Data {
-  const _$_Data(final List<int> ids) : _ids = ids;
+  const _$_Data(this.contentType, final List<int> ids) : _ids = ids;
 
+  @override
+  final HomeContentType contentType;
   final List<int> _ids;
   @override
   List<int> get ids {
@@ -228,7 +289,7 @@ class _$_Data implements _Data {
 
   @override
   String toString() {
-    return 'HomeState.data(ids: $ids)';
+    return 'HomeState.data(contentType: $contentType, ids: $ids)';
   }
 
   @override
@@ -236,12 +297,16 @@ class _$_Data implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Data &&
+            const DeepCollectionEquality()
+                .equals(other.contentType, contentType) &&
             const DeepCollectionEquality().equals(other.ids, ids));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(ids));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(contentType),
+      const DeepCollectionEquality().hash(ids));
 
   @JsonKey(ignore: true)
   @override
@@ -251,33 +316,34 @@ class _$_Data implements _Data {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(List<int> ids) data,
-    required TResult Function(Failure failure) error,
+    required TResult Function(HomeContentType contentType) loading,
+    required TResult Function(HomeContentType contentType, List<int> ids) data,
+    required TResult Function(HomeContentType contentType, Failure failure)
+        error,
   }) {
-    return data(ids);
+    return data(contentType, ids);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
   }) {
-    return data?.call(ids);
+    return data?.call(contentType, ids);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(ids);
+      return data(contentType, ids);
     }
     return orElse();
   }
@@ -318,18 +384,23 @@ class _$_Data implements _Data {
 }
 
 abstract class _Data implements HomeState {
-  const factory _Data(final List<int> ids) = _$_Data;
+  const factory _Data(final HomeContentType contentType, final List<int> ids) =
+      _$_Data;
 
+  @override
+  HomeContentType get contentType => throw _privateConstructorUsedError;
   List<int> get ids => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ErrorCopyWith<$Res> {
+abstract class _$ErrorCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
   factory _$ErrorCopyWith(_Error value, $Res Function(_Error) then) =
       __$ErrorCopyWithImpl<$Res>;
-  $Res call({Failure failure});
+  @override
+  $Res call({HomeContentType contentType, Failure failure});
 }
 
 /// @nodoc
@@ -343,9 +414,14 @@ class __$ErrorCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? contentType = freezed,
     Object? failure = freezed,
   }) {
     return _then(_Error(
+      contentType == freezed
+          ? _value.contentType
+          : contentType // ignore: cast_nullable_to_non_nullable
+              as HomeContentType,
       failure == freezed
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
@@ -357,14 +433,16 @@ class __$ErrorCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Error implements _Error {
-  const _$_Error(this.failure);
+  const _$_Error(this.contentType, this.failure);
 
+  @override
+  final HomeContentType contentType;
   @override
   final Failure failure;
 
   @override
   String toString() {
-    return 'HomeState.error(failure: $failure)';
+    return 'HomeState.error(contentType: $contentType, failure: $failure)';
   }
 
   @override
@@ -372,12 +450,16 @@ class _$_Error implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Error &&
+            const DeepCollectionEquality()
+                .equals(other.contentType, contentType) &&
             const DeepCollectionEquality().equals(other.failure, failure));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(failure));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(contentType),
+      const DeepCollectionEquality().hash(failure));
 
   @JsonKey(ignore: true)
   @override
@@ -387,33 +469,34 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(List<int> ids) data,
-    required TResult Function(Failure failure) error,
+    required TResult Function(HomeContentType contentType) loading,
+    required TResult Function(HomeContentType contentType, List<int> ids) data,
+    required TResult Function(HomeContentType contentType, Failure failure)
+        error,
   }) {
-    return error(failure);
+    return error(contentType, failure);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
   }) {
-    return error?.call(failure);
+    return error?.call(contentType, failure);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(List<int> ids)? data,
-    TResult Function(Failure failure)? error,
+    TResult Function(HomeContentType contentType)? loading,
+    TResult Function(HomeContentType contentType, List<int> ids)? data,
+    TResult Function(HomeContentType contentType, Failure failure)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure);
+      return error(contentType, failure);
     }
     return orElse();
   }
@@ -454,9 +537,13 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements HomeState {
-  const factory _Error(final Failure failure) = _$_Error;
+  const factory _Error(
+      final HomeContentType contentType, final Failure failure) = _$_Error;
 
+  @override
+  HomeContentType get contentType => throw _privateConstructorUsedError;
   Failure get failure => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
 }
