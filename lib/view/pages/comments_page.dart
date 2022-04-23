@@ -37,15 +37,21 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
       ),
       body: CustomScrollView(
         slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Text(widget.post?.title ?? ""),
-              Text(widget.post?.body ?? ""),
-              Text(widget.post?.author ?? ""),
-              const SizedBox(height: 8.0),
-              const Text("Comments"),
-              const SizedBox(height: 8.0)
-            ]),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(widget.post?.title ?? ""),
+                Text(widget.post?.author ?? ""),
+                const SizedBox(height: 8),
+                if (widget.post?.body != null)
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.grey.shade200,
+                    child: Text(widget.post?.body ?? ""),
+                  ),
+              ]),
+            ),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -86,22 +92,18 @@ class CommentCard extends ConsumerWidget {
           commentPageNotifier.addNode(Node(element, item.id));
         });
 
-        return Padding(
-          padding: EdgeInsets.only(left: indent * 12.0, bottom: 8.0),
-          child: Container(
-            decoration: const BoxDecoration(
-                border: Border(left: BorderSide(color: Colors.grey))),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(item.author),
-                  Text(item.body ?? ""),
-                ],
-              ),
-            ),
+        return Container(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+          ),
+          padding: EdgeInsets.fromLTRB(8.0 * indent, 8.0, 8.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(item.author),
+              Text(item.body ?? ""),
+            ],
           ),
         );
       },

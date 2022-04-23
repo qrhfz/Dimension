@@ -29,7 +29,7 @@ extension NodeTools on List<Node> {
   Node getNode(int id) {
     return firstWhere(
       (element) => element.id == id,
-      orElse: () => Node(-1, -1),
+      orElse: () => const Node(-1, -1),
     );
   }
 
@@ -37,16 +37,13 @@ extension NodeTools on List<Node> {
     return where((element) => element.parent == id).toList();
   }
 
-  List<IndentedNode> sortIndent(int rootID, [int indent = 0]) {
+  List<IndentedNode> sortIndent(int id, [int indent = 0]) {
+    final node = getNode(id).giveIndent(indent);
+
     final list = [
-      for (var item in getChildren(rootID)) ...sortIndent(item.id, indent + 1)
+      if (node.id != -1) node,
+      for (var item in getChildren(id)) ...sortIndent(item.id, indent + 1)
     ];
-
-    final first = getNode(rootID).giveIndent(indent);
-
-    if (first.id != -1) {
-      list.insert(0, first);
-    }
 
     return list;
   }
