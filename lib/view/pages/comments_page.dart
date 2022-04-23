@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 
 import '../../models/item.dart';
-import '../providers/item_notifier.dart';
 import '../widgets/comment_card.dart';
 
 class CommentsPage extends ConsumerStatefulWidget {
@@ -67,6 +67,45 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                   ],
                 ),
                 const SizedBox(height: 8),
+                if (widget.post?.url != null)
+                  GestureDetector(
+                    onTap: () {
+                      final url = widget.post?.url;
+                      if (url != null) {
+                        GoRouter.of(context).push('/browser', extra: url);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).hintColor,
+                          width: 0.5,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              widget.post?.url ?? "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: Colors.blue),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.blue,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 if (widget.post?.body != null)
                   Container(
                     color: Colors.grey.shade200,
