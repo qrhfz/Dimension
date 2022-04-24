@@ -23,9 +23,7 @@ class _CommentPageState extends ConsumerState<CommentPage> {
     final notifier =
         ref.read(commentsNotifierProvider(widget.parent.id).notifier);
 
-    Future.delayed(Duration.zero, () async {
-      notifier.seed(widget.parent);
-    });
+    notifier.seed(widget.parent);
   }
 
   @override

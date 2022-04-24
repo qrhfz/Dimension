@@ -23,11 +23,8 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
   void initState() {
     super.initState();
     final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
-    // notifier.rootID = widget.id;
     if (widget.post != null) {
-      Future.delayed(Duration.zero, () async {
-        notifier.seed(widget.post!);
-      });
+      notifier.seed(widget.post!);
     }
   }
 
