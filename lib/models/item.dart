@@ -19,9 +19,11 @@ enum ItemType {
 
 @freezed
 class Item with _$Item {
+  const Item._();
+
   const factory Item({
     required int id,
-    @JsonKey(name: "by") required String author,
+    @JsonKey(name: "by", defaultValue: "") required String author,
     // -----
     @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
         required DateTime createdAt,
@@ -41,4 +43,13 @@ class Item with _$Item {
   }) = _Item;
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+
+  String get bodyData {
+    if (isDeleted == true) {
+      return "[deleted]";
+    } else if (isDead == true) {
+      return "[dead]";
+    }
+    return body ?? "";
+  }
 }

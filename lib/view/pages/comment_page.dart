@@ -56,7 +56,7 @@ class _CommentPageState extends ConsumerState<CommentPage> {
                     ),
                   ],
                 ),
-                if (widget.parent.body != null) Body(widget.parent.body ?? "")
+                Body(widget.parent.bodyData)
               ]),
             ),
           ),

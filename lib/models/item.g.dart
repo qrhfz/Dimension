@@ -8,7 +8,7 @@ part of 'item.dart';
 
 _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       id: json['id'] as int,
-      author: json['by'] as String,
+      author: json['by'] as String? ?? '',
       createdAt: secondsFromEpochToDateTime(json['time'] as int),
       type: $enumDecode(_$ItemTypeEnumMap, json['type']),
       isDeleted: json['deleted'] as bool?,

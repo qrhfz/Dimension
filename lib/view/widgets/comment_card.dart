@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/widgets/body.dart';
@@ -27,20 +26,26 @@ class CommentCard extends ConsumerWidget {
     final commentPageNotifier =
         ref.read(commentsNotifierProvider(rootID).notifier);
 
-    return state.maybeWhen(
-      data: (item) {
-        item.childrenIds?.forEach((element) {
-          if (indent < 5) {
-            commentPageNotifier.addNode(Node(element, item.id));
+    final leftPadding = 16.0 * (indent - 1) + 8;
+    const rightPadding = 8.0;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: leftPadding,
+        right: rightPadding,
+        bottom: 8,
+      ),
+      child: state.maybeWhen(
+        data: (item) {
+          item.childrenIds?.forEach((element) {
+            if (indent < 5) {
+              commentPageNotifier.addNode(Node(element, item.id));
+            }
+          });
+          if (item.isDeleted == true) {
+            return const Text("[deleted]");
           }
-        });
-        return Padding(
-          padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width / 24 * (indent),
-            right: MediaQuery.of(context).size.width / 24,
-            bottom: 8,
-          ),
-          child: Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -56,7 +61,7 @@ class CommentCard extends ConsumerWidget {
                   ),
                 ],
               ),
-              Body(item.body ?? ""),
+              Body(item.bodyData),
               if (indent == 5 && (item.childrenIds?.isNotEmpty ?? false))
                 TextButton(
                   child: const Text("more reply"),
@@ -65,14 +70,9 @@ class CommentCard extends ConsumerWidget {
                   },
                 )
             ],
-          ),
-        );
-      },
-      orElse: () => Container(
-        padding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width / 24 * (indent - 1),
-        ),
-        child: const CommentCardPlaceholder(),
+          );
+        },
+        orElse: () => const CommentCardPlaceholder(),
       ),
     );
   }

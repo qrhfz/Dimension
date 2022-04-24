@@ -20,9 +20,12 @@ class ItemNotifier extends StateNotifier<ItemState> {
 
   void load() async {
     final failureOrItem = await repository.getItem(id);
-    state = failureOrItem.fold(
-      (failure) => ItemState.error(failure.message),
-      (item) => ItemState.data(item),
+    failureOrItem.fold(
+      (failure) {
+        state = ItemState.error(failure.message);
+        Future.delayed(const Duration(seconds: 3), load);
+      },
+      (item) => state = ItemState.data(item),
     );
   }
 }

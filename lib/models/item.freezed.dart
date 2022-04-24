@@ -21,7 +21,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Item {
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: "by")
+  @JsonKey(name: "by", defaultValue: "")
   String get author => throw _privateConstructorUsedError; // -----
   @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
   DateTime get createdAt => throw _privateConstructorUsedError; // -----
@@ -57,7 +57,7 @@ abstract class $ItemCopyWith<$Res> {
       _$ItemCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      @JsonKey(name: "by")
+      @JsonKey(name: "by", defaultValue: "")
           String author,
       @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
           DateTime createdAt,
@@ -181,7 +181,7 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      @JsonKey(name: "by")
+      @JsonKey(name: "by", defaultValue: "")
           String author,
       @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
           DateTime createdAt,
@@ -301,10 +301,10 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Item implements _Item {
+class _$_Item extends _Item {
   const _$_Item(
       {required this.id,
-      @JsonKey(name: "by")
+      @JsonKey(name: "by", defaultValue: "")
           required this.author,
       @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
           required this.createdAt,
@@ -329,14 +329,15 @@ class _$_Item implements _Item {
       @JsonKey(name: "descendants")
           this.descendantCount})
       : _childrenIds = childrenIds,
-        _pollOptIds = pollOptIds;
+        _pollOptIds = pollOptIds,
+        super._();
 
   factory _$_Item.fromJson(Map<String, dynamic> json) => _$$_ItemFromJson(json);
 
   @override
   final int id;
   @override
-  @JsonKey(name: "by")
+  @JsonKey(name: "by", defaultValue: "")
   final String author;
 // -----
   @override
@@ -453,10 +454,10 @@ class _$_Item implements _Item {
   }
 }
 
-abstract class _Item implements Item {
+abstract class _Item extends Item {
   const factory _Item(
       {required final int id,
-      @JsonKey(name: "by")
+      @JsonKey(name: "by", defaultValue: "")
           required final String author,
       @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)
           required final DateTime createdAt,
@@ -480,13 +481,14 @@ abstract class _Item implements Item {
       final int? score,
       @JsonKey(name: "descendants")
           final int? descendantCount}) = _$_Item;
+  const _Item._() : super._();
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
 
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: "by")
+  @JsonKey(name: "by", defaultValue: "")
   String get author => throw _privateConstructorUsedError;
   @override // -----
   @JsonKey(name: "time", fromJson: secondsFromEpochToDateTime)

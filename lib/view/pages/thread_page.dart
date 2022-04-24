@@ -71,7 +71,7 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
                   PostURL(
                     post: widget.post!,
                   ),
-                if (widget.post?.body != null) Body(widget.post!.body!)
+                if (widget.post != null) Body(widget.post!.bodyData)
               ]),
             ),
           ),
