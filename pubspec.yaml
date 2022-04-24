@@ -44,6 +44,8 @@ dependencies:
   time_elapsed: ^0.2.6
   webview_flutter: ^2.8.0
   flutter_html: ^2.2.1
+  html2md: ^1.2.5
+  flutter_markdown: ^0.6.10
 
 dev_dependencies:
   flutter_test:

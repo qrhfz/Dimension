@@ -31,7 +31,7 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(commentsNotifierProvider(widget.id));
-
+    final list = state.sortIndent(widget.post?.id ?? -1);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.post?.title ?? ""),
@@ -73,16 +73,18 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
             ),
           ),
           SliverList(
+            key: const Key("thread_comments"),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final list = state.sortIndent(widget.post?.id ?? -1);
+                final item = list[index];
                 return CommentCard(
-                  id: list[index].id,
-                  indent: list[index].indent,
+                  id: item.id,
+                  indent: item.indent,
                   rootID: widget.post?.id ?? -1,
+                  key: Key(item.id.toString()),
                 );
               },
-              childCount: state.sortIndent(widget.post?.id ?? -1).length,
+              childCount: list.length,
             ),
           ),
         ],

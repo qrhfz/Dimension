@@ -29,13 +29,11 @@ class CommentCard extends ConsumerWidget {
         if (indent < 5) {
           // comment with depth of 5 or more doesn't need to check their children
           item.childrenIds?.forEach((element) {
-            Future.delayed(Duration.zero, () {
-              // add delay so flutter doesn't throw error
-              final notifier =
-                  ref.read(commentsNotifierProvider(rootID).notifier);
-              // add each child to the ancestor
-              notifier.addNode(Node(element, item.id));
-            });
+            // add delay so flutter doesn't throw error
+            final notifier =
+                ref.read(commentsNotifierProvider(rootID).notifier);
+            // add each child to the ancestor
+            notifier.addNode(Node(element, item.id));
           });
         }
       },

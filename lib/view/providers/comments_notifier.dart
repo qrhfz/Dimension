@@ -12,15 +12,19 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
 
   final int parentID;
 
-  void addNode(Node node) {
-    final set = {...state}..add(node);
+  Future<void> addNode(Node node) async {
+    Future.delayed(Duration.zero, () {
+      final set = {...state}..add(node);
 
-    state = set.toList();
+      state = set.toList();
+    });
   }
 
-  void seed(Item item) {
-    state =
-        List<Node>.from(item.childrenIds?.map((e) => Node(e, item.id)) ?? []);
+  Future<void> seed(Item item) async {
+    Future.delayed(Duration.zero, () {
+      state =
+          List<Node>.from(item.childrenIds?.map((e) => Node(e, item.id)) ?? []);
+    });
   }
 }
 
