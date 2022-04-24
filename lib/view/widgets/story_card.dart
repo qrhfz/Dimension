@@ -15,7 +15,7 @@ class StoryCard extends ConsumerWidget {
   Widget build(context, ref) {
     final state = ref.watch(itemFamily(id));
     return state.when(
-      loading: () => const SizedBox(height: 64),
+      loading: () => const StoryCardPlaceholder(),
       data: (item) => ListTile(
         title: Text(item.title ?? ""),
         subtitle: Wrap(
@@ -58,6 +58,39 @@ class StoryCard extends ConsumerWidget {
       error: (message) => Padding(
         padding: const EdgeInsets.all(8),
         child: Text(message),
+      ),
+    );
+  }
+}
+
+class StoryCardPlaceholder extends StatelessWidget {
+  const StoryCardPlaceholder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Container(
+          height: 20,
+          color: Colors.grey.shade300,
+        ),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            width: 128,
+            height: 16,
+            color: Colors.grey.shade300,
+          ),
+        ),
+      ),
+      trailing: Container(
+        width: 24,
+        height: 32,
+        color: Colors.grey.shade300,
       ),
     );
   }

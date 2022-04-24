@@ -59,10 +59,40 @@ class CommentCard extends ConsumerWidget {
       orElse: () => Container(
         padding: EdgeInsets.only(
           left: MediaQuery.of(context).size.width / 24 * (indent - 1),
-          bottom: 64,
         ),
-        child: const LinearProgressIndicator(),
+        child: const CommentCardPlaceholder(),
       ),
+    );
+  }
+}
+
+class CommentCardPlaceholder extends StatelessWidget {
+  const CommentCardPlaceholder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+            color: Colors.grey.shade300,
+            height: 8,
+            width: 64,
+          ),
+        ),
+        for (var i = 0; i < 5; i++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Container(
+              color: Colors.grey.shade300,
+              height: 8,
+              width: double.infinity,
+            ),
+          ),
+      ],
     );
   }
 }
