@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
+import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 
@@ -68,61 +69,73 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                 ),
                 const SizedBox(height: 8),
                 if (widget.post?.url != null)
-                  GestureDetector(
-                    onTap: () {
-                      final url = widget.post?.url;
-                      if (url != null) {
-                        GoRouter.of(context).push('/browser', extra: url);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).hintColor,
-                          width: 0.5,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4)),
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              widget.post?.url ?? "",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          const Icon(Icons.arrow_forward_ios_rounded)
-                        ],
-                      ),
-                    ),
+                  PostURL(
+                    post: widget.post!,
                   ),
-                if (widget.post?.body != null)
-                  Html(data: widget.post?.body ?? "", style: {
-                    "body": Style(
-                      margin: EdgeInsets.zero,
-                      padding: EdgeInsets.zero,
-                    )
-                  }),
+                if (widget.post?.body != null) Body(widget.post!.body!)
               ]),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final list = state.sortIndent(widget.post?.id ?? -1);
-                return CommentCard(
-                  id: list[index].id,
-                  indent: list[index].indent,
-                );
-              },
-              childCount: state.sortIndent(widget.post?.id ?? -1).length,
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final list = state.sortIndent(widget.post?.id ?? -1);
+                  return CommentCard(
+                    id: list[index].id,
+                    indent: list[index].indent,
+                  );
+                },
+                childCount: state.sortIndent(widget.post?.id ?? -1).length,
+              ),
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class PostURL extends StatelessWidget {
+  const PostURL({
+    Key? key,
+    required this.post,
+  }) : super(key: key);
+
+  final Item post;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final url = post.url;
+        if (url != null) {
+          GoRouter.of(context).push('/browser', extra: url);
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).hintColor,
+            width: 0.5,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+        ),
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Text(
+                post.url ?? "",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios_rounded)
+          ],
+        ),
       ),
     );
   }
