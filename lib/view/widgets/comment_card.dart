@@ -23,8 +23,24 @@ class CommentCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemFamily(id));
-    final commentPageNotifier =
-        ref.read(commentsNotifierProvider(rootID).notifier);
+
+    state.maybeWhen(
+      data: (item) {
+        if (indent < 5) {
+          // comment with depth of 5 or more doesn't need to check their children
+          item.childrenIds?.forEach((element) {
+            Future.delayed(Duration.zero, () {
+              // add delay so flutter doesn't throw error
+              final notifier =
+                  ref.read(commentsNotifierProvider(rootID).notifier);
+              // add each child to the ancestor
+              notifier.addNode(Node(element, item.id));
+            });
+          });
+        }
+      },
+      orElse: () {},
+    );
 
     final leftPadding = 16.0 * (indent - 1) + 8;
     const rightPadding = 8.0;
@@ -37,11 +53,6 @@ class CommentCard extends ConsumerWidget {
       ),
       child: state.maybeWhen(
         data: (item) {
-          item.childrenIds?.forEach((element) {
-            if (indent < 5) {
-              commentPageNotifier.addNode(Node(element, item.id));
-            }
-          });
           if (item.isDeleted == true) {
             return const Text("[deleted]");
           }
