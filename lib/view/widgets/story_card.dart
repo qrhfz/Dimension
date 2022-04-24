@@ -17,6 +17,7 @@ class StoryCard extends ConsumerWidget {
     return state.when(
       loading: () => const StoryCardPlaceholder(),
       data: (item) => ListTile(
+        isThreeLine: true,
         title: Text(item.title ?? ""),
         subtitle: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -46,12 +47,18 @@ class StoryCard extends ConsumerWidget {
           onTap: () {
             GoRouter.of(context).go('/thread/${item.id}', extra: item);
           },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.chat),
-              Text((item.descendantCount ?? 0).toString()),
-            ],
+          child: SizedBox(
+            width: 48,
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.chat),
+                  Text((item.descendantCount ?? 0).toString()),
+                ],
+              ),
+            ),
           ),
         ),
       ),
