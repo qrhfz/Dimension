@@ -4,12 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/item.dart';
 
 final commentsNotifierProvider =
-    StateNotifierProvider<CommentsNotifier, List<Node>>(
-        (ref) => CommentsNotifier());
+    StateNotifierProvider.family<CommentsNotifier, List<Node>, int>(
+        (ref, id) => CommentsNotifier(id));
 
 class CommentsNotifier extends StateNotifier<List<Node>> {
-  CommentsNotifier() : super([]);
-  late int rootID;
+  CommentsNotifier(this.parentID) : super([]);
+
+  final int parentID;
 
   void addNode(Node node) async {
     await Future.delayed(Duration.zero, () async {

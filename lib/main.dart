@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/view/pages/browser_page.dart';
-import 'package:hn_client/view/pages/comments_page.dart';
+import 'package:hn_client/view/pages/comment_page.dart';
+import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,11 +36,18 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
-            path: 'comments/:id',
+            path: 'thread/:id',
             builder: (context, state) {
               final id = int.parse(state.params['id']!);
               final item = state.extra as Item?;
-              return CommentsPage(id, post: item);
+              return ThreadPage(id, post: item);
+            },
+          ),
+          GoRoute(
+            path: 'comment',
+            builder: (context, state) {
+              final parent = state.extra as Item;
+              return CommentPage(parent: parent);
             },
           ),
           GoRoute(

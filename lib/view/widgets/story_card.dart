@@ -39,12 +39,12 @@ class StoryCard extends ConsumerWidget {
           if (url != null) {
             GoRouter.of(context).go('/browser', extra: url);
           } else {
-            GoRouter.of(context).go('/comments/${item.id}', extra: item);
+            GoRouter.of(context).go('/thread/${item.id}', extra: item);
           }
         },
         trailing: GestureDetector(
           onTap: () {
-            GoRouter.of(context).go('/comments/${item.id}', extra: item);
+            GoRouter.of(context).go('/thread/${item.id}', extra: item);
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

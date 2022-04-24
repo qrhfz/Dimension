@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
@@ -10,21 +9,21 @@ import 'package:time_elapsed/time_elapsed.dart';
 import '../../models/item.dart';
 import '../widgets/comment_card.dart';
 
-class CommentsPage extends ConsumerStatefulWidget {
+class ThreadPage extends ConsumerStatefulWidget {
   final Item? post;
   final int id;
-  const CommentsPage(this.id, {this.post, Key? key}) : super(key: key);
+  const ThreadPage(this.id, {this.post, Key? key}) : super(key: key);
 
   @override
   _CommentsPageState createState() => _CommentsPageState();
 }
 
-class _CommentsPageState extends ConsumerState<CommentsPage> {
+class _CommentsPageState extends ConsumerState<ThreadPage> {
   @override
   void initState() {
     super.initState();
-    final notifier = ref.read(commentsNotifierProvider.notifier);
-    notifier.rootID = widget.id;
+    final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
+    // notifier.rootID = widget.id;
     if (widget.post != null) {
       Future.delayed(Duration.zero, () async {
         notifier.seed(widget.post!);
@@ -34,7 +33,7 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(commentsNotifierProvider);
+    final state = ref.watch(commentsNotifierProvider(widget.id));
 
     return Scaffold(
       appBar: AppBar(
@@ -76,21 +75,19 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
               ]),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final list = state.sortIndent(widget.post?.id ?? -1);
-                  return CommentCard(
-                    id: list[index].id,
-                    indent: list[index].indent,
-                  );
-                },
-                childCount: state.sortIndent(widget.post?.id ?? -1).length,
-              ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final list = state.sortIndent(widget.post?.id ?? -1);
+                return CommentCard(
+                  id: list[index].id,
+                  indent: list[index].indent,
+                  rootID: widget.post?.id ?? -1,
+                );
+              },
+              childCount: state.sortIndent(widget.post?.id ?? -1).length,
             ),
-          )
+          ),
         ],
       ),
     );
