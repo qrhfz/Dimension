@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hn_client/view/providers/item_state.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -24,7 +25,26 @@ class CommentCard extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemFamily(id));
 
-    final leftPadding = 16.0 * (indent - 1) + 8;
+    ref.listen<ItemState>(itemFamily(id), (prev, now) {
+      now.maybeWhen(
+        data: (item) {
+          if (indent >= 5) return;
+          // comment with depth of 5 or more doesn't need to check their children
+          item.childrenIds?.forEach((element) {
+            // add delay so flutter doesn't throw error
+            Future.delayed(Duration.zero, () {
+              final notifier =
+                  ref.read(commentsNotifierProvider(rootID).notifier);
+              // add each child to the ancestor
+              notifier.addNode(Node(element, item.id));
+            });
+          });
+        },
+        orElse: () {},
+      );
+    });
+
+    final leftPadding = 16.0 * (indent) + 8;
     const rightPadding = 8.0;
 
     return Padding(
@@ -35,16 +55,6 @@ class CommentCard extends ConsumerWidget {
       ),
       child: state.maybeWhen(
         data: (item) {
-          if (indent < 5) {
-            // comment with depth of 5 or more doesn't need to check their children
-            item.childrenIds?.forEach((element) {
-              // add delay so flutter doesn't throw error
-              final notifier =
-                  ref.read(commentsNotifierProvider(rootID).notifier);
-              // add each child to the ancestor
-              notifier.addNode(Node(element, item.id));
-            });
-          }
           if (item.isDeleted == true) {
             return const Text("[deleted]");
           }

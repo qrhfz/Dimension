@@ -13,51 +13,76 @@ class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
   CommentsNotifier(this.parentID) : super([]);
 
   final int parentID;
-  final Set<Node> nodes = {};
 
-  Future<void> addNode(Node node) async {
-    nodes.add(node);
+  void addNode(Node node) {
+    if (state.contains(node)) return;
 
-    scheduleMicrotask(() {
-      state = nodes.sortIndent();
-    });
+    final nodes = [...state];
+    if (nodes.isEmpty) {
+      state = nodes..add(node.giveIndent(1));
+
+      return;
+    }
+
+    final parentIndex =
+        nodes.indexWhere((element) => element.id == node.parent);
+
+    int? index;
+
+    for (var i = parentIndex + 1; i < nodes.length; i++) {
+      final current = nodes[i];
+      if (current.id == node.parent) {
+        continue;
+      } else {
+        index = i;
+        break;
+      }
+    }
+
+    final indent = parentIndex == -1 ? 0 : nodes[parentIndex].indent + 1;
+
+    if (index != null) {
+      nodes.insert(
+        index,
+        node.giveIndent(indent),
+      );
+    }
+
+    state = nodes;
   }
 
   Future<void> seed(Item item) async {
     if (item.childrenIds == null) return;
-    final list = item.childrenIds!.map((e) => Node(e, item.id));
-    nodes.addAll(list);
-
-    scheduleMicrotask(() {
-      state = nodes.sortIndent();
-    });
+    for (var e in item.childrenIds!) {
+      addNode(Node(e, item.id));
+    }
   }
 }
 
-extension NodeTools on Set<Node> {
-  Node getNode(int id) {
-    return firstWhere(
-      (element) => element.id == id,
-      orElse: () => const Node(-1, -1),
-    );
-  }
+// extension NodeTools on Set<Node> {
+//   Node getNode(int id) {
+//     return firstWhere(
+//       (element) => element.id == id,
+//       orElse: () => const Node(-1, -1),
+//     );
+//   }
 
-  Set<Node> getChildren(int id) {
-    return where((element) => element.parent == id).toSet();
-  }
+//   Set<Node> getChildren(int id) {
+//     return where((element) => element.parent == id).toSet();
+//   }
 
-  List<IndentedNode> sortIndent([int? id, int indent = 0]) {
-    id ??= first.parent;
-    final node = getNode(id).giveIndent(indent);
+//   List<IndentedNode> sortIndent([int? id, int indent = 0]) {
+//     id ??= first.parent;
+//     final node = getNode(id).giveIndent(indent);
 
-    final list = [
-      if (node.id != -1) node,
-      for (var item in getChildren(id)) ...sortIndent(item.id, indent + 1)
-    ];
+//     final list = [
+//       if (node.id != -1) node,
+//       for (var item in getChildren(id)) ...sortIndent(item.id, indent + 1)
+//     ];
 
-    return list;
-  }
-}
+//     return list;
+//   }
+// }
 
 class Node extends Equatable {
   final int id, parent;

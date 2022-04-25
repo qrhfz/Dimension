@@ -46,6 +46,7 @@ dependencies:
   flutter_html: ^2.2.1
   html2md: ^1.2.5
   flutter_markdown: ^0.6.10
+  async: ^2.8.2
 
 dev_dependencies:
   flutter_test:
