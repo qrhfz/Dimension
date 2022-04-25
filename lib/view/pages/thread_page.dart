@@ -40,6 +40,7 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
         title: Text(widget.post?.title ?? ""),
       ),
       body: CustomScrollView(
+        cacheExtent: 4000,
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
@@ -76,18 +77,17 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
             ),
           ),
           SliverList(
-            key: const Key("thread_comments"),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 final item = state.mask[index];
 
                 return GestureDetector(
-                  key: Key(item.id.toString()),
                   onTap: () {
                     notifier.toggleHide(item.id);
                   },
                   child: Builder(builder: (context) {
                     return CommentCard(
+                      key: Key(item.id.toString()),
                       id: item.id,
                       indent: item.indent,
                       rootID: widget.post?.id ?? -1,
