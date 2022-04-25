@@ -1,15 +1,13 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/item.dart';
 
 final commentsNotifierProvider =
-    StateNotifierProvider.family<CommentsNotifier, List<IndentedNode>, int>(
+    StateNotifierProvider.family<CommentsNotifier, List<Node>, int>(
         (ref, id) => CommentsNotifier(id));
 
-class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
+class CommentsNotifier extends StateNotifier<List<Node>> {
   CommentsNotifier(this.parentID) : super([]);
 
   final int parentID;
@@ -19,7 +17,7 @@ class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
 
     final nodes = [...state];
     if (nodes.isEmpty) {
-      state = nodes..add(node.giveIndent(1));
+      state = nodes..add(node);
 
       return;
     }
@@ -31,7 +29,7 @@ class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
 
     for (var i = parentIndex + 1; i < nodes.length; i++) {
       final current = nodes[i];
-      if (current.id == node.parent) {
+      if (current.parent == node.parent) {
         continue;
       } else {
         index = i;
@@ -44,14 +42,16 @@ class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
     if (index != null) {
       nodes.insert(
         index,
-        node.giveIndent(indent),
+        node.changeIndent(indent),
       );
+    } else {
+      nodes.add(node.changeIndent(indent));
     }
 
     state = nodes;
   }
 
-  Future<void> seed(Item item) async {
+  void seed(Item item) {
     if (item.childrenIds == null) return;
     for (var e in item.childrenIds!) {
       addNode(Node(e, item.id));
@@ -59,46 +59,12 @@ class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
   }
 }
 
-// extension NodeTools on Set<Node> {
-//   Node getNode(int id) {
-//     return firstWhere(
-//       (element) => element.id == id,
-//       orElse: () => const Node(-1, -1),
-//     );
-//   }
-
-//   Set<Node> getChildren(int id) {
-//     return where((element) => element.parent == id).toSet();
-//   }
-
-//   List<IndentedNode> sortIndent([int? id, int indent = 0]) {
-//     id ??= first.parent;
-//     final node = getNode(id).giveIndent(indent);
-
-//     final list = [
-//       if (node.id != -1) node,
-//       for (var item in getChildren(id)) ...sortIndent(item.id, indent + 1)
-//     ];
-
-//     return list;
-//   }
-// }
-
 class Node extends Equatable {
-  final int id, parent;
-
-  const Node(this.id, this.parent);
-
-  IndentedNode giveIndent(int indent) => IndentedNode(id, parent, indent);
-
-  @override
-  List<Object?> get props => [id, parent];
-}
-
-class IndentedNode extends Equatable {
   final int id, parent, indent;
 
-  const IndentedNode(this.id, this.parent, this.indent);
+  const Node(this.id, this.parent, [this.indent = 0]);
+
+  Node changeIndent(int indent) => Node(id, parent, indent);
 
   @override
   List<Object?> get props => [id, parent, indent];
