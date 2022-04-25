@@ -31,8 +31,10 @@ class CommentCard extends ConsumerWidget {
     ref.listen<ItemState>(itemFamily(id), (prev, now) {
       now.maybeWhen(
         data: (item) {
-          if (indent >= 5) return;
-          // comment with depth of 5 or more doesn't need to check their children
+          if (indent >= 4) return;
+
+          /// indent is base 0
+          /// comment with depth of 5 or more doesn't need to check their children
           item.childrenIds?.forEach((element) {
             // add delay so flutter doesn't throw error
             Future.delayed(Duration.zero, () {
@@ -102,7 +104,7 @@ class CommentContent extends StatelessWidget {
           ],
         ),
         Body(item.id, item.bodyData),
-        if (indent == 5 && (item.childrenIds?.isNotEmpty ?? false))
+        if (indent == 4 && (item.childrenIds?.isNotEmpty ?? false))
           TextButton(
             child: const Text("more reply"),
             onPressed: () {

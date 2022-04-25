@@ -40,12 +40,12 @@ class StoryCard extends ConsumerWidget {
           if (url != null) {
             GoRouter.of(context).go('/browser', extra: url);
           } else {
-            GoRouter.of(context).go('/thread/${item.id}', extra: item);
+            GoRouter.of(context).go('/thread/${item.id}');
           }
         },
         trailing: GestureDetector(
           onTap: () {
-            GoRouter.of(context).go('/thread/${item.id}', extra: item);
+            GoRouter.of(context).go('/thread/${item.id}');
           },
           child: SizedBox(
             width: 48,

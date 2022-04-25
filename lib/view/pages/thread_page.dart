@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
+import 'package:hn_client/view/providers/item_notifier.dart';
+import 'package:hn_client/view/providers/item_state.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -9,98 +13,84 @@ import 'package:time_elapsed/time_elapsed.dart';
 import '../../models/item.dart';
 import '../widgets/comment_card.dart';
 
-class ThreadPage extends ConsumerStatefulWidget {
-  final Item? post;
+class ThreadPage extends ConsumerWidget {
   final int id;
-  const ThreadPage(this.id, {this.post, Key? key}) : super(key: key);
+  const ThreadPage(this.id, {Key? key}) : super(key: key);
 
   @override
-  _CommentsPageState createState() => _CommentsPageState();
-}
+  Widget build(BuildContext context, ref) {
+    final state = ref.watch(commentsNotifierProvider(id));
+    final notifier = ref.read(commentsNotifierProvider(id).notifier);
+    final thread = ref.watch<ItemState>(itemFamily(id));
 
-class _CommentsPageState extends ConsumerState<ThreadPage> {
-  @override
-  void initState() {
-    super.initState();
-    final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
-
-    if (widget.post != null) {
-      Future.delayed(Duration.zero, () {
-        notifier.seed(widget.post!);
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(commentsNotifierProvider(widget.id));
-    final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.post?.title ?? ""),
-      ),
-      body: CustomScrollView(
-        cacheExtent: 4000,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                Text(
-                  widget.post?.title ?? "",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Row(
-                  children: [
-                    Text("${widget.post?.author}"),
-                    const Icon(
-                      Icons.arrow_drop_up_sharp,
-                      size: 24,
-                      color: Colors.grey,
-                    ),
-                    Text((widget.post?.score ?? 0).toString()),
-                    dotSeparator,
-                    Text(
-                      TimeElapsed.fromDateTime(
-                        widget.post?.createdAt ?? DateTime(0),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                if (widget.post?.url != null)
-                  PostURL(
-                    post: widget.post!,
+    return thread.maybeWhen(
+      data: (item) => Scaffold(
+        appBar: AppBar(
+          title: Text(item.title ?? ""),
+        ),
+        body: CustomScrollView(
+          cacheExtent: 4000,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  Text(
+                    item.title ?? "",
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                if (widget.post != null)
-                  Body(widget.post!.id, widget.post!.bodyData)
-              ]),
+                  Row(
+                    children: [
+                      Text(item.author),
+                      const Icon(
+                        Icons.arrow_drop_up_sharp,
+                        size: 24,
+                        color: Colors.grey,
+                      ),
+                      Text((item.score ?? 0).toString()),
+                      dotSeparator,
+                      Text(
+                        TimeElapsed.fromDateTime(item.createdAt),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  if (item.url != null)
+                    PostURL(
+                      post: item,
+                    ),
+                  if (item.bodyData.isNotEmpty) Body(item.id, item.bodyData)
+                ]),
+              ),
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = state.mask[index];
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final comment = state.mask[index];
 
-                return GestureDetector(
-                  onTap: () {
-                    notifier.toggleHide(item.id);
-                  },
-                  child: Builder(builder: (context) {
-                    return CommentCard(
-                      key: Key(item.id.toString()),
-                      id: item.id,
-                      indent: item.indent,
-                      rootID: widget.post?.id ?? -1,
-                      hidden: item.hidden,
-                    );
-                  }),
-                );
-              },
-              childCount: state.mask.length,
+                  return GestureDetector(
+                    onTap: () {
+                      notifier.toggleHide(item.id);
+                    },
+                    child: Builder(builder: (context) {
+                      return CommentCard(
+                        key: Key(comment.id.toString()),
+                        id: comment.id,
+                        indent: comment.indent,
+                        rootID: item.id,
+                        hidden: comment.hidden,
+                      );
+                    }),
+                  );
+                },
+                childCount: state.mask.length,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+      orElse: () => const Scaffold(
+        body: SafeArea(child: CircularProgressIndicator()),
       ),
     );
   }

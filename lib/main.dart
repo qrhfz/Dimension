@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
             path: 'thread/:id',
             builder: (context, state) {
               final id = int.parse(state.params['id']!);
-              final item = state.extra as Item?;
-              return ThreadPage(id, post: item);
+              // final item = state.extra as Item?;
+              return ThreadPage(id);
             },
           ),
           GoRoute(

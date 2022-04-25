@@ -2,20 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
 import 'package:hn_client/view/providers/item_state.dart';
 
+import 'comments_notifier.dart';
+
 final itemFamily = StateNotifierProvider.family<ItemNotifier, ItemState, int>(
   (ref, id) {
     final repository = ref.read(repositoryProvider);
-    return ItemNotifier(id: id, repository: repository);
+
+    return ItemNotifier(id: id, repository: repository, ref: ref);
   },
 );
 
 class ItemNotifier extends StateNotifier<ItemState> {
   final int id;
   final Repository repository;
-  ItemNotifier({
-    required this.id,
-    required this.repository,
-  }) : super(const ItemState.loading()) {
+  final StateNotifierProviderRef ref;
+  ItemNotifier({required this.id, required this.repository, required this.ref})
+      : super(const ItemState.loading()) {
     load();
   }
 
@@ -26,7 +28,19 @@ class ItemNotifier extends StateNotifier<ItemState> {
         state = ItemState.error(failure.message);
         Future.delayed(const Duration(seconds: 3), load);
       },
-      (item) => state = ItemState.data(item),
+      (item) {
+        return state = ItemState.data(item);
+      },
+    );
+  }
+
+  void getComments() {
+    state.maybeWhen(
+      data: (item) {
+        final comments = ref.read(commentsNotifierProvider(id).notifier);
+        comments.seed(item);
+      },
+      orElse: () {},
     );
   }
 }
