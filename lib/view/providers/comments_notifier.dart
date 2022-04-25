@@ -79,12 +79,13 @@ extension NodeListTools on List<Node> {
         hiddenNode = null;
       }
 
-      if (node.hidden) {
-        hiddenNode = node;
-      }
       // descendant of hidden node
       if (node.indent > (hiddenNode?.indent ?? 99)) {
         continue;
+      }
+
+      if (node.hidden) {
+        hiddenNode = node;
       }
 
       nodes.add(node);
