@@ -11,12 +11,9 @@ class Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final converter = ref.watch(htmlMDConverterProvider);
     final md = ref.watch(mdProvider(id));
     final mdNotifier = ref.read(mdProvider(id).notifier);
-    converter.sendAndReceive(html).then((md) {
-      mdNotifier.state = md;
-    });
+    mdNotifier.convert(html);
 
     return Markdown(
       padding: EdgeInsets.zero,
@@ -32,4 +29,19 @@ class Body extends ConsumerWidget {
   }
 }
 
-final mdProvider = StateProviderFamily<String, int>((ref, id) => "");
+final mdProvider = StateNotifierProvider.family<MDNotifier, String, int>(
+    (ref, id) => MDNotifier(ref));
+
+class MDNotifier extends StateNotifier<String> {
+  final StateNotifierProviderRef ref;
+  MDNotifier(this.ref) : super("");
+
+  void convert(String html) async {
+    final converter = ref.watch(htmlMDConverterProvider);
+    final md = await converter.sendAndReceive(html);
+
+    if (mounted) {
+      state = md;
+    }
+  }
+}

@@ -23,6 +23,7 @@ class ItemNotifier extends StateNotifier<ItemState> {
 
   void load() async {
     final failureOrItem = await repository.getItem(id);
+    if (!mounted) return;
     failureOrItem.fold(
       (failure) {
         state = ItemState.error(failure.message);

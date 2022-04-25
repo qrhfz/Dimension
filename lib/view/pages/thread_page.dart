@@ -81,7 +81,7 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
 
                   return GestureDetector(
                     onTap: () {
-                      notifier.toggleHide(item.id);
+                      notifier.toggleHide(comment.id);
                     },
                     child: Builder(builder: (context) {
                       return CommentCard(

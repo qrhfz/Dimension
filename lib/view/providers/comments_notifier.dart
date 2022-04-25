@@ -118,5 +118,5 @@ class Node extends Equatable {
   static Node get faux => const Node(id: -1, parent: -1);
 
   @override
-  List<Object?> get props => [id, parent, indent, hidden];
+  List<Object?> get props => [id, parent];
 }
