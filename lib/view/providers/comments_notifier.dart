@@ -1,34 +1,40 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/item.dart';
 
 final commentsNotifierProvider =
-    StateNotifierProvider.family<CommentsNotifier, List<Node>, int>(
+    StateNotifierProvider.family<CommentsNotifier, List<IndentedNode>, int>(
         (ref, id) => CommentsNotifier(id));
 
-class CommentsNotifier extends StateNotifier<List<Node>> {
+class CommentsNotifier extends StateNotifier<List<IndentedNode>> {
   CommentsNotifier(this.parentID) : super([]);
 
   final int parentID;
+  final Set<Node> nodes = {};
 
   Future<void> addNode(Node node) async {
-    Future.delayed(Duration.zero, () {
-      final set = {...state}..add(node);
+    nodes.add(node);
 
-      state = set.toList();
+    scheduleMicrotask(() {
+      state = nodes.sortIndent();
     });
   }
 
   Future<void> seed(Item item) async {
-    Future.delayed(Duration.zero, () {
-      state =
-          List<Node>.from(item.childrenIds?.map((e) => Node(e, item.id)) ?? []);
+    if (item.childrenIds == null) return;
+    final list = item.childrenIds!.map((e) => Node(e, item.id));
+    nodes.addAll(list);
+
+    scheduleMicrotask(() {
+      state = nodes.sortIndent();
     });
   }
 }
 
-extension NodeTools on List<Node> {
+extension NodeTools on Set<Node> {
   Node getNode(int id) {
     return firstWhere(
       (element) => element.id == id,
@@ -36,11 +42,12 @@ extension NodeTools on List<Node> {
     );
   }
 
-  List<Node> getChildren(int id) {
-    return where((element) => element.parent == id).toList();
+  Set<Node> getChildren(int id) {
+    return where((element) => element.parent == id).toSet();
   }
 
-  List<IndentedNode> sortIndent(int id, [int indent = 0]) {
+  List<IndentedNode> sortIndent([int? id, int indent = 0]) {
+    id ??= first.parent;
     final node = getNode(id).giveIndent(indent);
 
     final list = [

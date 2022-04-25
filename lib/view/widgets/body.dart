@@ -13,12 +13,14 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late final String md;
+  String md = "";
 
   @override
   void initState() {
     super.initState();
-    md = html2md.convert(widget.data);
+    setState(() {
+      md = html2md.convert(widget.data);
+    });
   }
 
   @override

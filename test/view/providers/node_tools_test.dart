@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hn_client/view/providers/comments_notifier.dart';
 
 void main() {
-  const list = <Node>[
-    Node(1, 0),
-    Node(2, 1),
-    Node(3, 1),
-    Node(4, 2),
-  ];
+  final list = {
+    const Node(1, 0),
+    const Node(2, 1),
+    const Node(3, 1),
+    const Node(4, 2),
+  };
 
   const indentedList = <IndentedNode>[
     IndentedNode(1, 0, 0),
