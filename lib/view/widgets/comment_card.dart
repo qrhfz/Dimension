@@ -59,10 +59,12 @@ class CommentCard extends ConsumerWidget {
           if (item.isDeleted == true) {
             return const Text("[deleted]");
           }
+          if (hidden) {
+            return CommentCardCollapsed(indent, item);
+          }
           return CommentContent(
             indent: indent,
             item: item,
-            hidden: hidden,
           );
         },
         orElse: () => const CommentCardPlaceholder(),
@@ -76,12 +78,10 @@ class CommentContent extends StatelessWidget {
     Key? key,
     required this.item,
     required this.indent,
-    required this.hidden,
   }) : super(key: key);
 
   final int indent;
   final Item item;
-  final bool hidden;
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +99,10 @@ class CommentContent extends StatelessWidget {
             Text(
               TimeElapsed.fromDateTime(item.createdAt),
             ),
-            if (hidden) const Text("  [collapsed]")
           ],
         ),
-        if (!hidden) Body(item.bodyData),
-        if (!hidden && indent == 5 && (item.childrenIds?.isNotEmpty ?? false))
+        Body(item.id, item.bodyData),
+        if (indent == 5 && (item.childrenIds?.isNotEmpty ?? false))
           TextButton(
             child: const Text("more reply"),
             onPressed: () {
@@ -154,25 +153,18 @@ class CommentCardCollapsed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leftPadding = 16.0 * (indent) + 8;
-    const rightPadding = 8.0;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Wrap(
-            children: [
-              Text(
-                item.author,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              dotSeparator,
-              Text(
-                TimeElapsed.fromDateTime(item.createdAt),
-              ),
-            ],
-          ),
-          const Text("collapsed")
-        ]);
+    return Wrap(
+      children: [
+        Text(
+          item.author,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        dotSeparator,
+        Text(
+          TimeElapsed.fromDateTime(item.createdAt),
+        ),
+        const Text("  [collapsed]")
+      ],
+    );
   }
 }

@@ -54,7 +54,7 @@ class _CommentPageState extends ConsumerState<CommentPage> {
                     ),
                   ],
                 ),
-                Body(widget.parent.bodyData)
+                Body(widget.parent.id, widget.parent.bodyData)
               ]),
             ),
           ),
