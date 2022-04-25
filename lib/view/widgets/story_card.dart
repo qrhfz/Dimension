@@ -17,7 +17,6 @@ class StoryCard extends ConsumerWidget {
     return state.when(
       loading: () => const StoryCardPlaceholder(),
       data: (item) => ListTile(
-        isThreeLine: true,
         title: Text(item.title ?? ""),
         subtitle: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
