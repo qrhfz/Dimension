@@ -34,6 +34,7 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(commentsNotifierProvider(widget.id));
+    final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.post?.title ?? ""),
@@ -78,15 +79,24 @@ class _CommentsPageState extends ConsumerState<ThreadPage> {
             key: const Key("thread_comments"),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final item = state[index];
-                return CommentCard(
-                  id: item.id,
-                  indent: item.indent,
-                  rootID: widget.post?.id ?? -1,
+                final item = state.mask[index];
+
+                return GestureDetector(
                   key: Key(item.id.toString()),
+                  onTap: () {
+                    notifier.toggleHide(item.id);
+                  },
+                  child: Builder(builder: (context) {
+                    return CommentCard(
+                      id: item.id,
+                      indent: item.indent,
+                      rootID: widget.post?.id ?? -1,
+                      hidden: item.hidden,
+                    );
+                  }),
                 );
               },
-              childCount: state.length,
+              childCount: state.mask.length,
             ),
           ),
         ],

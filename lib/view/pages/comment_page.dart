@@ -67,6 +67,7 @@ class _CommentPageState extends ConsumerState<CommentPage> {
                     id: state[index].id,
                     indent: state[index].indent,
                     rootID: widget.parent.id,
+                    hidden: state[index].hidden,
                   );
                 },
                 childCount: state.length,
