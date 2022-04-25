@@ -68,57 +68,25 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
 
 extension NodeListTools on List<Node> {
   List<Node> get mask {
-    return [
-      for (final node in this)
-        if (!isAncestorHiding(node.id)) node
-    ];
-  }
+    final nodes = <Node>[];
 
-  // bool _isParentExist(int id) {
-  //   return contains(firstWhere(
-  //     (element) => element.id == id,
-  //     orElse: () => Node.faux,
-  //   ));
-  // }
+    int? parentId;
 
-  bool? isParentHiding(int id) {
-    final parent = firstWhere(
-      (el) => el.id == getById(id)?.parent,
-      orElse: () => Node.faux,
-    );
+    for (var i = 0; i < length; i++) {
+      final node = this[i];
 
-    if (parent == Node.faux) {
-      return null;
+      if (parentId != null && node.parent != parentId) {
+        continue;
+      }
+
+      nodes.add(node);
+
+      if (node.hidden) {
+        parentId = node.parent;
+      }
     }
-    return parent.hidden;
-  }
 
-  bool isAncestorHiding(int id) {
-    final parentHiding = isParentHiding(id);
-    final parent = getParentById(id);
-    if (parentHiding == null) {
-      return false;
-    } else {
-      return parentHiding ? true : isAncestorHiding(parent!.id);
-    }
-  }
-
-  Node? getById(int id) {
-    Node node = firstWhere(
-      (element) => element.id == id,
-      orElse: () => Node.faux,
-    );
-    if (node == Node.faux) return null;
-    return node;
-  }
-
-  Node? getParentById(int id) {
-    Node node = firstWhere(
-      (element) => element.id == getById(id)?.parent,
-      orElse: () => Node.faux,
-    );
-    if (node == Node.faux) return null;
-    return node;
+    return nodes;
   }
 }
 
