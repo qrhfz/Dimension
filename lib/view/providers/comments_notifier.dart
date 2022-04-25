@@ -70,20 +70,24 @@ extension NodeListTools on List<Node> {
   List<Node> get mask {
     final nodes = <Node>[];
 
-    int? parentId;
+    Node? hiddenNode;
 
     for (var i = 0; i < length; i++) {
       final node = this[i];
 
-      if (parentId != null && node.parent != parentId) {
+      if (node.parent == hiddenNode?.parent) {
+        hiddenNode = null;
+      }
+
+      if (node.hidden) {
+        hiddenNode = node;
+      }
+      // descendant of hidden node
+      if (node.indent > (hiddenNode?.indent ?? 99)) {
         continue;
       }
 
       nodes.add(node);
-
-      if (node.hidden) {
-        parentId = node.parent;
-      }
     }
 
     return nodes;
