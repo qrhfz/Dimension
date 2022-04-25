@@ -13,15 +13,26 @@ import 'package:time_elapsed/time_elapsed.dart';
 import '../../models/item.dart';
 import '../widgets/comment_card.dart';
 
-class ThreadPage extends ConsumerWidget {
+class ThreadPage extends ConsumerStatefulWidget {
   final int id;
   const ThreadPage(this.id, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
-    final state = ref.watch(commentsNotifierProvider(id));
-    final notifier = ref.read(commentsNotifierProvider(id).notifier);
-    final thread = ref.watch<ItemState>(itemFamily(id));
+  ConsumerState<ThreadPage> createState() => _ThreadPageState();
+}
+
+class _ThreadPageState extends ConsumerState<ThreadPage> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(itemFamily(widget.id).notifier).getComments();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(commentsNotifierProvider(widget.id));
+    final notifier = ref.read(commentsNotifierProvider(widget.id).notifier);
+    final thread = ref.watch<ItemState>(itemFamily(widget.id));
 
     return thread.maybeWhen(
       data: (item) => Scaffold(
