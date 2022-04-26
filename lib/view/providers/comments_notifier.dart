@@ -11,19 +11,19 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
   CommentsNotifier(this.parentID) : super([]);
 
   final int parentID;
+  final Map<int, int> indexMap = {};
 
   void addNode(Node node) {
-    if (state.contains(node)) return;
+    if (indexMap[node.id] != null) return;
 
     final nodes = [...state];
     if (nodes.isEmpty) {
       state = nodes..add(node);
-
+      indexMap[node.id] = state.length - 1;
       return;
     }
 
-    final parentIndex =
-        nodes.indexWhere((element) => element.id == node.parent);
+    final parentIndex = indexMap[node.id] ?? -1;
 
     int index = parentIndex + 1;
 
@@ -45,11 +45,12 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
     );
 
     state = nodes;
+    indexMap[node.id] = index;
   }
 
   void toggleHide(int id) {
-    final index = state.indexWhere((element) => element.id == id);
-    if (index == -1) return;
+    final index = indexMap[id];
+    if (index == null) return;
     var node = state[index];
     node = node.copy(hidden: !node.hidden);
     final nodes = [...state];
