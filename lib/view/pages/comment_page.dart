@@ -63,11 +63,12 @@ class _CommentPageState extends ConsumerState<CommentPage> {
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
+                  final comment = state[index];
                   return CommentCard(
-                    id: state[index].id,
-                    indent: state[index].indent,
+                    id: comment.id,
+                    indent: comment.indent,
                     rootID: widget.parent.id,
-                    hidden: state[index].hidden,
+                    hidden: comment.hidden,
                   );
                 },
                 childCount: state.length,

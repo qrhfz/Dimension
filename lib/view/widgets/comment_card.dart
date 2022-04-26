@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,25 +29,19 @@ class CommentCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemFamily(id));
-    final notifier = ref.read(commentsNotifierProvider(rootID).notifier);
-    ref.listen<ItemState>(itemFamily(id), (prev, now) {
-      now.maybeWhen(
-        data: (item) {
-          if (indent >= 4) return;
+    final thread = ref.read(commentsNotifierProvider(rootID).notifier);
 
-          /// indent is base 0
-          /// comment with depth of 5 or more doesn't need to check their children
-          item.childrenIds?.forEach((element) {
-            // add delay so flutter doesn't throw error
-            Future.delayed(Duration.zero, () {
-              // add each child to the ancestor
-              notifier.addNode(Node(id: element, parent: item.id));
-            });
+    state.maybeWhen(
+      data: (item) {
+        if (indent >= 4) return;
+        item.childrenIds?.forEach((element) {
+          scheduleMicrotask(() {
+            thread.addNode(Node(id: element, parent: item.id));
           });
-        },
-        orElse: () {},
-      );
-    });
+        });
+      },
+      orElse: () {},
+    );
 
     final leftPadding = 16.0 * (indent) + 8;
     const rightPadding = 8.0;
