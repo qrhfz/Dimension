@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +15,7 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
   final int parentID;
 
   void addNode(Node node) {
+    if (!mounted) return;
     final nodes = [...state];
     if (nodes.isEmpty) {
       state = {...nodes..add(node)}.toList();
@@ -59,7 +62,9 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
   void seed(Item item) {
     if (item.childrenIds == null) return;
     for (var e in item.childrenIds!) {
-      addNode(Node(id: e, parent: item.id));
+      scheduleMicrotask(() {
+        addNode(Node(id: e, parent: item.id));
+      });
     }
   }
 }

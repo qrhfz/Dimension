@@ -62,7 +62,19 @@ class _CommentCardState extends ConsumerState<CommentCard> {
       child: state.maybeWhen(
         data: (item) {
           if (item.isDeleted == true) {
-            return const Text("[deleted]");
+            return Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: const [
+                Icon(
+                  Icons.delete_outline,
+                  color: Colors.black54,
+                ),
+                Text(
+                  "Deleted post.",
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ],
+            );
           }
           if (widget.hidden) {
             return CommentCardCollapsed(widget.indent, item);
@@ -104,9 +116,14 @@ class CommentContent extends StatelessWidget {
             Text(
               TimeElapsed.fromDateTime(item.createdAt),
             ),
+            if (item.isDead ?? false)
+              const Text(
+                "  dead post",
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
           ],
         ),
-        Body(item.id, item.bodyData),
+        Body(item.id, item.body ?? ""),
         if (indent == 4 && (item.childrenIds?.isNotEmpty ?? false))
           TextButton(
             child: const Text("more reply"),
@@ -159,6 +176,7 @@ class CommentCardCollapsed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
           item.author,
@@ -168,7 +186,7 @@ class CommentCardCollapsed extends StatelessWidget {
         Text(
           TimeElapsed.fromDateTime(item.createdAt),
         ),
-        const Text("  [collapsed]")
+        const Icon(Icons.expand_more)
       ],
     );
   }

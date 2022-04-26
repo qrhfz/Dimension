@@ -45,11 +45,6 @@ class Item with _$Item {
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   String get bodyData {
-    if (isDeleted == true) {
-      return "[deleted]";
-    } else if (isDead == true) {
-      return "[dead]";
-    }
     return body ?? "";
   }
 }
