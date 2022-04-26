@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -36,79 +37,120 @@ class StoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                final url = item.url;
-                if (url != null) {
-                  GoRouter.of(context).go('/browser', extra: url);
-                } else {
-                  GoRouter.of(context).go('/thread/${item.id}');
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      item.title ?? "",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.subtitle1!,
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(
-                            item.url != null
-                                ? extractDomain(item.url!) ?? "no domain"
-                                : "hackernews",
-                          ),
-                          const Icon(
-                            Icons.arrow_drop_up_sharp,
-                            size: 24,
-                            color: Colors.grey,
-                          ),
-                          Text((item.score ?? 0).toString()),
-                          dotSeparator,
-                          Text(TimeElapsed.fromDateTime(item.createdAt)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          InkWell(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: InkWell(
             onTap: () {
               GoRouter.of(context).go('/thread/${item.id}');
             },
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              width: 48,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.comment_rounded,
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                  RichText(
+                    text: TextSpan(
+                      text: item.title ?? "",
+                      style: Theme.of(context).textTheme.bodyText1,
+                      children: [
+                        TextSpan(
+                          text:
+                              " (${extractDomain(item.url ?? "") ?? "self.hackernews"})",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ],
+                    ),
                   ),
-                  Text((item.descendantCount ?? 0).toString()),
+                  const SizedBox(height: 4),
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.caption!,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.arrow_circle_up_rounded,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text((item.score ?? 0).toString()),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.chat_rounded,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text((item.descendantCount ?? 0).toString()),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.access_time_rounded,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "${TimeElapsed.fromDateTime(item.createdAt)} ago",
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        InkWell(
+          onTap: () {
+            final url = item.url;
+            if (url != null) {
+              GoRouter.of(context).go('/browser', extra: url);
+            } else {
+              GoRouter.of(context).go('/thread/${item.id}');
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade200,
+              ),
+              padding: const EdgeInsets.all(8.0),
+              width: 32,
+              height: 32,
+              child: WebIcon(item.url),
+            ),
+          ),
+        ),
+      ],
     );
+  }
+}
+
+class WebIcon extends StatelessWidget {
+  const WebIcon(this.url, {Key? key}) : super(key: key);
+
+  final String? url;
+
+  @override
+  Widget build(BuildContext context) {
+    if (url != null) {
+      return CachedNetworkImage(
+        imageUrl: "https://${extractDomain(url!)}/favicon.ico",
+        errorWidget: (ctx, s, _) {
+          return const Icon(Icons.link_rounded, size: 16);
+        },
+        placeholder: (ctx, s) {
+          return const Icon(Icons.link_rounded, size: 16);
+        },
+      );
+    }
+    return const Icon(Icons.link_rounded, size: 16);
   }
 }
 

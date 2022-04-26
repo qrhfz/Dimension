@@ -20,7 +20,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'HackerNews Client',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          appBarTheme: const AppBarTheme(elevation: 0),
+          primarySwatch: Colors.indigo,
+          scaffoldBackgroundColor: Colors.white,
         ),
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,

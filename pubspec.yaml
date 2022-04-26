@@ -46,6 +46,8 @@ dependencies:
   html2md: ^1.2.5
   flutter_markdown: ^0.6.10
   async: ^2.8.2
+  url_launcher: ^6.1.0
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:

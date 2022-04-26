@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -124,28 +122,21 @@ class PostURL extends StatelessWidget {
           GoRouter.of(context).push('/browser', extra: url);
         }
       },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).hintColor,
-            width: 0.5,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                post.url ?? "",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+      child: Row(
+        children: [
+          Flexible(
+            child: Text(
+              post.url ?? "",
+              style: TextStyle(color: Theme.of(context).primaryColor),
+              overflow: TextOverflow.ellipsis,
             ),
-            const Icon(Icons.arrow_forward_ios_rounded)
-          ],
-        ),
+          ),
+          Icon(
+            Icons.open_in_new_rounded,
+            color: Theme.of(context).primaryColor,
+            size: 16,
+          )
+        ],
       ),
     );
   }
