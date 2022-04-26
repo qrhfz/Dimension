@@ -40,7 +40,7 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
           title: Text(item.title ?? ""),
         ),
         body: CustomScrollView(
-          cacheExtent: 4000,
+          cacheExtent: 2000,
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),

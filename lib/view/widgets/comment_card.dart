@@ -12,7 +12,7 @@ import '../../models/item.dart';
 import '../providers/comments_notifier.dart';
 import '../providers/item_notifier.dart';
 
-class CommentCard extends ConsumerWidget {
+class CommentCard extends ConsumerStatefulWidget {
   const CommentCard({
     Key? key,
     required this.id,
@@ -27,23 +27,30 @@ class CommentCard extends ConsumerWidget {
   final bool hidden;
 
   @override
-  Widget build(BuildContext context, ref) {
-    final state = ref.watch(itemFamily(id));
-    final thread = ref.read(commentsNotifierProvider(rootID).notifier);
+  ConsumerState<CommentCard> createState() => _CommentCardState();
+}
 
-    state.maybeWhen(
-      data: (item) {
-        if (indent >= 4) return;
-        item.childrenIds?.forEach((element) {
-          scheduleMicrotask(() {
-            thread.addNode(Node(id: element, parent: item.id));
+class _CommentCardState extends ConsumerState<CommentCard> {
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(itemFamily(widget.id));
+
+    final thread = ref.read(commentsNotifierProvider(widget.rootID).notifier);
+    ref.listen(itemFamily(widget.id), (_, ItemState state) {
+      state.maybeWhen(
+        data: (item) {
+          if (widget.indent >= 4) return;
+          item.childrenIds?.forEach((element) {
+            scheduleMicrotask(() {
+              thread.addNode(Node(id: element, parent: item.id));
+            });
           });
-        });
-      },
-      orElse: () {},
-    );
+        },
+        orElse: () {},
+      );
+    });
 
-    final leftPadding = 16.0 * (indent) + 8;
+    final leftPadding = 16.0 * (widget.indent) + 8;
     const rightPadding = 8.0;
 
     return Padding(
@@ -57,11 +64,11 @@ class CommentCard extends ConsumerWidget {
           if (item.isDeleted == true) {
             return const Text("[deleted]");
           }
-          if (hidden) {
-            return CommentCardCollapsed(indent, item);
+          if (widget.hidden) {
+            return CommentCardCollapsed(widget.indent, item);
           }
           return CommentContent(
-            indent: indent,
+            indent: widget.indent,
             item: item,
           );
         },

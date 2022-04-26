@@ -13,11 +13,9 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
   final int parentID;
 
   void addNode(Node node) {
-    if (state.contains(node)) return;
-
     final nodes = [...state];
     if (nodes.isEmpty) {
-      state = nodes..add(node);
+      state = {...nodes..add(node)}.toList();
 
       return;
     }
@@ -44,7 +42,7 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
       node.copy(indent: indent),
     );
 
-    state = nodes;
+    state = {...nodes}.toList();
   }
 
   void toggleHide(int id) {
