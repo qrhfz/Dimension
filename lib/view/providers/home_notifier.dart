@@ -20,6 +20,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   }
 
   void load(HomeContentType type) async {
+    state = HomeState.loading(type);
     late final Either<Failure, List<int>> failureOrIDs;
 
     switch (type) {
