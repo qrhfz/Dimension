@@ -12,7 +12,7 @@ import '../../models/item.dart';
 import '../providers/comments_notifier.dart';
 import '../providers/item_notifier.dart';
 
-class CommentCard extends ConsumerStatefulWidget {
+class CommentCard extends ConsumerWidget {
   const CommentCard({
     Key? key,
     required this.comment,
@@ -25,19 +25,14 @@ class CommentCard extends ConsumerStatefulWidget {
   final Function() onHide;
 
   @override
-  ConsumerState<CommentCard> createState() => _CommentCardState();
-}
-
-class _CommentCardState extends ConsumerState<CommentCard> {
-  @override
-  Widget build(BuildContext context) {
-    final id = widget.comment.id;
-    final indent = widget.comment.indent;
-    final hidden = widget.comment.hidden;
+  Widget build(BuildContext context, ref) {
+    final id = comment.id;
+    final indent = comment.indent;
+    final hidden = comment.hidden;
 
     final state = ref.watch(itemFamily(id));
 
-    final thread = ref.read(commentsNotifierProvider(widget.rootID).notifier);
+    final thread = ref.read(commentsNotifierProvider(rootID).notifier);
     ref.listen(itemFamily(id), (_, ItemState state) {
       state.maybeWhen(
         data: (item) {
@@ -65,7 +60,7 @@ class _CommentCardState extends ConsumerState<CommentCard> {
             indent: indent,
             item: item,
             hidden: hidden,
-            onHide: widget.onHide,
+            onHide: onHide,
           );
         },
         orElse: () => const CommentCardPlaceholder(),
@@ -84,9 +79,15 @@ class DeletedComment extends StatelessWidget {
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
       children: const [
-        Icon(
-          Icons.delete_outline,
-          color: Colors.black54,
+        SizedBox(
+          width: 32,
+          height: 32,
+          child: Center(
+            child: Icon(
+              Icons.delete,
+              color: Colors.black54,
+            ),
+          ),
         ),
         Text(
           "Deleted post.",
