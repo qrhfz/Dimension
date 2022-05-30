@@ -6,19 +6,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/item.dart';
 
 final commentsNotifierProvider =
-    StateNotifierProvider.family<CommentsNotifier, List<Node>, int>(
+    StateNotifierProvider.family<CommentsNotifier, CommentList, int>(
         (ref, id) => CommentsNotifier(id));
 
-class CommentsNotifier extends StateNotifier<List<Node>> {
-  CommentsNotifier(this.parentID) : super([]);
+class CommentsNotifier extends StateNotifier<CommentList> {
+  CommentsNotifier(this.parentID) : super(CommentList([]));
 
   final int parentID;
 
   void addNode(Node node) {
     if (!mounted) return;
-    final nodes = [...state];
+    final nodes = [...state.nodes];
     if (nodes.isEmpty) {
-      state = {...nodes..add(node)}.toList();
+      state = CommentList({...nodes..add(node)}.toList());
 
       return;
     }
@@ -45,18 +45,15 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
       node.copy(indent: indent),
     );
 
-    state = {...nodes}.toList();
+    state = CommentList({...nodes}.toList());
   }
 
   void toggleHide(int id) {
-    final index = state.indexWhere((element) => element.id == id);
+    final index = state.nodes.indexWhere((element) => element.id == id);
     if (index == -1) return;
-    var node = state[index];
-    node = node.copy(hidden: !node.hidden);
-    final nodes = [...state];
-    nodes.removeAt(index);
-    nodes.insert(index, node);
-    state = nodes;
+    final nodes = [...state.nodes];
+    nodes[index] = nodes[index].copy(hidden: !nodes[index].hidden);
+    state = CommentList(nodes);
   }
 
   void seed(Item item) {
@@ -67,6 +64,17 @@ class CommentsNotifier extends StateNotifier<List<Node>> {
       });
     }
   }
+}
+
+class CommentList extends Equatable {
+  final List<Node> nodes;
+  late final List<Node> masked;
+
+  CommentList(this.nodes) {
+    masked = nodes.mask;
+  }
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }
 
 extension NodeListTools on List<Node> {

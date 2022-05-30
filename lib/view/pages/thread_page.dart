@@ -75,7 +75,7 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final comment = state.mask[index];
+                  final comment = state.masked[index];
 
                   return GestureDetector(
                     onTap: () {
@@ -92,7 +92,7 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
                     }),
                   );
                 },
-                childCount: state.mask.length,
+                childCount: state.masked.length,
               ),
             ),
           ],

@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'HackerNews Client',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(elevation: 0),
