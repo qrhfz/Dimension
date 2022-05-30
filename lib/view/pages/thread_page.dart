@@ -76,20 +76,11 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final comment = state.masked[index];
-
-                  return GestureDetector(
-                    onTap: () {
-                      notifier.toggleHide(comment.id);
-                    },
-                    child: Builder(builder: (context) {
-                      return CommentCard(
-                        key: Key(comment.id.toString()),
-                        id: comment.id,
-                        indent: comment.indent,
-                        rootID: item.id,
-                        hidden: comment.hidden,
-                      );
-                    }),
+                  return CommentCard(
+                    key: Key(comment.id.toString()),
+                    comment: comment,
+                    rootID: item.id,
+                    onHide: () => notifier.toggleHide(comment.id),
                   );
                 },
                 childCount: state.masked.length,

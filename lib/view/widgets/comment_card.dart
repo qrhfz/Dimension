@@ -15,16 +15,14 @@ import '../providers/item_notifier.dart';
 class CommentCard extends ConsumerStatefulWidget {
   const CommentCard({
     Key? key,
-    required this.id,
-    required this.indent,
+    required this.comment,
     required this.rootID,
-    required this.hidden,
+    required this.onHide,
   }) : super(key: key);
 
-  final int id;
-  final int indent;
+  final Node comment;
   final int rootID;
-  final bool hidden;
+  final Function() onHide;
 
   @override
   ConsumerState<CommentCard> createState() => _CommentCardState();
@@ -33,13 +31,17 @@ class CommentCard extends ConsumerStatefulWidget {
 class _CommentCardState extends ConsumerState<CommentCard> {
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(itemFamily(widget.id));
+    final id = widget.comment.id;
+    final indent = widget.comment.indent;
+    final hidden = widget.comment.hidden;
+
+    final state = ref.watch(itemFamily(id));
 
     final thread = ref.read(commentsNotifierProvider(widget.rootID).notifier);
-    ref.listen(itemFamily(widget.id), (_, ItemState state) {
+    ref.listen(itemFamily(id), (_, ItemState state) {
       state.maybeWhen(
         data: (item) {
-          if (widget.indent >= 4) return;
+          if (indent >= 4) return;
           item.childrenIds?.forEach((element) {
             scheduleMicrotask(() {
               thread.addNode(Node(id: element, parent: item.id));
@@ -50,42 +52,47 @@ class _CommentCardState extends ConsumerState<CommentCard> {
       );
     });
 
-    final leftPadding = 16.0 * (widget.indent) + 8;
-    const rightPadding = 8.0;
+    final leftPadding = 32.0 * (indent);
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: leftPadding,
-        right: rightPadding,
-        bottom: 8,
-      ),
+      padding: EdgeInsets.only(bottom: 8, left: leftPadding),
       child: state.maybeWhen(
         data: (item) {
           if (item.isDeleted == true) {
-            return Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: const [
-                Icon(
-                  Icons.delete_outline,
-                  color: Colors.black54,
-                ),
-                Text(
-                  "Deleted post.",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ],
-            );
-          }
-          if (widget.hidden) {
-            return CommentCardCollapsed(widget.indent, item);
+            return const DeletedComment();
           }
           return CommentContent(
-            indent: widget.indent,
+            indent: indent,
             item: item,
+            hidden: hidden,
+            onHide: widget.onHide,
           );
         },
         orElse: () => const CommentCardPlaceholder(),
       ),
+    );
+  }
+}
+
+class DeletedComment extends StatelessWidget {
+  const DeletedComment({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: const [
+        Icon(
+          Icons.delete_outline,
+          color: Colors.black54,
+        ),
+        Text(
+          "Deleted post.",
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
+      ],
     );
   }
 }
@@ -95,10 +102,14 @@ class CommentContent extends StatelessWidget {
     Key? key,
     required this.item,
     required this.indent,
+    required this.hidden,
+    required this.onHide,
   }) : super(key: key);
 
   final int indent;
   final Item item;
+  final bool hidden;
+  final Function() onHide;
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +117,15 @@ class CommentContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Wrap(
+        Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            GestureDetector(
+              onTap: onHide,
+              child: hidden
+                  ? const Icon(Icons.expand_more, size: 32)
+                  : const Icon(Icons.expand_less, size: 32),
+            ),
             Text(
               item.author,
               style: Theme.of(context).textTheme.labelLarge,
@@ -123,7 +141,11 @@ class CommentContent extends StatelessWidget {
               ),
           ],
         ),
-        Body(item.id, item.body ?? ""),
+        if (!hidden)
+          Padding(
+            padding: const EdgeInsets.only(left: 32),
+            child: Body(item.id, item.body ?? ""),
+          ),
         if (indent == 4 && (item.childrenIds?.isNotEmpty ?? false))
           TextButton(
             child: const Text("more reply"),
@@ -162,31 +184,6 @@ class CommentCardPlaceholder extends StatelessWidget {
               width: double.infinity,
             ),
           ),
-      ],
-    );
-  }
-}
-
-class CommentCardCollapsed extends StatelessWidget {
-  const CommentCardCollapsed(this.indent, this.item, {Key? key})
-      : super(key: key);
-  final int indent;
-  final Item item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        Text(
-          item.author,
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-        dotSeparator,
-        Text(
-          TimeElapsed.fromDateTime(item.createdAt),
-        ),
-        const Icon(Icons.expand_more)
       ],
     );
   }
