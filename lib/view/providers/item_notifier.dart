@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
 import 'package:hn_client/view/providers/item_state.dart';
 
-import 'comments_notifier.dart';
-
 final itemFamily = StateNotifierProvider.family<ItemNotifier, ItemState, int>(
   (ref, id) {
     final repository = ref.read(repositoryProvider);
@@ -35,13 +33,13 @@ class ItemNotifier extends StateNotifier<ItemState> {
     );
   }
 
-  void getComments() {
-    state.maybeWhen(
-      data: (item) {
-        final comments = ref.read(commentsNotifierProvider(id).notifier);
-        comments.seed(item);
-      },
-      orElse: () {},
-    );
-  }
+  // void getComments() {
+  //   state.maybeWhen(
+  //     data: (item) {
+  //       final comments = ref.read(commentsNotifierProvider(id).notifier);
+  //       comments.seed(item);
+  //     },
+  //     orElse: () {},
+  //   );
+  // }
 }

@@ -16,7 +16,6 @@ class Body extends ConsumerWidget {
     mdNotifier.convert(html);
 
     return Markdown(
-      selectable: true,
       padding: EdgeInsets.zero,
       data: md,
       shrinkWrap: true,
