@@ -43,6 +43,8 @@ class DB {
 
   Future<void> setLinkVisited(String url) async {
     final newLink = VisitedLink()..url = url;
+    final visited = await isLinkVisited(url);
+    if (visited) return;
     isar.writeTxn((isar) async {
       await isar.visitedLinks.put(newLink);
     });
