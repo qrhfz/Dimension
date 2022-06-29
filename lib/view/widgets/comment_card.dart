@@ -83,7 +83,7 @@ class CommentContent extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           left: BorderSide(
-            color: Color(0xFFCCCCCC),
+            color: Color(0xFFD1D5DB),
             width: 1,
           ),
         ),
