@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/story_notifier.dart';
 import 'package:time_elapsed/time_elapsed.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/extract_domain.dart';
 import '../../models/item.dart';
@@ -120,7 +121,7 @@ class StoryCardContent extends StatelessWidget {
             final url = item.url;
             if (url != null) {
               await onVisitUrl();
-              GoRouter.of(context).go('/browser', extra: url);
+              launchUrl(Uri.parse(url));
             } else {
               GoRouter.of(context).go('/thread/${item.id}');
             }

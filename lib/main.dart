@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/view/pages/browser_page.dart';
 import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
@@ -50,13 +49,6 @@ class MyApp extends StatelessWidget {
             builder: (context, state) {
               final parent = state.extra as Item;
               return ThreadPage(parent.id);
-            },
-          ),
-          GoRoute(
-            path: 'browser',
-            builder: (context, state) {
-              final url = state.extra as String;
-              return BrowserPage(url);
             },
           ),
         ],

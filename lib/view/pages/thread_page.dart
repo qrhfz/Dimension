@@ -6,6 +6,7 @@ import 'package:hn_client/view/providers/item_state.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/item.dart';
 import '../widgets/comment_card.dart';
@@ -106,7 +107,7 @@ class PostURL extends StatelessWidget {
       onTap: () {
         final url = post.url;
         if (url != null) {
-          GoRouter.of(context).push('/browser', extra: url);
+          launchUrl(Uri.parse(url));
         }
       },
       child: Row(

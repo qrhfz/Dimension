@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class BrowserPage extends StatefulWidget {
@@ -46,7 +47,9 @@ class _BrowserPageState extends State<BrowserPage> {
           title: Text(title),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                launchUrl(Uri.parse(widget.initialUrl));
+              },
               icon: const Icon(Icons.open_in_new),
             )
           ],

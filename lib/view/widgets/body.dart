@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:hn_client/service/html_md_converter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Body extends ConsumerWidget {
   const Body(this.id, this.html, {Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class Body extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       onTapLink: (_, url, __) {
         if (url != null) {
-          GoRouter.of(context).push("/browser", extra: url);
+          launchUrl(Uri.parse(url));
         }
       },
     );
