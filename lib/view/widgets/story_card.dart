@@ -23,8 +23,8 @@ class StoryCard extends ConsumerWidget {
       data: (item) => StoryCardContent(
         item,
         visited: state.visited,
-        onVisitUrl: () async {
-          await notifier.visitUrl();
+        onVisitStory: () async {
+          await notifier.visitStory();
         },
       ),
       error: (message) => Padding(
@@ -39,13 +39,13 @@ class StoryCardContent extends StatelessWidget {
   const StoryCardContent(
     this.item, {
     required this.visited,
-    required this.onVisitUrl,
+    required this.onVisitStory,
     Key? key,
   }) : super(key: key);
 
   final Item item;
   final bool visited;
-  final Function onVisitUrl;
+  final Function onVisitStory;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -54,14 +54,14 @@ class StoryCardContent extends StatelessWidget {
       children: [
         Expanded(
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               GoRouter.of(context).go('/thread/${item.id}');
+              await onVisitStory();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
                     text: TextSpan(
@@ -120,11 +120,11 @@ class StoryCardContent extends StatelessWidget {
           onTap: () async {
             final url = item.url;
             if (url != null) {
-              await onVisitUrl();
               launchUrl(Uri.parse(url));
             } else {
               GoRouter.of(context).go('/thread/${item.id}');
             }
+            await onVisitStory();
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

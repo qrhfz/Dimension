@@ -28,26 +28,26 @@ class StoryNotifier extends StateNotifier<StoryState> {
 
   Future<void> load() async {
     if (!mounted) return;
-    final url = item.maybeWhen(
+    final id = item.maybeWhen(
       data: (itemData) {
-        return itemData.url;
+        return itemData.id;
       },
       orElse: () => null,
     );
-    if (url == null) return;
-    final visited = await repository.isLinkVisited(url);
+    if (id == null) return;
+    final visited = await repository.isLinkVisited(id);
     state = StoryState(item, visited);
   }
 
-  Future<void> visitUrl() async {
-    final url = item.maybeWhen(
+  Future<void> visitStory() async {
+    final id = item.maybeWhen(
       data: (itemData) {
-        return itemData.url;
+        return itemData.id;
       },
       orElse: () => null,
     );
-    if (url == null) return;
-    await repository.setLinkVisited(url);
+    if (id == null) return;
+    await repository.setLinkVisited(id);
     state = StoryState(state.item, true);
   }
 }

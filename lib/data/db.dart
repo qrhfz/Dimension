@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../models/visited_link.dart';
+import '../models/visited_story.dart';
 
 final dbProvider = Provider<DB>((ref) {
   return DB();
@@ -22,7 +22,7 @@ class DB {
   Future<Isar> getIsar() async {
     final dir = await getApplicationSupportDirectory();
     final isar = await Isar.open(
-      schemas: [VisitedLinkSchema],
+      schemas: [VisitedStorySchema],
       directory: dir.path,
     );
     return isar;
@@ -36,17 +36,17 @@ class DB {
     init();
   }
 
-  Future<bool> isLinkVisited(String url) async {
-    final count = await isar.visitedLinks.where().urlEqualTo(url).count();
+  Future<bool> isLinkVisited(int id) async {
+    final count = await isar.visitedStories.where().itemIdEqualTo(id).count();
     return count == 1;
   }
 
-  Future<void> setLinkVisited(String url) async {
-    final newLink = VisitedLink()..url = url;
-    final visited = await isLinkVisited(url);
+  Future<void> setLinkVisited(int id) async {
+    final item = VisitedStory()..itemId = id;
+    final visited = await isLinkVisited(id);
     if (visited) return;
     isar.writeTxn((isar) async {
-      await isar.visitedLinks.put(newLink);
+      await isar.visitedStories.put(item);
     });
   }
 }

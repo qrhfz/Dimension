@@ -76,7 +76,7 @@ class Repository {
     }
   }
 
-  Future<bool> isLinkVisited(String url) async => db.isLinkVisited(url);
+  Future<bool> isLinkVisited(int id) async => db.isLinkVisited(id);
 
-  Future<void> setLinkVisited(String url) async => db.setLinkVisited(url);
+  Future<void> setLinkVisited(int id) async => db.setLinkVisited(id);
 }
