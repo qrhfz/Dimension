@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/models/visited_link.dart';
 import 'package:hn_client/view/pages/browser_page.dart';
 import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'models/item.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 

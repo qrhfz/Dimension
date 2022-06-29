@@ -78,19 +78,20 @@ class _$ItemStateCopyWithImpl<$Res> implements $ItemStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<$Res> {
-  factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
-      __$LoadingCopyWithImpl<$Res>;
+abstract class _$$_LoadingCopyWith<$Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading value, $Res Function(_$_Loading) then) =
+      __$$_LoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
-    implements _$LoadingCopyWith<$Res> {
-  __$LoadingCopyWithImpl(_Loading _value, $Res Function(_Loading) _then)
-      : super(_value, (v) => _then(v as _Loading));
+class __$$_LoadingCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
+    implements _$$_LoadingCopyWith<$Res> {
+  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+      : super(_value, (v) => _then(v as _$_Loading));
 
   @override
-  _Loading get _value => super._value as _Loading;
+  _$_Loading get _value => super._value as _$_Loading;
 }
 
 /// @nodoc
@@ -106,7 +107,7 @@ class _$_Loading implements _Loading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading);
+        (other.runtimeType == runtimeType && other is _$_Loading);
   }
 
   @override
@@ -186,28 +187,28 @@ abstract class _Loading implements ItemState {
 }
 
 /// @nodoc
-abstract class _$ItemCopyWith<$Res> {
-  factory _$ItemCopyWith(_Item value, $Res Function(_Item) then) =
-      __$ItemCopyWithImpl<$Res>;
+abstract class _$$_ItemCopyWith<$Res> {
+  factory _$$_ItemCopyWith(_$_Item value, $Res Function(_$_Item) then) =
+      __$$_ItemCopyWithImpl<$Res>;
   $Res call({Item item});
 
   $ItemCopyWith<$Res> get item;
 }
 
 /// @nodoc
-class __$ItemCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
-    implements _$ItemCopyWith<$Res> {
-  __$ItemCopyWithImpl(_Item _value, $Res Function(_Item) _then)
-      : super(_value, (v) => _then(v as _Item));
+class __$$_ItemCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
+    implements _$$_ItemCopyWith<$Res> {
+  __$$_ItemCopyWithImpl(_$_Item _value, $Res Function(_$_Item) _then)
+      : super(_value, (v) => _then(v as _$_Item));
 
   @override
-  _Item get _value => super._value as _Item;
+  _$_Item get _value => super._value as _$_Item;
 
   @override
   $Res call({
     Object? item = freezed,
   }) {
-    return _then(_Item(
+    return _then(_$_Item(
       item == freezed
           ? _value.item
           : item // ignore: cast_nullable_to_non_nullable
@@ -240,7 +241,7 @@ class _$_Item implements _Item {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Item &&
+            other is _$_Item &&
             const DeepCollectionEquality().equals(other.item, item));
   }
 
@@ -250,8 +251,8 @@ class _$_Item implements _Item {
 
   @JsonKey(ignore: true)
   @override
-  _$ItemCopyWith<_Item> get copyWith =>
-      __$ItemCopyWithImpl<_Item>(this, _$identity);
+  _$$_ItemCopyWith<_$_Item> get copyWith =>
+      __$$_ItemCopyWithImpl<_$_Item>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -327,30 +328,30 @@ abstract class _Item implements ItemState {
 
   Item get item => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;
+  _$$_ItemCopyWith<_$_Item> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ErrorCopyWith<$Res> {
-  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) then) =
-      __$ErrorCopyWithImpl<$Res>;
+abstract class _$$_ErrorCopyWith<$Res> {
+  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
+      __$$_ErrorCopyWithImpl<$Res>;
   $Res call({String message});
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
-    implements _$ErrorCopyWith<$Res> {
-  __$ErrorCopyWithImpl(_Error _value, $Res Function(_Error) _then)
-      : super(_value, (v) => _then(v as _Error));
+class __$$_ErrorCopyWithImpl<$Res> extends _$ItemStateCopyWithImpl<$Res>
+    implements _$$_ErrorCopyWith<$Res> {
+  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+      : super(_value, (v) => _then(v as _$_Error));
 
   @override
-  _Error get _value => super._value as _Error;
+  _$_Error get _value => super._value as _$_Error;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_Error(
+    return _then(_$_Error(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -376,7 +377,7 @@ class _$_Error implements _Error {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Error &&
+            other is _$_Error &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -386,8 +387,8 @@ class _$_Error implements _Error {
 
   @JsonKey(ignore: true)
   @override
-  _$ErrorCopyWith<_Error> get copyWith =>
-      __$ErrorCopyWithImpl<_Error>(this, _$identity);
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -463,5 +464,6 @@ abstract class _Error implements ItemState {
 
   String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+      throw _privateConstructorUsedError;
 }

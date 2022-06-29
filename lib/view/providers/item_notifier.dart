@@ -32,14 +32,4 @@ class ItemNotifier extends StateNotifier<ItemState> {
       },
     );
   }
-
-  // void getComments() {
-  //   state.maybeWhen(
-  //     data: (item) {
-  //       final comments = ref.read(commentsNotifierProvider(id).notifier);
-  //       comments.seed(item);
-  //     },
-  //     orElse: () {},
-  //   );
-  // }
 }

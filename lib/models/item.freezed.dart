@@ -175,9 +175,9 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
-  factory _$ItemCopyWith(_Item value, $Res Function(_Item) then) =
-      __$ItemCopyWithImpl<$Res>;
+abstract class _$$_ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
+  factory _$$_ItemCopyWith(_$_Item value, $Res Function(_$_Item) then) =
+      __$$_ItemCopyWithImpl<$Res>;
   @override
   $Res call(
       {int id,
@@ -208,13 +208,13 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
-    implements _$ItemCopyWith<$Res> {
-  __$ItemCopyWithImpl(_Item _value, $Res Function(_Item) _then)
-      : super(_value, (v) => _then(v as _Item));
+class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
+    implements _$$_ItemCopyWith<$Res> {
+  __$$_ItemCopyWithImpl(_$_Item _value, $Res Function(_$_Item) _then)
+      : super(_value, (v) => _then(v as _$_Item));
 
   @override
-  _Item get _value => super._value as _Item;
+  _$_Item get _value => super._value as _$_Item;
 
   @override
   $Res call({
@@ -234,7 +234,7 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
     Object? score = freezed,
     Object? descendantCount = freezed,
   }) {
-    return _then(_Item(
+    return _then(_$_Item(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -272,11 +272,11 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           : body // ignore: cast_nullable_to_non_nullable
               as String?,
       childrenIds: childrenIds == freezed
-          ? _value.childrenIds
+          ? _value._childrenIds
           : childrenIds // ignore: cast_nullable_to_non_nullable
               as List<int>?,
       pollOptIds: pollOptIds == freezed
-          ? _value.pollOptIds
+          ? _value._pollOptIds
           : pollOptIds // ignore: cast_nullable_to_non_nullable
               as List<int>?,
       parentId: parentId == freezed
@@ -360,7 +360,6 @@ class _$_Item extends _Item {
   @override
   @JsonKey(name: "text")
   final String? body;
-  @JsonKey(name: "kids")
   final List<int>? _childrenIds;
   @override
   @JsonKey(name: "kids")
@@ -371,7 +370,6 @@ class _$_Item extends _Item {
     return EqualUnmodifiableListView(value);
   }
 
-  @JsonKey(name: "parts")
   final List<int>? _pollOptIds;
   @override
   @JsonKey(name: "parts")
@@ -402,7 +400,7 @@ class _$_Item extends _Item {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Item &&
+            other is _$_Item &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.author, author) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
@@ -413,9 +411,9 @@ class _$_Item extends _Item {
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality()
-                .equals(other.childrenIds, childrenIds) &&
+                .equals(other._childrenIds, _childrenIds) &&
             const DeepCollectionEquality()
-                .equals(other.pollOptIds, pollOptIds) &&
+                .equals(other._pollOptIds, _pollOptIds) &&
             const DeepCollectionEquality().equals(other.parentId, parentId) &&
             const DeepCollectionEquality().equals(other.url, url) &&
             const DeepCollectionEquality().equals(other.score, score) &&
@@ -436,8 +434,8 @@ class _$_Item extends _Item {
       const DeepCollectionEquality().hash(pollId),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
-      const DeepCollectionEquality().hash(childrenIds),
-      const DeepCollectionEquality().hash(pollOptIds),
+      const DeepCollectionEquality().hash(_childrenIds),
+      const DeepCollectionEquality().hash(_pollOptIds),
       const DeepCollectionEquality().hash(parentId),
       const DeepCollectionEquality().hash(url),
       const DeepCollectionEquality().hash(score),
@@ -445,8 +443,8 @@ class _$_Item extends _Item {
 
   @JsonKey(ignore: true)
   @override
-  _$ItemCopyWith<_Item> get copyWith =>
-      __$ItemCopyWithImpl<_Item>(this, _$identity);
+  _$$_ItemCopyWith<_$_Item> get copyWith =>
+      __$$_ItemCopyWithImpl<_$_Item>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -527,5 +525,5 @@ abstract class _Item extends Item {
   int? get descendantCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;
+  _$$_ItemCopyWith<_$_Item> get copyWith => throw _privateConstructorUsedError;
 }

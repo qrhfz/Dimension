@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/providers/item_notifier.dart';
+import 'package:hn_client/view/providers/story_notifier.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 
 import '../../common/extract_domain.dart';
@@ -14,10 +17,18 @@ class StoryCard extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final state = ref.watch(itemFamily(id));
-    return state.when(
+    final state = ref.watch(storyFamily(id));
+    final notifier = ref.read(storyFamily(id).notifier);
+
+    return state.item.when(
       loading: () => const StoryCardPlaceholder(),
-      data: (item) => StoryTile(item),
+      data: (item) => StoryCardContent(
+        item,
+        visited: state.visited,
+        onVisitUrl: () async {
+          await notifier.visitUrl();
+        },
+      ),
       error: (message) => Padding(
         padding: const EdgeInsets.all(8),
         child: Text(message),
@@ -26,14 +37,17 @@ class StoryCard extends ConsumerWidget {
   }
 }
 
-class StoryTile extends StatelessWidget {
-  const StoryTile(
+class StoryCardContent extends StatelessWidget {
+  const StoryCardContent(
     this.item, {
+    required this.visited,
+    required this.onVisitUrl,
     Key? key,
   }) : super(key: key);
 
   final Item item;
-
+  final bool visited;
+  final Function onVisitUrl;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -54,7 +68,8 @@ class StoryTile extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: item.title ?? "",
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          color: visited ? Colors.grey : Colors.black),
                       children: [
                         TextSpan(
                           text:
@@ -104,9 +119,10 @@ class StoryTile extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {
+          onTap: () async {
             final url = item.url;
             if (url != null) {
+              await onVisitUrl();
               GoRouter.of(context).go('/browser', extra: url);
             } else {
               GoRouter.of(context).go('/thread/${item.id}');

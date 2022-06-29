@@ -97,27 +97,28 @@ class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
-      __$LoadingCopyWithImpl<$Res>;
+abstract class _$$_LoadingCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading value, $Res Function(_$_Loading) then) =
+      __$$_LoadingCopyWithImpl<$Res>;
   @override
   $Res call({HomeContentType contentType});
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
-    implements _$LoadingCopyWith<$Res> {
-  __$LoadingCopyWithImpl(_Loading _value, $Res Function(_Loading) _then)
-      : super(_value, (v) => _then(v as _Loading));
+class __$$_LoadingCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
+    implements _$$_LoadingCopyWith<$Res> {
+  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+      : super(_value, (v) => _then(v as _$_Loading));
 
   @override
-  _Loading get _value => super._value as _Loading;
+  _$_Loading get _value => super._value as _$_Loading;
 
   @override
   $Res call({
     Object? contentType = freezed,
   }) {
-    return _then(_Loading(
+    return _then(_$_Loading(
       contentType == freezed
           ? _value.contentType
           : contentType // ignore: cast_nullable_to_non_nullable
@@ -143,7 +144,7 @@ class _$_Loading implements _Loading {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Loading &&
+            other is _$_Loading &&
             const DeepCollectionEquality()
                 .equals(other.contentType, contentType));
   }
@@ -154,8 +155,8 @@ class _$_Loading implements _Loading {
 
   @JsonKey(ignore: true)
   @override
-  _$LoadingCopyWith<_Loading> get copyWith =>
-      __$LoadingCopyWithImpl<_Loading>(this, _$identity);
+  _$$_LoadingCopyWith<_$_Loading> get copyWith =>
+      __$$_LoadingCopyWithImpl<_$_Loading>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -234,39 +235,39 @@ abstract class _Loading implements HomeState {
   HomeContentType get contentType => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$LoadingCopyWith<_Loading> get copyWith =>
+  _$$_LoadingCopyWith<_$_Loading> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$DataCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$DataCopyWith(_Data value, $Res Function(_Data) then) =
-      __$DataCopyWithImpl<$Res>;
+abstract class _$$_DataCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory _$$_DataCopyWith(_$_Data value, $Res Function(_$_Data) then) =
+      __$$_DataCopyWithImpl<$Res>;
   @override
   $Res call({HomeContentType contentType, List<int> ids});
 }
 
 /// @nodoc
-class __$DataCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
-    implements _$DataCopyWith<$Res> {
-  __$DataCopyWithImpl(_Data _value, $Res Function(_Data) _then)
-      : super(_value, (v) => _then(v as _Data));
+class __$$_DataCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
+    implements _$$_DataCopyWith<$Res> {
+  __$$_DataCopyWithImpl(_$_Data _value, $Res Function(_$_Data) _then)
+      : super(_value, (v) => _then(v as _$_Data));
 
   @override
-  _Data get _value => super._value as _Data;
+  _$_Data get _value => super._value as _$_Data;
 
   @override
   $Res call({
     Object? contentType = freezed,
     Object? ids = freezed,
   }) {
-    return _then(_Data(
+    return _then(_$_Data(
       contentType == freezed
           ? _value.contentType
           : contentType // ignore: cast_nullable_to_non_nullable
               as HomeContentType,
       ids == freezed
-          ? _value.ids
+          ? _value._ids
           : ids // ignore: cast_nullable_to_non_nullable
               as List<int>,
     ));
@@ -296,22 +297,22 @@ class _$_Data implements _Data {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Data &&
+            other is _$_Data &&
             const DeepCollectionEquality()
                 .equals(other.contentType, contentType) &&
-            const DeepCollectionEquality().equals(other.ids, ids));
+            const DeepCollectionEquality().equals(other._ids, _ids));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(contentType),
-      const DeepCollectionEquality().hash(ids));
+      const DeepCollectionEquality().hash(_ids));
 
   @JsonKey(ignore: true)
   @override
-  _$DataCopyWith<_Data> get copyWith =>
-      __$DataCopyWithImpl<_Data>(this, _$identity);
+  _$$_DataCopyWith<_$_Data> get copyWith =>
+      __$$_DataCopyWithImpl<_$_Data>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -392,32 +393,32 @@ abstract class _Data implements HomeState {
   List<int> get ids => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
+  _$$_DataCopyWith<_$_Data> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ErrorCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) then) =
-      __$ErrorCopyWithImpl<$Res>;
+abstract class _$$_ErrorCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
+      __$$_ErrorCopyWithImpl<$Res>;
   @override
   $Res call({HomeContentType contentType, Failure failure});
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
-    implements _$ErrorCopyWith<$Res> {
-  __$ErrorCopyWithImpl(_Error _value, $Res Function(_Error) _then)
-      : super(_value, (v) => _then(v as _Error));
+class __$$_ErrorCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
+    implements _$$_ErrorCopyWith<$Res> {
+  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+      : super(_value, (v) => _then(v as _$_Error));
 
   @override
-  _Error get _value => super._value as _Error;
+  _$_Error get _value => super._value as _$_Error;
 
   @override
   $Res call({
     Object? contentType = freezed,
     Object? failure = freezed,
   }) {
-    return _then(_Error(
+    return _then(_$_Error(
       contentType == freezed
           ? _value.contentType
           : contentType // ignore: cast_nullable_to_non_nullable
@@ -449,7 +450,7 @@ class _$_Error implements _Error {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Error &&
+            other is _$_Error &&
             const DeepCollectionEquality()
                 .equals(other.contentType, contentType) &&
             const DeepCollectionEquality().equals(other.failure, failure));
@@ -463,8 +464,8 @@ class _$_Error implements _Error {
 
   @JsonKey(ignore: true)
   @override
-  _$ErrorCopyWith<_Error> get copyWith =>
-      __$ErrorCopyWithImpl<_Error>(this, _$identity);
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -545,5 +546,6 @@ abstract class _Error implements HomeState {
   Failure get failure => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ErrorCopyWith<_Error> get copyWith => throw _privateConstructorUsedError;
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+      throw _privateConstructorUsedError;
 }

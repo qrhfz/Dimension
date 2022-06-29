@@ -75,4 +75,8 @@ class Repository {
       return left(NetworkFailure());
     }
   }
+
+  Future<bool> isLinkVisited(String url) async => db.isLinkVisited(url);
+
+  Future<void> setLinkVisited(String url) async => db.setLinkVisited(url);
 }

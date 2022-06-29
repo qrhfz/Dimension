@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -72,8 +74,8 @@ class CommentContent extends StatelessWidget {
 
   final Item comment;
   final int level;
-  static const _maxLevel = 5;
-  final hide;
+  static const maxLevel = 5;
+  final bool hide;
 
   @override
   Widget build(BuildContext context) {
@@ -91,57 +93,96 @@ class CommentContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                comment.author,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              dotSeparator,
-              Text(
-                TimeElapsed.fromDateTime(comment.createdAt),
-              ),
-              if (comment.isDead ?? false)
-                const Text(
-                  "  dead post",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-            ],
-          ),
+          /// author and comment info
+          CommentInfo(comment: comment, hide: hide),
           if (!hide) Body(comment.id, comment.body ?? ""),
-          if (hide)
-            const Text(
-              "hidden",
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
           const SizedBox(height: 8),
-          if (level < _maxLevel &&
-              comment.childrenIds != null &&
-              comment.childrenIds!.isNotEmpty &&
-              !hide)
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: comment.childrenIds
-                      ?.map((id) => CommentCard(
-                            id: id,
-                            level: level + 1,
-                          ))
-                      .toList() ??
-                  [],
-            ),
-          if (level >= _maxLevel &&
-              comment.childrenIds != null &&
-              comment.childrenIds!.isNotEmpty)
-            TextButton(
-              onPressed: () {
-                GoRouter.of(context).push(ThreadPage.routeBuilder(comment.id));
-              },
-              child: const Text("More comments"),
-            )
+          if (!hide) ChildrenComment(comment: comment, level: level),
         ],
       ),
+    );
+  }
+}
+
+class ChildrenComment extends StatelessWidget {
+  const ChildrenComment({
+    Key? key,
+    required this.comment,
+    required this.level,
+  }) : super(key: key);
+
+  final Item comment;
+  final int level;
+
+  /// show children comments if exist and not too indented (below _maxLevel = 5)
+  @override
+  Widget build(BuildContext context) {
+    final childrenIds = comment.childrenIds;
+
+    if (childrenIds == null) return const SizedBox();
+
+    if (level < CommentContent.maxLevel && childrenIds.isNotEmpty) {
+      final childrenIdsSlice =
+          childrenIds.sublist(0, min(childrenIds.length, 5));
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...childrenIdsSlice
+              .map((id) => CommentCard(id: id, level: level + 1))
+              .toList(),
+          _moreComments(context, childrenIds.length),
+        ],
+      );
+    }
+    return const SizedBox();
+  }
+
+  Widget _moreComments(BuildContext context, int nChildren) {
+    if (level >= CommentContent.maxLevel && nChildren > 0 ||
+        nChildren > CommentContent.maxLevel) {
+      return TextButton(
+        onPressed: () {
+          GoRouter.of(context).push(ThreadPage.routeBuilder(comment.id));
+        },
+        child: const Text("More comments"),
+      );
+    }
+
+    return const SizedBox();
+  }
+}
+
+class CommentInfo extends StatelessWidget {
+  const CommentInfo({
+    Key? key,
+    required this.comment,
+    required this.hide,
+  }) : super(key: key);
+
+  final Item comment;
+  final bool hide;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          comment.author,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        dotSeparator,
+        Text(
+          TimeElapsed.fromDateTime(comment.createdAt),
+        ),
+        if (comment.isDead ?? false)
+          const Text(
+            "  dead post",
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        if (hide) const Icon(Icons.expand_more, size: 16)
+      ],
     );
   }
 }
