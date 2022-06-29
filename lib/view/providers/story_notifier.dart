@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
 import 'package:hn_client/view/providers/item_state.dart';

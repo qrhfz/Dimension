@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../models/item.dart';
 import '../models/visited_link.dart';
 
 final dbProvider = Provider<DB>((ref) {
