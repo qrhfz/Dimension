@@ -13,8 +13,8 @@ import '../providers/item_notifier.dart';
 import 'comment_card_placeholder.dart';
 import 'deleted_comment.dart';
 
-class CommentCard extends ConsumerStatefulWidget {
-  const CommentCard({
+class CommentTile extends ConsumerStatefulWidget {
+  const CommentTile({
     Key? key,
     required this.id,
     this.level = 0,
@@ -27,7 +27,7 @@ class CommentCard extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CommentCardState();
 }
 
-class _CommentCardState extends ConsumerState<CommentCard> {
+class _CommentCardState extends ConsumerState<CommentTile> {
   bool hide = false;
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class ChildrenComment extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...childrenIdsSlice
-              .map((id) => CommentCard(id: id, level: level + 1))
+              .map((id) => CommentTile(id: id, level: level + 1))
               .toList(),
           _moreComments(context, childrenIds.length),
         ],

@@ -82,7 +82,7 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final commentId = item.childrenIds![index];
-                  return CommentCard(id: commentId);
+                  return CommentTile(id: commentId);
                 },
                 childCount: item.childrenIds?.length ?? 0,
               ),
