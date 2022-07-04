@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/view/providers/item_descendant_notifier.dart';
 import 'package:hn_client/view/providers/item_notifier.dart';
 import 'package:hn_client/view/providers/item_state.dart';
 import 'package:hn_client/view/widgets/body.dart';
@@ -7,27 +8,19 @@ import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widgets/comment_card.dart';
+import '../widgets/comment_tile.dart';
 
-class ThreadPage extends ConsumerStatefulWidget {
+class ThreadPage extends ConsumerWidget {
   static String routeBuilder(int id) => "/thread/$id";
 
   final int id;
   const ThreadPage(this.id, {Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ThreadPage> createState() => _ThreadPageState();
-}
-
-class _ThreadPageState extends ConsumerState<ThreadPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch<ItemState>(itemFamily(widget.id));
+  Widget build(BuildContext context, ref) {
+    final state = ref.watch(itemFamily(id));
+    final tree = ref.watch(itemDescendantProvider(id));
+    final flat = tree.flatten().sublist(2);
 
     return state.maybeWhen(
       data: (item) => Scaffold(
@@ -81,10 +74,15 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final commentId = item.childrenIds![index];
-                  return CommentTile(id: commentId);
+                  final commentId = flat[index].id;
+                  final level = flat[index].level;
+                  return CommentTile(
+                    id: commentId,
+                    level: level,
+                    rootId: item.id,
+                  );
                 },
-                childCount: item.childrenIds?.length ?? 0,
+                childCount: flat.length,
               ),
             ),
           ],

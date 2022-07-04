@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hn_client/view/pages/thread_page.dart';
+import 'package:hn_client/view/providers/item_descendant_notifier.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -17,11 +18,13 @@ class CommentTile extends ConsumerStatefulWidget {
   const CommentTile({
     Key? key,
     required this.id,
+    required this.rootId,
     this.level = 0,
   }) : super(key: key);
 
   final int id;
   final int level;
+  final int rootId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CommentCardState();
@@ -32,33 +35,44 @@ class _CommentCardState extends ConsumerState<CommentTile> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(itemFamily(widget.id));
-
+    final tree = ref.read(itemDescendantProvider(widget.rootId).notifier);
+    final leftPadding = 16.0 * (widget.level - 1) + 8.0;
     return GestureDetector(
       onTap: () {
         setState(() {
           hide = !hide;
+          tree.collapseId(widget.id);
         });
       },
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: widget.level == 0 ? 8 : 16,
-          bottom: 8,
-          right: widget.level == 0 ? 8 : 0,
-        ),
-        child: state.maybeWhen(
-          data: (item) {
-            if (item.isDeleted == true) {
-              return const DeletedComment();
-            }
-
-            return CommentContent(
+      child: state.maybeWhen(
+        data: (item) {
+          if (item.isDeleted == true) {
+            return Padding(
+              padding: EdgeInsets.only(left: leftPadding),
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                      color: Color(0xFFD1D5DB),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const DeletedComment(),
+              ),
+            );
+          }
+          return Padding(
+            padding: EdgeInsets.only(left: leftPadding),
+            child: CommentContent(
               comment: item,
               level: widget.level,
               hide: hide,
-            );
-          },
-          orElse: () => const CommentCardPlaceholder(),
-        ),
+            ),
+          );
+        },
+        orElse: () => const CommentCardPlaceholder(),
       ),
     );
   }
@@ -88,7 +102,7 @@ class CommentContent extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -97,59 +111,10 @@ class CommentContent extends StatelessWidget {
           CommentInfo(comment: comment, hide: hide),
           if (!hide) Body(comment.id, comment.body ?? ""),
           const SizedBox(height: 8),
-          if (!hide) ChildrenComment(comment: comment, level: level),
+          // if (!hide) ChildrenComment(comment: comment, level: level),
         ],
       ),
     );
-  }
-}
-
-class ChildrenComment extends StatelessWidget {
-  const ChildrenComment({
-    Key? key,
-    required this.comment,
-    required this.level,
-  }) : super(key: key);
-
-  final Item comment;
-  final int level;
-
-  /// show children comments if exist and not too indented (below _maxLevel = 5)
-  @override
-  Widget build(BuildContext context) {
-    final childrenIds = comment.childrenIds;
-
-    if (childrenIds == null) return const SizedBox();
-
-    if (level < CommentContent.maxLevel && childrenIds.isNotEmpty) {
-      final childrenIdsSlice =
-          childrenIds.sublist(0, min(childrenIds.length, 5));
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...childrenIdsSlice
-              .map((id) => CommentTile(id: id, level: level + 1))
-              .toList(),
-          _moreComments(context, childrenIds.length),
-        ],
-      );
-    }
-    return const SizedBox();
-  }
-
-  Widget _moreComments(BuildContext context, int nChildren) {
-    if (level >= CommentContent.maxLevel && nChildren > 0 ||
-        nChildren > CommentContent.maxLevel) {
-      return TextButton(
-        onPressed: () {
-          GoRouter.of(context).push(ThreadPage.routeBuilder(comment.id));
-        },
-        child: const Text("More comments"),
-      );
-    }
-
-    return const SizedBox();
   }
 }
 
