@@ -16,6 +16,13 @@ class ItemIdTree extends Equatable {
       [this._children = emptyIList, this.collapsed = false]);
 
   ItemIdTree addChildren(List<int> childrenIds) {
+    final currentChildrenIds = _children.map((element) => element.id);
+    for (var x in childrenIds) {
+      if (currentChildrenIds.contains(x)) {
+        return this;
+      }
+    }
+
     final list = childrenIds.map((e) => ItemIdTree(e)).toList();
     final x = {...children, ...list}.toIList();
 

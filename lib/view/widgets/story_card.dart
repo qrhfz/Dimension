@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/providers/story_notifier.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,7 +52,7 @@ class StoryCardContent extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () async {
-              GoRouter.of(context).go('/thread/${item.id}');
+              GoRouter.of(context).go(ThreadPage.routeBuilder(item.id));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -117,7 +118,7 @@ class StoryCardContent extends StatelessWidget {
             if (url != null) {
               launchUrl(Uri.parse(url));
             } else {
-              GoRouter.of(context).go('/thread/${item.id}');
+              GoRouter.of(context).go(ThreadPage.routeBuilder(item.id));
             }
           },
           child: Padding(

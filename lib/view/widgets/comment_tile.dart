@@ -46,6 +46,7 @@ class _CommentCardState extends ConsumerState<CommentTile> {
       },
       child: state.maybeWhen(
         data: (item) {
+          tree.addChildrenToId(item.childrenIds ?? [], item.id);
           if (item.isDeleted == true) {
             return Padding(
               padding: EdgeInsets.only(left: leftPadding),

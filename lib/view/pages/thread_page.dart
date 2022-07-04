@@ -12,7 +12,7 @@ import '../providers/story_notifier.dart';
 import '../widgets/comment_tile.dart';
 
 class ThreadPage extends ConsumerWidget {
-  static String routeBuilder(int id) => "/thread/$id";
+  static String routeBuilder(int id) => "/item?id=$id";
 
   final int id;
   const ThreadPage(this.id, {Key? key}) : super(key: key);
