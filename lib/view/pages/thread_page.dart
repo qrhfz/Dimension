@@ -8,6 +8,7 @@ import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../providers/story_notifier.dart';
 import '../widgets/comment_tile.dart';
 
 class ThreadPage extends ConsumerWidget {
@@ -21,6 +22,7 @@ class ThreadPage extends ConsumerWidget {
     final state = ref.watch(itemFamily(id));
     final tree = ref.watch(itemDescendantProvider(id));
     final flat = tree.flatten().sublist(2);
+    final storyNotifier = ref.read(storyFamily(id).notifier)..visitStory();
 
     return state.maybeWhen(
       data: (item) => Scaffold(

@@ -40,17 +40,16 @@ class MyApp extends StatelessWidget {
             path: 'thread/:id',
             builder: (context, state) {
               final id = int.parse(state.params['id']!);
-              // final item = state.extra as Item?;
               return ThreadPage(id);
             },
           ),
-          GoRoute(
-            path: 'comment',
-            builder: (context, state) {
-              final parent = state.extra as Item;
-              return ThreadPage(parent.id);
-            },
-          ),
+          // GoRoute(
+          //   path: 'comment',
+          //   builder: (context, state) {
+          //     final parent = state.extra as Item;
+          //     return ThreadPage(parent.id);
+          //   },
+          // ),
         ],
       ),
     ],
