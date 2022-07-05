@@ -6,6 +6,8 @@ import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
+import 'view/providers/home_state.dart';
+
 void main() async {
   runApp(MyApp());
 }
@@ -47,6 +49,37 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
+      GoRoute(
+        path: '/best',
+        builder: (context, state) {
+          return const HomePage(initialType: HomeContentType.best);
+        },
+      ),
+      GoRoute(
+        path: '/ask',
+        builder: (context, state) {
+          return const HomePage(initialType: HomeContentType.ask);
+        },
+      ),
+      GoRoute(
+        path: '/jobs',
+        builder: (context, state) {
+          return const HomePage(initialType: HomeContentType.job);
+        },
+      ),
+      GoRoute(
+        path: '/show',
+        builder: (context, state) {
+          return const HomePage(initialType: HomeContentType.show);
+        },
+      ),
+      GoRoute(
+        path: '/newest',
+        builder: (context, state) {
+          return const HomePage(initialType: HomeContentType.new_);
+        },
+      ),
     ],
+    errorBuilder: (_, __) => const HomePage(),
   );
 }

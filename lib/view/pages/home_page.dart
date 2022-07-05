@@ -6,7 +6,9 @@ import 'package:hn_client/view/providers/home_state.dart';
 import 'package:hn_client/view/widgets/story_card.dart';
 
 class HomePage extends ConsumerWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({this.initialType = HomeContentType.top, Key? key})
+      : super(key: key);
+  final HomeContentType initialType;
 
   @override
   Widget build(context, ref) {
@@ -18,7 +20,7 @@ class HomePage extends ConsumerWidget {
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.filter_list_rounded),
-            initialValue: state.contentType,
+            initialValue: initialType,
             itemBuilder: (ctx) => const [
               PopupMenuItem<HomeContentType>(
                 child: Text("Top"),
