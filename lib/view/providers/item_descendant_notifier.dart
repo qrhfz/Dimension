@@ -12,7 +12,7 @@ final itemDescendantProvider =
   final tree = item.maybeWhen(
     data: (item) {
       final IList<ItemIdTree> children =
-          item.childrenIds?.map((e) => ItemIdTree(id)).toIList() ?? emptyIList;
+          item.childrenIds?.map((e) => ItemIdTree(e)).toIList() ?? emptyIList;
       return ItemIdTree(item.id, children);
     },
     orElse: () => ItemIdTree(id),

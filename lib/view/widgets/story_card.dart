@@ -17,7 +17,7 @@ class StoryCard extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final state = ref.watch(storyFamily(id));
-    final notifier = ref.read(storyFamily(id).notifier);
+    // final notifier = ref.read(storyFamily(id).notifier);
 
     return state.item.when(
       loading: () => const StoryCardPlaceholder(),

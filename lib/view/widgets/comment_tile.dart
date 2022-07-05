@@ -1,9 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/providers/item_descendant_notifier.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
@@ -36,7 +32,7 @@ class _CommentCardState extends ConsumerState<CommentTile> {
   Widget build(BuildContext context) {
     final state = ref.watch(itemFamily(widget.id));
     final tree = ref.read(itemDescendantProvider(widget.rootId).notifier);
-    final leftPadding = 16.0 * (widget.level - 1) + 8.0;
+    final leftPadding = 16.0 * (widget.level);
     return GestureDetector(
       onTap: () {
         setState(() {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/view/providers/item_descendant_notifier.dart';
 import 'package:hn_client/view/providers/item_notifier.dart';
-import 'package:hn_client/view/providers/item_state.dart';
+
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -21,8 +21,9 @@ class ThreadPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemFamily(id));
     final tree = ref.watch(itemDescendantProvider(id));
-    final flat = tree.flatten().sublist(2);
-    final storyNotifier = ref.read(storyFamily(id).notifier)..visitStory();
+
+    final flat = tree.flatten().sublist(1);
+    ref.read(storyFamily(id).notifier).visitStory();
 
     return state.maybeWhen(
       data: (item) => Scaffold(

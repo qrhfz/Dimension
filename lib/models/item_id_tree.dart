@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
@@ -39,14 +37,15 @@ class ItemIdTree extends Equatable {
   }
 
   List<ItemId> flatten([int level = 0]) {
-    final out = [ItemId(id, level)];
-
-    if (collapsed) return out;
-
-    for (final item in children) {
-      out.addAll(item.flatten(level + 1));
+    if (collapsed) {
+      return [ItemId(id, level)];
     }
-    return out;
+    final x = children
+        .map((e) => e.flatten(level + 1))
+        .expand((element) => element)
+        .toList();
+
+    return [ItemId(id, level), ...x];
   }
 
   ItemIdTree collapseId(int inputId) {
