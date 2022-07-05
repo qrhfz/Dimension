@@ -21,6 +21,15 @@ class CommentTile extends ConsumerStatefulWidget {
   final int id;
   final int level;
   final int rootId;
+  static const colors = [
+    Color.fromRGBO(74, 222, 128, 1),
+    Color.fromRGBO(96, 165, 250, 1),
+    Color.fromRGBO(129, 140, 248, 1),
+    Color.fromRGBO(192, 132, 252, 1),
+    Color.fromRGBO(248, 113, 113, 1),
+    Color.fromRGBO(251, 146, 60, 1),
+    Color.fromRGBO(250, 204, 21, 1),
+  ];
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CommentCardState();
@@ -34,44 +43,30 @@ class _CommentCardState extends ConsumerState<CommentTile> {
     final tree = ref.read(itemDescendantProvider(widget.rootId).notifier);
     final leftPadding = 16.0 * (widget.level);
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          hide = !hide;
-          tree.collapseId(widget.id);
-        });
-      },
-      child: state.maybeWhen(
-        data: (item) {
-          tree.addChildrenToId(item.childrenIds ?? [], item.id);
-          if (item.isDeleted == true) {
-            return Padding(
-              padding: EdgeInsets.only(left: leftPadding),
-              child: Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    left: BorderSide(
-                      color: Color(0xFFD1D5DB),
-                      width: 1,
-                    ),
-                  ),
-                ),
-                padding: const EdgeInsets.all(8),
-                child: const DeletedComment(),
-              ),
-            );
-          }
-          return Padding(
-            padding: EdgeInsets.only(left: leftPadding),
-            child: CommentContent(
-              comment: item,
-              level: widget.level,
-              hide: hide,
-            ),
-          );
+        onTap: () {
+          setState(() {
+            hide = !hide;
+            tree.collapseId(widget.id);
+          });
         },
-        orElse: () => const CommentCardPlaceholder(),
-      ),
-    );
+        child: CommentContainer(
+          child: state.maybeWhen(
+            data: (item) {
+              tree.addChildrenToId(item.childrenIds ?? [], item.id);
+              if (item.isDeleted == true) {
+                return const DeletedComment();
+              }
+              return CommentContent(
+                comment: item,
+                level: widget.level,
+                hide: hide,
+              );
+            },
+            orElse: () => const CommentCardPlaceholder(),
+          ),
+          leftPadding: leftPadding,
+          level: widget.level,
+        ));
   }
 }
 
@@ -90,27 +85,15 @@ class CommentContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: Color(0xFFD1D5DB),
-            width: 1,
-          ),
-        ),
-      ),
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          /// author and comment info
-          CommentInfo(comment: comment, hide: hide),
-          if (!hide) Body(comment.id, comment.body ?? ""),
-          const SizedBox(height: 8),
-          // if (!hide) ChildrenComment(comment: comment, level: level),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        /// author and comment info
+        CommentInfo(comment: comment, hide: hide),
+        if (!hide) Body(comment.id, comment.body ?? ""),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }
@@ -145,6 +128,39 @@ class CommentInfo extends StatelessWidget {
           ),
         if (hide) const Icon(Icons.expand_more, size: 16)
       ],
+    );
+  }
+}
+
+class CommentContainer extends StatelessWidget {
+  const CommentContainer(
+      {Key? key,
+      required this.level,
+      required this.leftPadding,
+      required this.child})
+      : super(key: key);
+  final int level;
+  final double leftPadding;
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: leftPadding,
+        bottom: 8,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: CommentTile.colors[level % CommentTile.colors.length],
+              width: 3,
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.all(8),
+        child: child,
+      ),
     );
   }
 }

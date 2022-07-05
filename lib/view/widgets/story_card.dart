@@ -62,8 +62,11 @@ class StoryCardContent extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: item.title ?? "",
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          color: visited ? Colors.grey : Colors.black),
+                      style: TextStyle(
+                        color: visited
+                            ? Theme.of(context).textTheme.caption?.color
+                            : Theme.of(context).colorScheme.onBackground,
+                      ),
                       children: [
                         TextSpan(
                           text:
@@ -172,7 +175,7 @@ class StoryCardPlaceholder extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Container(
           height: 20,
-          color: Colors.grey.shade300,
+          color: Theme.of(context).colorScheme.surfaceVariant,
         ),
       ),
       subtitle: Padding(
@@ -182,7 +185,7 @@ class StoryCardPlaceholder extends StatelessWidget {
           child: Container(
             width: 128,
             height: 16,
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.surfaceVariant,
           ),
         ),
       ),

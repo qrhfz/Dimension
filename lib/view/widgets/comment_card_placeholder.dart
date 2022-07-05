@@ -12,17 +12,17 @@ class CommentCardPlaceholder extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Container(
-            color: Colors.grey.shade300,
-            height: 8,
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            height: 16,
             width: 64,
           ),
         ),
-        for (var i = 0; i < 15; i++)
+        for (var i = 0; i < 8; i++)
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Container(
-              color: Colors.grey.shade300,
-              height: 8,
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              height: 16,
               width: double.infinity,
             ),
           ),

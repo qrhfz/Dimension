@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
           scaffoldBackgroundColor: Colors.white,
         ),
+        darkTheme: ThemeData.dark(),
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
       ),
