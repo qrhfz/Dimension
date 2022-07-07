@@ -52,7 +52,6 @@ class _CommentCardState extends ConsumerState<CommentTile> {
         child: CommentContainer(
           child: state.maybeWhen(
             data: (item) {
-              tree.addChildrenToId(item.childrenIds ?? [], item.id);
               if (item.isDeleted == true) {
                 return const DeletedComment();
               }

@@ -5,60 +5,75 @@ const emptyIList = IListConst<ItemIdTree>([]);
 
 class ItemIdTree extends Equatable {
   final int id;
-  final IList<ItemIdTree> _children;
+  final IList<ItemIdTree> children;
   final bool collapsed;
 
-  List<ItemIdTree> get children => _children.toList();
-
   const ItemIdTree(this.id,
-      [this._children = emptyIList, this.collapsed = false]);
+      [this.children = emptyIList, this.collapsed = false]);
 
   ItemIdTree addChildren(List<int> childrenIds) {
-    final currentChildrenIds = _children.map((element) => element.id);
-    for (var x in childrenIds) {
-      if (currentChildrenIds.contains(x)) {
+    // if duplicate id found then return
+    for (final item in children) {
+      final id = item.id;
+      if (childrenIds.contains(id)) {
         return this;
       }
     }
+    final List<ItemIdTree> childrenNode = children.toList();
 
-    final list = childrenIds.map((e) => ItemIdTree(e)).toList();
-    final x = {...children, ...list}.toIList();
+    for (final x in childrenIds) {
+      childrenNode.add(ItemIdTree(x));
+    }
 
-    return copy(children: x);
+    return copy(children: childrenNode.toIList());
   }
 
   ItemIdTree addChildrenToId(List<int> childrenIds, int inputId) {
     if (id == inputId) {
       return addChildren(childrenIds);
     }
-    final x =
-        children.map((e) => e.addChildrenToId(childrenIds, inputId)).toIList();
-    return copy(children: x);
+    List<ItemIdTree> _children = [];
+    for (final item in children) {
+      _children.add(item.addChildrenToId(childrenIds, inputId));
+    }
+
+    return copy(children: _children.toIList());
   }
 
-  List<ItemId> flatten([int level = 0]) {
+  IList<ItemId> flatten([int level = 0]) {
     if (collapsed) {
-      return [ItemId(id, level)];
+      return IList([ItemId(id, level)]);
     }
-    final x = children
-        .map((e) => e.flatten(level + 1))
-        .expand((element) => element)
-        .toList();
 
-    return [ItemId(id, level), ...x];
+    final List<ItemId> items = [];
+
+    for (var item in children) {
+      final innerItems = item.flatten(level + 1);
+      for (var itemX in innerItems) {
+        items.add(itemX);
+      }
+    }
+
+    return IList([ItemId(id, level), ...items]);
   }
 
   ItemIdTree collapseId(int inputId) {
     if (id == inputId) {
       return copy(collapsed: !collapsed);
     }
-    final x = children.map((e) => e.collapseId(inputId)).toIList();
-    return copy(children: x);
+    final List<ItemIdTree> _children = [];
+    for (var item in children) {
+      _children.add(item.collapseId(inputId));
+    }
+    return copy(children: _children.toIList());
   }
 
   ItemIdTree copy({int? id, IList<ItemIdTree>? children, bool? collapsed}) {
     return ItemIdTree(
-        id ?? this.id, children ?? _children, collapsed ?? this.collapsed);
+      id ?? this.id,
+      children ?? this.children,
+      collapsed ?? this.collapsed,
+    );
   }
 
   @override

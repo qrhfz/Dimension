@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/item_id_tree.dart';
@@ -11,9 +13,17 @@ final itemDescendantProvider =
   final item = ref.watch(itemFamily(id));
   final tree = item.maybeWhen(
     data: (item) {
-      final IList<ItemIdTree> children =
-          item.childrenIds?.map((e) => ItemIdTree(e)).toIList() ?? emptyIList;
-      return ItemIdTree(item.id, children);
+      final ids = item.childrenIds;
+      if (ids == null) {
+        return ItemIdTree(item.id);
+      }
+      final List<ItemIdTree> children = [];
+
+      for (var id in ids) {
+        children.add(ItemIdTree(id));
+      }
+
+      return ItemIdTree(item.id, children.toIList());
     },
     orElse: () => ItemIdTree(id),
   );
@@ -21,27 +31,27 @@ final itemDescendantProvider =
 });
 
 class ItemDescendantNotifier extends StateNotifier<ItemIdTree> {
-  ItemDescendantNotifier(ItemIdTree state) : super(state);
+  ItemDescendantNotifier(super.state);
 
-  Future<void> addChildren(List<int> childrenIds) async {
-    await Future.microtask(() {
-      state = state.addChildren(childrenIds);
-    });
+  // Future<void> addChildren(List<int> childrenIds) async {
+  //   await Future.microtask(() {
+  //     state = state.addChildren(childrenIds);
+  //   });
+  // }
+
+  void addChildrenToId(List<int> childrenIds, int id) async {
+    // await Future.microtask(
+    //   () {
+    state = state.addChildrenToId(childrenIds, id);
+    //   },
+    // );
   }
 
-  Future<void> addChildrenToId(List<int> childrenIds, int id) async {
-    await Future.microtask(
-      () {
-        state = state.addChildrenToId(childrenIds, id);
-      },
-    );
-  }
-
-  Future<void> collapseId(int id) async {
-    await Future.microtask(
-      () {
-        state = state.collapseId(id);
-      },
-    );
+  void collapseId(int id) async {
+    // await Future.microtask(
+    //   () {
+    state = state.collapseId(id);
+    //   },
+    // );
   }
 }

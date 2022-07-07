@@ -27,6 +27,19 @@ void main() {
     final c = a.addChildren([2]);
 
     expect(c, b);
+
+    final d = b.addChildren([3, 4]);
+    expect(
+      d,
+      const ItemIdTree(
+        1,
+        IListConst([
+          ItemIdTree(2),
+          ItemIdTree(3),
+          ItemIdTree(4),
+        ]),
+      ),
+    );
   });
 
   test("addChildrenToId", () {
@@ -79,6 +92,7 @@ void main() {
         ),
         ItemIdTree(31986500)
       ]),
+      true,
     );
 
     final b = a.flatten();

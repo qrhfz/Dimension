@@ -52,6 +52,7 @@ dependencies:
   isar_flutter_libs: ^2.5.0
   path_provider: ^2.0.11
   fast_immutable_collections: ^7.4.1
+  flutter_offline: ^2.1.0
 
 dev_dependencies:
   flutter_test:
