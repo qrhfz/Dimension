@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-const emptyIList = IListConst<ItemIdTree>([]);
+const emptyIList = IListConst<TreeIdItem>([]);
 
-class ItemIdTree extends Equatable {
+class TreeIdItem extends Equatable {
   final int id;
-  final IList<ItemIdTree> children;
+  final IList<TreeIdItem> children;
   final bool collapsed;
 
-  const ItemIdTree(this.id,
+  const TreeIdItem(this.id,
       [this.children = emptyIList, this.collapsed = false]);
 
-  ItemIdTree addChildren(List<int> childrenIds) {
+  TreeIdItem addChildren(List<int> childrenIds) {
     // if duplicate id found then return
     for (final item in children) {
       final id = item.id;
@@ -19,20 +19,20 @@ class ItemIdTree extends Equatable {
         return this;
       }
     }
-    final List<ItemIdTree> childrenNode = children.toList();
+    final List<TreeIdItem> childrenNode = children.toList();
 
     for (final x in childrenIds) {
-      childrenNode.add(ItemIdTree(x));
+      childrenNode.add(TreeIdItem(x));
     }
 
     return copy(children: childrenNode.toIList());
   }
 
-  ItemIdTree addChildrenToId(List<int> childrenIds, int inputId) {
+  TreeIdItem addChildrenToId(List<int> childrenIds, int inputId) {
     if (id == inputId) {
       return addChildren(childrenIds);
     }
-    List<ItemIdTree> _children = [];
+    List<TreeIdItem> _children = [];
     for (final item in children) {
       _children.add(item.addChildrenToId(childrenIds, inputId));
     }
@@ -40,12 +40,12 @@ class ItemIdTree extends Equatable {
     return copy(children: _children.toIList());
   }
 
-  IList<ItemId> flatten([int level = 0]) {
+  IList<ListIdItem> flatten([int level = 0]) {
     if (collapsed) {
-      return IList([ItemId(id, level)]);
+      return IList([ListIdItem(id, level, collapsed)]);
     }
 
-    final List<ItemId> items = [];
+    final List<ListIdItem> items = [];
 
     for (var item in children) {
       final innerItems = item.flatten(level + 1);
@@ -54,22 +54,22 @@ class ItemIdTree extends Equatable {
       }
     }
 
-    return IList([ItemId(id, level), ...items]);
+    return IList([ListIdItem(id, level), ...items]);
   }
 
-  ItemIdTree collapseId(int inputId) {
+  TreeIdItem collapseId(int inputId) {
     if (id == inputId) {
       return copy(collapsed: !collapsed);
     }
-    final List<ItemIdTree> _children = [];
+    final List<TreeIdItem> _children = [];
     for (var item in children) {
       _children.add(item.collapseId(inputId));
     }
     return copy(children: _children.toIList());
   }
 
-  ItemIdTree copy({int? id, IList<ItemIdTree>? children, bool? collapsed}) {
-    return ItemIdTree(
+  TreeIdItem copy({int? id, IList<TreeIdItem>? children, bool? collapsed}) {
+    return TreeIdItem(
       id ?? this.id,
       children ?? this.children,
       collapsed ?? this.collapsed,
@@ -80,11 +80,12 @@ class ItemIdTree extends Equatable {
   List<Object?> get props => [id, children, collapsed];
 }
 
-class ItemId extends Equatable {
+class ListIdItem extends Equatable {
   final int id;
   final int level;
+  final bool collapsed;
 
-  const ItemId(this.id, [this.level = 0]);
+  const ListIdItem(this.id, [this.level = 0, this.collapsed = false]);
 
   @override
   List<Object?> get props => [id, level];

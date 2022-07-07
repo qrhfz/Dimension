@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/view/providers/item_descendant_notifier.dart';
+import 'package:hn_client/view/providers/item_tree_notifier.dart';
 import 'package:hn_client/view/providers/item_notifier.dart';
 
 import 'package:hn_client/view/widgets/body.dart';
@@ -20,9 +20,8 @@ class ThreadPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemFamily(id));
-    final tree = ref.watch(itemDescendantProvider(id));
 
-    final flat = tree.flatten().sublist(1);
+    final childrenIdList = ref.watch(itemTreeFamily(id));
     ref.read(storyFamily(id).notifier).visitStory();
 
     return state.maybeWhen(
@@ -77,15 +76,13 @@ class ThreadPage extends ConsumerWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final commentId = flat[index].id;
-                  final level = flat[index].level;
+                  final child = childrenIdList[index];
                   return CommentTile(
-                    id: commentId,
-                    level: level,
                     rootId: item.id,
+                    listIdItem: child,
                   );
                 },
-                childCount: flat.length,
+                childCount: childrenIdList.length,
               ),
             ),
           ],

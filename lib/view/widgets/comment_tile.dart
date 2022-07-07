@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/view/providers/item_descendant_notifier.dart';
+import 'package:hn_client/models/tree_id_item.dart';
+import 'package:hn_client/view/providers/item_tree_notifier.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -10,16 +11,14 @@ import '../providers/item_notifier.dart';
 import 'comment_card_placeholder.dart';
 import 'deleted_comment.dart';
 
-class CommentTile extends ConsumerStatefulWidget {
+class CommentTile extends ConsumerWidget {
   const CommentTile({
     Key? key,
-    required this.id,
+    required this.listIdItem,
     required this.rootId,
-    this.level = 0,
   }) : super(key: key);
 
-  final int id;
-  final int level;
+  final ListIdItem listIdItem;
   final int rootId;
   static const colors = [
     Color.fromRGBO(74, 222, 128, 1),
@@ -32,22 +31,16 @@ class CommentTile extends ConsumerStatefulWidget {
   ];
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CommentCardState();
-}
-
-class _CommentCardState extends ConsumerState<CommentTile> {
-  bool hide = false;
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(itemFamily(widget.id));
-    final tree = ref.read(itemDescendantProvider(widget.rootId).notifier);
-    final leftPadding = 16.0 * (widget.level);
+  Widget build(BuildContext context, ref) {
+    final id = listIdItem.id;
+    final level = listIdItem.level;
+    final collapsed = listIdItem.collapsed;
+    final state = ref.watch(itemFamily(id));
+    final tree = ref.read(itemTreeFamily(rootId).notifier);
+    final leftPadding = 16.0 * (level);
     return GestureDetector(
         onTap: () {
-          setState(() {
-            hide = !hide;
-            tree.collapseId(widget.id);
-          });
+          tree.collapseId(id);
         },
         child: CommentContainer(
           child: state.maybeWhen(
@@ -57,14 +50,14 @@ class _CommentCardState extends ConsumerState<CommentTile> {
               }
               return CommentContent(
                 comment: item,
-                level: widget.level,
-                hide: hide,
+                level: level,
+                hide: collapsed,
               );
             },
             orElse: () => const CommentCardPlaceholder(),
           ),
           leftPadding: leftPadding,
-          level: widget.level,
+          level: level,
         ));
   }
 }

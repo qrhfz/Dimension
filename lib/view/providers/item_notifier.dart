@@ -3,7 +3,7 @@ import 'package:hn_client/repository/repository.dart';
 import 'package:hn_client/view/providers/item_state.dart';
 
 import '../../models/item.dart';
-import 'item_descendant_notifier.dart';
+import 'item_tree_notifier.dart';
 
 final itemFamily = StateNotifierProvider.family<ItemNotifier, ItemState, int>(
   (ref, id) {
@@ -52,7 +52,7 @@ class ItemNotifier extends StateNotifier<ItemState> {
   void loadComment(Item item) {
     final ancestorId = findAncestor(item);
     if (ancestorId != null) {
-      final tree = ref.read(itemDescendantProvider(ancestorId).notifier);
+      final tree = ref.read(itemTreeFamily(ancestorId).notifier);
       tree.addChildrenToId(item.childrenIds ?? [], item.id);
     }
   }
