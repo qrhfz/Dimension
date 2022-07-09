@@ -5,8 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/view/pages/thread_page.dart';
 import 'package:hn_client/view/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
-
-import 'view/providers/home_state.dart';
+import 'package:hn_client/view/providers/home/home_state.dart';
 
 void main() async {
   runApp(MyApp());

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/models/item_detail.dart';
 import 'package:hn_client/models/user.dart';
 
 import '../models/item.dart';
@@ -62,6 +63,13 @@ class API {
         await client.get(Uri.https(authority, '/v0/item/$id.json'));
     final Map<String, dynamic> json = jsonDecode(response.body);
     return Item.fromJson(json);
+  }
+
+  Future<ItemDetail> getItemDetail(int id) async {
+    final response =
+        await client.get(Uri.https('hn.algolia.com', '/api/v1/items/$id'));
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    return ItemDetail.fromJson(json);
   }
 
   Future<User> getUser(String id) {

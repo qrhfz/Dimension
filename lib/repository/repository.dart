@@ -3,6 +3,7 @@ import 'package:hn_client/data/api.dart';
 import 'package:hn_client/models/failure.dart';
 import 'package:hn_client/models/item.dart';
 import 'package:dartz/dartz.dart';
+import 'package:hn_client/models/item_detail.dart';
 import '../data/db.dart';
 
 final repositoryProvider = Provider((ref) {
@@ -71,6 +72,14 @@ class Repository {
   Future<Either<Failure, Item>> getItem(int id) async {
     try {
       return right(await api.getItem(id));
+    } catch (e) {
+      return left(NetworkFailure());
+    }
+  }
+
+  Future<Either<Failure, ItemDetail>> getItemDetail(int id) async {
+    try {
+      return right(await api.getItemDetail(id));
     } catch (e) {
       return left(NetworkFailure());
     }

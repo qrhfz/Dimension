@@ -1,7 +1,8 @@
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/view/providers/item_tree_notifier.dart';
-import 'package:hn_client/view/providers/item_notifier.dart';
+import 'package:hn_client/models/item_detail.dart';
+import 'package:hn_client/view/providers/item_detail/item_detail_notifier.dart';
 
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
@@ -19,77 +20,122 @@ class ThreadPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final state = ref.watch(itemFamily(id));
-
-    final childrenIdList = ref.watch(itemTreeFamily(id));
+    final state = ref.watch(itemDetailFamily(id));
+    final notifier = ref.read(itemDetailFamily(id).notifier);
     ref.read(storyFamily(id).notifier).visitStory();
 
-    return state.maybeWhen(
-      data: (item) => Scaffold(
-        appBar: AppBar(
-          title: Text(item.title ?? ""),
-          actions: state.maybeWhen(
-              data: (item) {
-                final url = item.url;
-                if (url == null) return null;
-                return [
-                  IconButton(
-                    onPressed: () {
-                      launchUrl(Uri.parse(url));
-                    },
-                    icon: const Icon(Icons.open_in_new),
-                  )
-                ];
+    return state.when(
+      data: (items) {
+        final op = items.first;
+        final comments = items.sublist(1);
+        return ThreadContent(op: op, comments: comments, notifier: notifier);
+      },
+      loading: () => const ThreadLoading(),
+      error: (msg) => ThreadError(msg),
+    );
+  }
+}
+
+class ThreadError extends StatelessWidget {
+  const ThreadError(
+    this.message, {
+    Key? key,
+  }) : super(key: key);
+  final String message;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(child: Text(message)),
+    );
+  }
+}
+
+class ThreadLoading extends StatelessWidget {
+  const ThreadLoading({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class ThreadContent extends StatelessWidget {
+  const ThreadContent({
+    Key? key,
+    required this.op,
+    required this.comments,
+    required this.notifier,
+  }) : super(key: key);
+
+  final FlatItemDetail op;
+  final IList<FlatItemDetail> comments;
+  final ItemDetailNotifier notifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(op.title ?? ""),
+        actions: [
+          if (op.url != null)
+            IconButton(
+              onPressed: () {
+                launchUrl(Uri.parse(op.url!));
               },
-              orElse: () => null),
-        ),
-        body: CustomScrollView(
-          cacheExtent: 240,
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(8.0),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  Text(
-                    item.title ?? "",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Row(
-                    children: [
-                      Text(item.author),
-                      const Icon(
-                        Icons.arrow_drop_up_sharp,
-                        size: 24,
-                        color: Colors.grey,
-                      ),
-                      Text((item.score ?? 0).toString()),
-                      dotSeparator,
-                      Text(
-                        TimeElapsed.fromDateTime(item.createdAt),
-                      ),
-                    ],
-                  ),
-                  if (item.bodyData.isNotEmpty) Body(item.id, item.bodyData)
-                ]),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final child = childrenIdList[index];
-                  return CommentTile(
-                    rootId: item.id,
-                    listIdItem: child,
-                  );
-                },
-                childCount: childrenIdList.length,
-              ),
-            ),
-          ],
-        ),
+              icon: const Icon(Icons.open_in_new),
+            )
+        ],
       ),
-      orElse: () => const Scaffold(
-        body: SafeArea(child: CircularProgressIndicator()),
+      body: CustomScrollView(
+        cacheExtent: 240,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(8.0),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(
+                  op.title ?? "",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Row(
+                  children: [
+                    Text(op.author),
+                    const Icon(
+                      Icons.arrow_drop_up_sharp,
+                      size: 24,
+                      color: Colors.grey,
+                    ),
+                    Text((op.score ?? 0).toString()),
+                    dotSeparator,
+                    Text(
+                      TimeElapsed.fromDateTime(op.createdAt),
+                    ),
+                  ],
+                ),
+                if (op.bodyData.isNotEmpty) Body(op.id, op.bodyData)
+              ]),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final comment = comments[index];
+                return CommentTile(
+                    item: comment,
+                    onCollapse: (int id) {
+                      notifier.collapse(id);
+                    });
+              },
+              childCount: comments.length,
+            ),
+          ),
+        ],
       ),
     );
   }

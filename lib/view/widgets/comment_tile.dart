@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/models/item_detail.dart';
 import 'package:hn_client/models/tree_id_item.dart';
 import 'package:hn_client/view/providers/item_tree_notifier.dart';
 import 'package:hn_client/view/widgets/body.dart';
@@ -14,12 +15,12 @@ import 'deleted_comment.dart';
 class CommentTile extends ConsumerWidget {
   const CommentTile({
     Key? key,
-    required this.listIdItem,
-    required this.rootId,
+    required this.item,
+    required this.onCollapse,
   }) : super(key: key);
 
-  final ListIdItem listIdItem;
-  final int rootId;
+  final FlatItemDetail item;
+  final void Function(int id) onCollapse;
   static const colors = [
     Color.fromRGBO(74, 222, 128, 1),
     Color.fromRGBO(96, 165, 250, 1),
@@ -32,48 +33,28 @@ class CommentTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final id = listIdItem.id;
-    final level = listIdItem.level;
-    final collapsed = listIdItem.collapsed;
-    final state = ref.watch(itemFamily(id));
-    final tree = ref.read(itemTreeFamily(rootId).notifier);
+    final id = item.id;
+    final level = item.level;
+    // final collapsed = item.collapsed;
+
     final leftPadding = 16.0 * (level) - 8.0;
     return GestureDetector(
-        onTap: () {
-          tree.collapseId(id);
-        },
-        child: CommentContainer(
-          child: state.maybeWhen(
-            data: (item) {
-              if (item.isDeleted == true) {
-                return const DeletedComment();
-              }
-              return CommentContent(
-                comment: item,
-                level: level,
-                hide: collapsed,
-              );
-            },
-            orElse: () => const CommentCardPlaceholder(),
-          ),
-          leftPadding: leftPadding,
-          level: level,
-        ));
+      onTap: () {
+        onCollapse(id);
+      },
+      child: CommentContainer(
+        child: CommentContent(item),
+        leftPadding: leftPadding,
+        level: level,
+      ),
+    );
   }
 }
 
 class CommentContent extends StatelessWidget {
-  const CommentContent(
-      {Key? key,
-      required this.comment,
-      required this.level,
-      required this.hide})
-      : super(key: key);
+  const CommentContent(this.item, {Key? key}) : super(key: key);
 
-  final Item comment;
-  final int level;
-  static const maxLevel = 5;
-  final bool hide;
+  final FlatItemDetail item;
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +63,8 @@ class CommentContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         /// author and comment info
-        CommentInfo(comment: comment, hide: hide),
-        if (!hide) Body(comment.id, comment.body ?? ""),
+        CommentInfo(comment: item),
+        if (!item.collapsed) Body(item.id, item.body ?? ""),
         const SizedBox(height: 8),
       ],
     );
@@ -94,11 +75,9 @@ class CommentInfo extends StatelessWidget {
   const CommentInfo({
     Key? key,
     required this.comment,
-    required this.hide,
   }) : super(key: key);
 
-  final Item comment;
-  final bool hide;
+  final FlatItemDetail comment;
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +92,7 @@ class CommentInfo extends StatelessWidget {
         Text(
           TimeElapsed.fromDateTime(comment.createdAt),
         ),
-        if (comment.isDead ?? false)
-          const Text(
-            "  dead post",
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        if (hide) const Icon(Icons.expand_more, size: 16)
+        if (comment.collapsed) const Icon(Icons.expand_more, size: 16)
       ],
     );
   }

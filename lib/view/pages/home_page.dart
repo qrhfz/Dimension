@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/failure.dart';
-import 'package:hn_client/view/providers/home_notifier.dart';
-import 'package:hn_client/view/providers/home_state.dart';
 import 'package:hn_client/view/widgets/story_card.dart';
+
+import '../providers/home/home_notifier.dart';
+import '../providers/home/home_state.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({this.initialType = HomeContentType.top, Key? key})
