@@ -37,7 +37,7 @@ class CommentTile extends ConsumerWidget {
     final collapsed = listIdItem.collapsed;
     final state = ref.watch(itemFamily(id));
     final tree = ref.read(itemTreeFamily(rootId).notifier);
-    final leftPadding = 16.0 * (level);
+    final leftPadding = 16.0 * (level) - 8.0;
     return GestureDetector(
         onTap: () {
           tree.collapseId(id);

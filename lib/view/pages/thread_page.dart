@@ -44,7 +44,7 @@ class ThreadPage extends ConsumerWidget {
               orElse: () => null),
         ),
         body: CustomScrollView(
-          cacheExtent: 2000,
+          cacheExtent: 240,
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(8.0),

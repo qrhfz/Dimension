@@ -11,18 +11,18 @@ class DeletedComment extends StatelessWidget {
       width: double.infinity,
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
+        children: const [
           SizedBox(
             width: 32,
             height: 32,
             child: Center(
               child: Icon(
                 Icons.delete,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Colors.grey,
               ),
             ),
           ),
-          const Text(
+          Text(
             "Deleted Comment",
             style: TextStyle(fontStyle: FontStyle.italic),
           ),

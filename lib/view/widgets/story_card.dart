@@ -61,11 +61,10 @@ class StoryCardContent extends StatelessWidget {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: item.title ?? "",
+                      text: item.title ?? "no title",
                       style: TextStyle(
-                        color: visited
-                            ? Theme.of(context).textTheme.caption?.color
-                            : Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontWeight: visited ? FontWeight.w300 : FontWeight.bold,
                       ),
                       children: [
                         TextSpan(
