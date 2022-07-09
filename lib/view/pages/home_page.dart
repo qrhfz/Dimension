@@ -5,13 +5,24 @@ import 'package:hn_client/view/providers/home_notifier.dart';
 import 'package:hn_client/view/providers/home_state.dart';
 import 'package:hn_client/view/widgets/story_card.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({this.initialType = HomeContentType.top, Key? key})
       : super(key: key);
   final HomeContentType initialType;
 
   @override
-  Widget build(context, ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(homeNotifierProvider.notifier).setType(widget.initialType);
+  }
+
+  @override
+  Widget build(context) {
     final state = ref.watch(homeNotifierProvider);
     final notifier = ref.read(homeNotifierProvider.notifier);
     return Scaffold(
@@ -20,7 +31,7 @@ class HomePage extends ConsumerWidget {
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.filter_list_rounded),
-            initialValue: initialType,
+            initialValue: state.contentType,
             itemBuilder: (ctx) => const [
               PopupMenuItem<HomeContentType>(
                 child: Text("Top"),
@@ -62,6 +73,7 @@ class HomePage extends ConsumerWidget {
   }
 
   Widget loading(_) => const Center(child: CircularProgressIndicator());
+
   Widget data(_, List<int> ids) {
     return ListView.builder(
       itemCount: ids.length,

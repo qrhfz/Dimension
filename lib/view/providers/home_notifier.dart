@@ -15,11 +15,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
 
   HomeNotifier(this.repository)
-      : super(const HomeState.loading(HomeContentType.top)) {
-    load(state.contentType);
-  }
+      : super(const HomeState.loading(HomeContentType.top));
 
-  void load(HomeContentType type) async {
+  Future<void> load(HomeContentType type) async {
     state = HomeState.loading(type);
     late final Either<Failure, List<int>> failureOrIDs;
 
@@ -48,5 +46,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
       (failure) => HomeState.error(type, failure),
       (ids) => HomeState.data(type, ids),
     );
+  }
+
+  Future<void> setType(HomeContentType type) async {
+    load(type);
   }
 }
