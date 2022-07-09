@@ -1,0 +1,79 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+script:
+  - rm -rf AppDir || true
+  - cp -r build/linux/x64/release/bundle AppDir
+  - mkdir -p AppDir/usr/share/icons/hicolor/scalable/apps/
+  - cp hn_client.svg AppDir/usr/share/icons/hicolor/scalable/apps/
+AppDir:
+  path: /home/q/Dev/flutter/hn_cllent_repo/hn_client/AppDir
+  app_info:
+    id: dev.qori.hn_client
+    name: hn_client
+    icon: hn_client
+    version: latest
+    exec: hn_client
+    exec_args: $@
+  apt:
+    arch:
+    - amd64
+    allow_unauthenticated: true
+    sources:
+    - sourceline: deb http://download.opensuse.org/repositories/shells:/zsh-users:/zsh-syntax-highlighting/xUbuntu_20.04/
+        /
+    - sourceline: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+        https://download.docker.com/linux/ubuntu   focal stable
+    - sourceline: deb http://ppa.launchpad.net/serge-rider/dbeaver-ce/ubuntu focal
+        main
+    - sourceline: deb http://download.opensuse.org/repositories/shells:/zsh-users:/zsh-autosuggestions/xUbuntu_20.04/
+        /
+    - sourceline: deb http://packages.linuxmint.com una main upstream import backport
+    - sourceline: deb http://archive.ubuntu.com/ubuntu focal main restricted universe
+        multiverse
+    - sourceline: deb http://archive.ubuntu.com/ubuntu focal-updates main restricted
+        universe multiverse
+    - sourceline: deb http://archive.ubuntu.com/ubuntu focal-backports main restricted
+        universe multiverse
+    - sourceline: deb http://security.ubuntu.com/ubuntu/ focal-security main restricted
+        universe multiverse
+    - sourceline: deb http://archive.canonical.com/ubuntu/ focal partner
+    - sourceline: deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x
+        focal main
+    - sourceline: deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/ubuntu/20.04/prod
+        focal main
+    - sourceline: deb http://deb.xanmod.org releases main
+    - sourceline: deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code
+        stable main
+    - sourceline: deb http://ppa.launchpad.net/lutris-team/lutris/ubuntu focal main
+    include:
+    - libc6:amd64
+    - libgtk-3-0
+    - libwayland-cursor0
+    - libwayland-egl1
+  files:
+    include: []
+    exclude:
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
+  test:
+    fedora-30:
+      image: appimagecrafters/tests-env:fedora-30
+      command: ./AppRun
+    debian-stable:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+    archlinux-latest:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+    centos-7:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+    ubuntu-xenial:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+AppImage:
+  arch: x86_64
+  update-information: guess
