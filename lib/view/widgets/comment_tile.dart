@@ -38,6 +38,7 @@ class CommentTile extends ConsumerWidget {
     // final collapsed = item.collapsed;
 
     final leftPadding = 16.0 * (level) - 8.0;
+
     return GestureDetector(
       onTap: () {
         onCollapse(id);
@@ -64,7 +65,7 @@ class CommentContent extends StatelessWidget {
       children: [
         /// author and comment info
         CommentInfo(comment: item),
-        if (!item.collapsed) Body(item.id, item.body ?? ""),
+        if (!item.collapsed && item.body != null) Body(item.id, item.body!),
         const SizedBox(height: 8),
       ],
     );
@@ -86,7 +87,6 @@ class CommentInfo extends StatelessWidget {
       children: [
         Text(
           comment.author,
-          style: Theme.of(context).textTheme.labelLarge,
         ),
         dotSeparator,
         Text(

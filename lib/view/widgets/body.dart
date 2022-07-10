@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,98 +19,77 @@ class Body extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final tokens = ref.watch(tokenFamily(html));
 
-    return RichText(text: rootTextSpan(tokens, context));
+    return BodyText(tokens: tokens);
   }
 }
 
-TextSpan rootTextSpan(List<Token> tokens, BuildContext context) {
-  if (tokens.isEmpty) {
-    return const TextSpan();
-  }
-  TextStyle style = TextStyle(
-    color: Theme.of(context).colorScheme.onSurface,
-  );
+class BodyText extends StatelessWidget {
+  const BodyText({
+    Key? key,
+    required this.tokens,
+  }) : super(key: key);
 
-  final List<InlineSpan> children =
-      tokens.sublist(1).map((e) => genTextSpan(e, context)).toList();
-  final token = tokens.first;
+  final List<Token> tokens;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: RootTextSpan(tokens, context),
+    );
+  }
+}
+
+// ignore: non_constant_identifier_names
+TextSpan RootTextSpan(List<Token> tokens, BuildContext context) {
+  if (tokens.isEmpty) return const TextSpan();
+  final List<InlineSpan> children = [];
+  for (var i = 0; i < tokens.length; i++) {
+    children.add(ChildTextSpan(tokens[i], context));
+    if (i < tokens.length - 1) {
+      children.add(const TextSpan(text: "\n\n"));
+    }
+  }
+  return TextSpan(children: children);
+}
+
+// ignore: non_constant_identifier_names
+InlineSpan ChildTextSpan(Token token, BuildContext context) {
   switch (token.type) {
     case TokenType.P:
-      return TextSpan(
-        text: "\n\n",
-        children: children,
-        style: style,
-      );
-
-    case TokenType.ITALIC:
-      return TextSpan(
-        text: token.value.toString(),
-        children: children,
-        style: style.copyWith(fontStyle: FontStyle.italic),
-      );
-    case TokenType.TEXT:
-      return TextSpan(
-        text: token.value.toString(),
-        children: children,
-        style: style,
-      );
-    case TokenType.CODE:
-      return TextSpan(
-        text: token.value.toString(),
-        children: children,
-        style: style.copyWith(fontFamily: "monospace"),
-      );
-    case TokenType.LINK:
-      return TextSpan(
-          text: (token.value as List)[1].toString(),
-          children: children,
-          style: style.copyWith(color: Colors.blue),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              launchUrl(Uri.parse((token.value as List)[0].toString()));
-            });
-    case TokenType.PRE:
+      final List<Token> tokens =
+          (token.value as List).map((e) => e as Token).toList();
+      final List<InlineSpan> children = [];
+      for (var i = 0; i < tokens.length; i++) {
+        children.add(ChildTextSpan(tokens[i], context));
+      }
       return TextSpan(children: children);
-  }
-}
-
-InlineSpan genTextSpan(Token token, BuildContext context) {
-  TextStyle style = TextStyle(
-    color: Theme.of(context).colorScheme.onSurface,
-  );
-
-  switch (token.type) {
-    case TokenType.P:
-      return TextSpan(
-        text: "\n\n",
-        style: style,
-      );
-
+    case TokenType.TEXT:
+      return TextSpan(text: token.value.toString());
     case TokenType.ITALIC:
       return TextSpan(
         text: token.value.toString(),
-        style: style.copyWith(fontStyle: FontStyle.italic),
+        style: const TextStyle(fontStyle: FontStyle.italic),
       );
-    case TokenType.TEXT:
+    case TokenType.LINK:
+      final text = (token.value as List)[1];
+      final url = (token.value as List)[0];
       return TextSpan(
-        text: token.value.toString(),
-        style: style,
+        text: text,
+        onEnter: (e) => log("enter"),
+        style: const TextStyle(color: Colors.blue),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => launchUrl(Uri.parse(url)),
+
+        /// hack to reduce recognizer width to minimum
+        children: const [TextSpan(text: "\u200b")],
       );
     case TokenType.CODE:
       return TextSpan(
         text: token.value.toString(),
-        style: style.copyWith(fontFamily: "monospace"),
+        style: const TextStyle(fontFamily: "monospace"),
       );
-    case TokenType.LINK:
-      return TextSpan(
-          text: (token.value as List)[1].toString(),
-          style: style.copyWith(color: Colors.blue),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              launchUrl(Uri.parse((token.value as List)[0].toString()));
-            });
-    case TokenType.PRE:
-      return const TextSpan();
+    default:
+      return TextSpan(text: token.toString());
   }
 }
 

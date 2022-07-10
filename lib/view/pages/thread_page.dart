@@ -28,7 +28,11 @@ class ThreadPage extends ConsumerWidget {
       data: (items) {
         final op = items.first;
         final comments = items.sublist(1);
-        return ThreadContent(op: op, comments: comments, notifier: notifier);
+        return ThreadContent(
+          op: op,
+          comments: comments,
+          notifier: notifier,
+        );
       },
       loading: () => const ThreadLoading(),
       error: (msg) => ThreadError(msg),
