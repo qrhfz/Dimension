@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hn_client/common/time_converter.dart';
 import 'package:hn_client/models/item_detail.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 
 class CommentTile extends ConsumerWidget {
   const CommentTile({
@@ -75,20 +75,24 @@ class CommentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          comment.author,
-        ),
-        dotSeparator,
-        Text(
-          TimeElapsed.fromDateTime(comment.createdAt),
-        ),
-        if (comment.collapsed) const Icon(Icons.expand_more, size: 16)
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            author,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+          dotSeparator,
+          Text(formatTime(comment.createdAt)),
+          if (comment.collapsed) const Icon(Icons.expand_more, size: 16)
+        ],
+      ),
     );
   }
+
+  String get author => comment.author.isEmpty ? "[deleted]" : comment.author;
 }
 
 class CommentContainer extends StatelessWidget {

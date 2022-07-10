@@ -64,7 +64,7 @@ class StoryCardContent extends StatelessWidget {
                       text: item.title ?? "no title",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: visited ? FontWeight.w300 : FontWeight.bold,
+                        fontWeight: visited ? FontWeight.w400 : FontWeight.w500,
                       ),
                       children: [
                         TextSpan(

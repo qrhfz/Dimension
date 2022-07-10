@@ -48,7 +48,10 @@ TextSpan RootTextSpan(List<Token> tokens, BuildContext context) {
       children.add(const TextSpan(text: "\n\n"));
     }
   }
-  return TextSpan(children: children);
+  return TextSpan(
+    children: children,
+    style: Theme.of(context).textTheme.bodyMedium,
+  );
 }
 
 // ignore: non_constant_identifier_names
