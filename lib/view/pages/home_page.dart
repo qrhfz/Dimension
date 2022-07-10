@@ -16,42 +16,44 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  final types = [
+    HomeContentType.top,
+    HomeContentType.best,
+    HomeContentType.new_,
+    HomeContentType.ask,
+    HomeContentType.show,
+    HomeContentType.job
+  ];
   @override
   void initState() {
     super.initState();
     ref.read(homeNotifierProvider.notifier).setType(widget.initialType);
   }
 
+  void onIndexChange(int index, HomeNotifier notifier) {
+    notifier.load(types[index]);
+  }
+
   @override
   Widget build(context) {
     final state = ref.watch(homeNotifierProvider);
     final notifier = ref.read(homeNotifierProvider.notifier);
-
-    final types = [
-      HomeContentType.top,
-      HomeContentType.best,
-      HomeContentType.new_,
-      HomeContentType.ask,
-      HomeContentType.show,
-      HomeContentType.job
-    ];
     final currentIndex = types.indexOf(state.contentType);
 
-    void onIndexChange(index) {
-      notifier.load(types[index]);
-    }
-
     return LayoutBuilder(builder: (context, constraint) {
-      if (constraint.maxWidth <= 800) {
+      if (constraint.maxWidth >= 800) {
         return Scaffold(
           appBar: AppBar(
             title: Text(state.contentType.name),
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            ],
           ),
           body: Row(
             children: [
               MyNavRail(
                 types: types,
-                onTap: onIndexChange,
+                onTap: (index) => onIndexChange(index, notifier),
                 currentIndex: currentIndex,
               ),
               Flexible(
@@ -63,38 +65,25 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ],
           ),
-          bottomNavigationBar: MyNavBar(
-            types: types,
-            currentIndex: currentIndex,
-            onTap: onIndexChange,
-          ),
         );
       }
 
       return Scaffold(
         appBar: AppBar(
           title: Text(state.contentType.name),
-        ),
-        body: Row(
-          children: [
-            MyNavRail(
-              types: types,
-              onTap: onIndexChange,
-              currentIndex: currentIndex,
-            ),
-            Flexible(
-              child: state.when(
-                loading: loading,
-                data: data,
-                error: error,
-              ),
-            ),
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
           ],
+        ),
+        body: state.when(
+          loading: loading,
+          data: data,
+          error: error,
         ),
         bottomNavigationBar: MyNavBar(
           types: types,
           currentIndex: currentIndex,
-          onTap: onIndexChange,
+          onTap: (index) => onIndexChange(index, notifier),
         ),
       );
     });
@@ -139,13 +128,15 @@ class MyNavBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Top"),
         BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: "Best"),
-        BottomNavigationBarItem(icon: Icon(Icons.new_releases), label: "New"),
+        BottomNavigationBarItem(icon: Icon(Icons.update), label: "New"),
         BottomNavigationBarItem(
           icon: Icon(Icons.question_answer),
           label: "Ask HN",
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.stars), label: "Show HN"),
-        BottomNavigationBarItem(icon: Icon(Icons.cases), label: "Jobs"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.tips_and_updates_sharp), label: "Show HN"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.cases_outlined), label: "Jobs"),
       ],
       onTap: onTap,
     );
@@ -173,15 +164,15 @@ class MyNavRail extends StatelessWidget {
           NavigationRailDestination(
               icon: Icon(Icons.trending_up), label: Text("Best")),
           NavigationRailDestination(
-              icon: Icon(Icons.new_releases), label: Text("New")),
+              icon: Icon(Icons.update), label: Text("New")),
           NavigationRailDestination(
             icon: Icon(Icons.question_answer),
             label: Text("Ask HN"),
           ),
           NavigationRailDestination(
-              icon: Icon(Icons.stars), label: Text("Show HN")),
+              icon: Icon(Icons.tips_and_updates_sharp), label: Text("Show HN")),
           NavigationRailDestination(
-              icon: Icon(Icons.cases), label: Text("Jobs")),
+              icon: Icon(Icons.cases_outlined), label: Text("Jobs")),
         ],
         selectedIndex: currentIndex);
   }
