@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/models/tree_id_item.dart';
-import 'package:hn_client/view/providers/item_tree_notifier.dart';
 import 'package:hn_client/view/widgets/body.dart';
 import 'package:hn_client/view/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
-
-import '../../models/item.dart';
-import '../providers/item_notifier.dart';
-import 'comment_card_placeholder.dart';
-import 'deleted_comment.dart';
 
 class CommentTile extends ConsumerWidget {
   const CommentTile({
