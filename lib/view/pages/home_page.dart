@@ -41,7 +41,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       notifier.load(types[index]);
     }
 
-    ;
     return LayoutBuilder(builder: (context, constraint) {
       if (constraint.maxWidth <= 800) {
         return Scaffold(
