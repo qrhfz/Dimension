@@ -4,6 +4,7 @@ import 'package:hn_client/models/failure.dart';
 import 'package:hn_client/models/item.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hn_client/models/item_detail.dart';
+import 'package:hn_client/models/search_item.dart';
 import '../data/db.dart';
 
 final repositoryProvider = Provider((ref) {
@@ -82,6 +83,14 @@ class Repository {
       return right(await api.getItemDetail(id));
     } catch (e) {
       return left(NetworkFailure());
+    }
+  }
+
+  Future<Either<Failure, List<SearchItem>>> search(String query) async {
+    try {
+      return right(await api.search(query));
+    } catch (e) {
+      return left(NetworkFailure(message: e.toString()));
     }
   }
 

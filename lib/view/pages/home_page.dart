@@ -1,10 +1,15 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hn_client/models/failure.dart';
+import 'package:hn_client/models/search_item.dart';
+import 'package:hn_client/repository/repository.dart';
 import 'package:hn_client/view/widgets/story_card.dart';
 
 import '../providers/home/home_notifier.dart';
 import '../providers/home/home_state.dart';
+import 'thread_page.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({this.initialType = HomeContentType.top, Key? key})
@@ -46,7 +51,12 @@ class _HomePageState extends ConsumerState<HomePage> {
           appBar: AppBar(
             title: Text(state.contentType.name),
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+              IconButton(
+                  onPressed: () {
+                    showSearch(
+                        context: context, delegate: MySearchDelegate(ref));
+                  },
+                  icon: const Icon(Icons.search))
             ],
           ),
           body: Row(
@@ -175,5 +185,60 @@ class MyNavRail extends StatelessWidget {
               icon: Icon(Icons.cases_outlined), label: Text("Jobs")),
         ],
         selectedIndex: currentIndex);
+  }
+}
+
+class MySearchDelegate extends SearchDelegate {
+  MySearchDelegate(this.ref);
+
+  final WidgetRef ref;
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final repo = ref.read(repositoryProvider);
+    final searchResults = repo.search(query);
+
+    return FutureBuilder<Either<Failure, List<SearchItem>>>(
+      future: searchResults,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text('App Error'));
+        } else if (snapshot.hasData) {
+          return snapshot.data!.fold(
+            (l) => Center(child: Text(l.message)),
+            (r) => ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(r[index].title ?? ""),
+                  subtitle: Text("${r[index].author} ${r[index].createdAt}"),
+                  onTap: () {
+                    if (r[index].id == null) return;
+                    GoRouter.of(context)
+                        .go(ThreadPage.routeBuilder(r[index].id!));
+                  },
+                );
+              },
+              itemCount: r.length,
+            ),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return const SizedBox();
   }
 }

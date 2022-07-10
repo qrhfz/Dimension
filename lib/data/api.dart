@@ -7,6 +7,8 @@ import 'package:hn_client/models/user.dart';
 import '../models/item.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/search_item.dart';
+
 final apiProvider = Provider((_) => API(http.Client()));
 
 class API {
@@ -74,5 +76,21 @@ class API {
 
   Future<User> getUser(String id) {
     throw UnimplementedError();
+  }
+
+  Future<List<SearchItem>> search(String query) async {
+    final response = await client.get(Uri.https(
+      'hn.algolia.com',
+      '/api/v1/search',
+      {
+        'query': query,
+        'tags': 'story',
+      },
+    ));
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    final hits =
+        (json['hits'] as List).map((e) => e as Map<String, dynamic>).toList();
+
+    return hits.map((e) => SearchItem.fromJson(e)).toList();
   }
 }
