@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,22 +24,7 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      ref.read(searchProvider.notifier).search(query);
-      final state = ref.watch(searchProvider);
-
-      return state.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (msg) => Center(child: Text(msg)),
-        data: (data) => ListView.builder(
-          itemBuilder: (context, index) {
-            final ItemEntity item = data[index];
-            return StoryCardContent(item, visited: false);
-          },
-          itemCount: data.length,
-        ),
-      );
-    });
+    return SearchResult(query);
   }
 
   @override
@@ -55,15 +42,55 @@ final searchProvider =
 });
 
 class SearchNotifierProvider extends StateNotifier<SearchState> {
-  SearchNotifierProvider(this.repo) : super(const AsyncState.loading());
+  SearchNotifierProvider(this.repo) : super(const SearchState.loading());
   final Repository repo;
 
   Future<void> search(String query) async {
+    if (state != const SearchState.loading()) {
+      state = const SearchState.loading();
+    }
+    log("SEARCH");
     final results = await repo.search(query);
 
     state = results.fold(
       (l) => AsyncState.error(l.message),
       (r) => AsyncState.data(r.toIList()),
+    );
+  }
+}
+
+class SearchResult extends ConsumerStatefulWidget {
+  const SearchResult(this.query, {Key? key}) : super(key: key);
+
+  final String query;
+
+  @override
+  ConsumerState<SearchResult> createState() => _SearchResultState();
+}
+
+class _SearchResultState extends ConsumerState<SearchResult> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      ref.read(searchProvider.notifier).search(widget.query);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(searchProvider);
+
+    return state.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (msg) => Center(child: Text(msg)),
+      data: (data) => ListView.builder(
+        itemBuilder: (context, index) {
+          final ItemEntity item = data[index];
+          return StoryCardContent(item, visited: false);
+        },
+        itemCount: data.length,
+      ),
     );
   }
 }
