@@ -2,15 +2,16 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/view/providers/item_detail/item_detail_notifier.dart';
 
-import 'package:hn_client/view/widgets/body.dart';
-import 'package:hn_client/view/widgets/dot_separator.dart';
+import 'package:hn_client/thread/comment/body.dart';
+import 'package:hn_client/widgets/dot_separator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../providers/story_notifier.dart';
-import '../widgets/comment_tile.dart';
+import '../item/item_detail/item_detail_notifier.dart';
+import '../item/story_notifier.dart';
+import '../widgets/dot_separator.dart';
+import 'comment/comment_tile.dart';
 
 class ThreadPage extends ConsumerWidget {
   static String routeBuilder(int id) => "/item?id=$id";

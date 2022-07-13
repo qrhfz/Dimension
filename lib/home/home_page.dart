@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/failure.dart';
-import 'package:hn_client/view/widgets/story_card.dart';
+import 'package:hn_client/home/story_card.dart';
 
-import '../providers/home/home_notifier.dart';
-import '../providers/home/home_state.dart';
-import '../widgets/my_bottom_nav.dart';
-import '../widgets/my_nav_rail.dart';
-import '../widgets/my_search_button.dart';
+import './widgets/my_nav_rail.dart';
+import 'home_notifier.dart';
+import 'home_state.dart';
+import 'my_search_button.dart';
+import 'widgets/my_bottom_nav.dart';
 
 const homeContentTypes = [
   HomeContentType.top,

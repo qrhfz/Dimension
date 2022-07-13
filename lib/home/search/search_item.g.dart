@@ -8,7 +8,7 @@ part of 'search_item.dart';
 
 _$_SearchItem _$$_SearchItemFromJson(Map<String, dynamic> json) =>
     _$_SearchItem(
-      id: int.tryParse(json['objectID'] as String),
+      id: int.parse(json['objectID'] as String),
       author: json['author'] as String? ?? '',
       createdAt: DateTime.parse(json['created_at'] as String),
       title: json['title'] as String?,

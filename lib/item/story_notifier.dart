@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
-import 'package:hn_client/view/providers/item_state.dart';
+import 'package:hn_client/item/item_state.dart';
 
 import 'item_notifier.dart';
 import 'story_state.dart';

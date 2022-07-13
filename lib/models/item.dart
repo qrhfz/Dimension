@@ -4,6 +4,17 @@ import 'package:hn_client/common/time_converter.dart';
 part 'item.freezed.dart';
 part 'item.g.dart';
 
+abstract class ItemEntity {
+  int get id;
+  String get author;
+  DateTime get createdAt;
+  String? get body;
+  String? get title;
+  String? get url;
+  int? get score;
+  int? get descendantCount;
+}
+
 enum ItemType {
   @JsonValue('job')
   job,
@@ -18,7 +29,7 @@ enum ItemType {
 }
 
 @freezed
-class Item with _$Item {
+class Item with _$Item implements ItemEntity {
   const Item._();
 
   const factory Item({

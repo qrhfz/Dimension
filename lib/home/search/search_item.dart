@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hn_client/models/item.dart';
 
 part 'search_item.freezed.dart';
 part 'search_item.g.dart';
 
 @freezed
-class SearchItem with _$SearchItem {
+class SearchItem with _$SearchItem implements ItemEntity {
+  const SearchItem._();
   factory SearchItem({
-    @JsonKey(name: "objectID", fromJson: int.tryParse) int? id,
+    @JsonKey(name: "objectID", fromJson: int.parse) required int id,
     @JsonKey(name: "author", defaultValue: "") required String author,
     // -----
     @JsonKey(name: "created_at", fromJson: DateTime.parse)
@@ -19,4 +21,10 @@ class SearchItem with _$SearchItem {
 
   factory SearchItem.fromJson(Map<String, dynamic> json) =>
       _$SearchItemFromJson(json);
+
+  @override
+  String? get body => null;
+
+  @override
+  int? get descendantCount => null;
 }

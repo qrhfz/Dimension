@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
-import 'package:hn_client/view/providers/item_state.dart';
+import 'package:hn_client/item/item_state.dart';
 
-import '../../models/item.dart';
-import 'item_tree_notifier.dart';
+import '../models/item.dart';
 
 final itemFamily = StateNotifierProvider.family<ItemNotifier, ItemState, int>(
   (ref, id) {
@@ -44,16 +43,7 @@ class ItemNotifier extends StateNotifier<ItemState> {
       },
       (item) {
         state = ItemState.data(item);
-        loadComment(item);
       },
     );
-  }
-
-  void loadComment(Item item) {
-    final ancestorId = findAncestor(item);
-    if (ancestorId != null) {
-      final tree = ref.read(itemTreeFamily(ancestorId).notifier);
-      tree.addChildrenToId(item.childrenIds ?? [], item.id);
-    }
   }
 }

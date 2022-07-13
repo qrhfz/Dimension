@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/common/time_converter.dart';
 import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/view/widgets/body.dart';
-import 'package:hn_client/view/widgets/dot_separator.dart';
+import 'package:hn_client/thread/comment/body.dart';
+
+import '../../widgets/dot_separator.dart';
 
 class CommentTile extends ConsumerWidget {
   const CommentTile({

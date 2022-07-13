@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hn_client/view/pages/thread_page.dart';
-import 'package:hn_client/view/providers/story_notifier.dart';
+import 'package:hn_client/thread/thread_page.dart';
+import 'package:hn_client/item/story_notifier.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../common/extract_domain.dart';
-import '../../models/item.dart';
+import '../common/extract_domain.dart';
+import '../models/item.dart';
 
 class StoryCard extends ConsumerWidget {
   final int id;
@@ -40,7 +40,7 @@ class StoryCardContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Item item;
+  final ItemEntity item;
   final bool visited;
 
   @override

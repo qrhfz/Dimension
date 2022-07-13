@@ -4,8 +4,8 @@ import 'package:hn_client/models/failure.dart';
 import 'package:hn_client/models/item.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/models/search_item.dart';
 import '../data/db.dart';
+import '../home/search/search_item.dart';
 
 final repositoryProvider = Provider((ref) {
   final api = ref.read(apiProvider);

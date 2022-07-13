@@ -90,6 +90,8 @@ InlineSpan ChildTextSpan(Token token, BuildContext context) {
         text: token.value.toString(),
         style: const TextStyle(fontFamily: "monospace"),
       );
+    case TokenType.PRE:
+      return const TextSpan();
     default:
       return TextSpan(text: token.toString());
   }

@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/repository/repository.dart';
 
-import '../../../models/failure.dart';
+import '../models/failure.dart';
 import 'home_state.dart';
 
 final homeNotifierProvider =

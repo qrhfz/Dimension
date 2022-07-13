@@ -20,8 +20,8 @@ SearchItem _$SearchItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SearchItem {
-  @JsonKey(name: "objectID", fromJson: int.tryParse)
-  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "objectID", fromJson: int.parse)
+  int get id => throw _privateConstructorUsedError;
   @JsonKey(name: "author", defaultValue: "")
   String get author => throw _privateConstructorUsedError; // -----
   @JsonKey(name: "created_at", fromJson: DateTime.parse)
@@ -43,7 +43,7 @@ abstract class $SearchItemCopyWith<$Res> {
           SearchItem value, $Res Function(SearchItem) then) =
       _$SearchItemCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: "objectID", fromJson: int.tryParse) int? id,
+      {@JsonKey(name: "objectID", fromJson: int.parse) int id,
       @JsonKey(name: "author", defaultValue: "") String author,
       @JsonKey(name: "created_at", fromJson: DateTime.parse) DateTime createdAt,
       String? title,
@@ -72,7 +72,7 @@ class _$SearchItemCopyWithImpl<$Res> implements $SearchItemCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       author: author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -105,7 +105,7 @@ abstract class _$$_SearchItemCopyWith<$Res>
       __$$_SearchItemCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: "objectID", fromJson: int.tryParse) int? id,
+      {@JsonKey(name: "objectID", fromJson: int.parse) int id,
       @JsonKey(name: "author", defaultValue: "") String author,
       @JsonKey(name: "created_at", fromJson: DateTime.parse) DateTime createdAt,
       String? title,
@@ -136,7 +136,7 @@ class __$$_SearchItemCopyWithImpl<$Res> extends _$SearchItemCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       author: author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -163,10 +163,10 @@ class __$$_SearchItemCopyWithImpl<$Res> extends _$SearchItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SearchItem implements _SearchItem {
+class _$_SearchItem extends _SearchItem {
   _$_SearchItem(
-      {@JsonKey(name: "objectID", fromJson: int.tryParse)
-          this.id,
+      {@JsonKey(name: "objectID", fromJson: int.parse)
+          required this.id,
       @JsonKey(name: "author", defaultValue: "")
           required this.author,
       @JsonKey(name: "created_at", fromJson: DateTime.parse)
@@ -174,14 +174,15 @@ class _$_SearchItem implements _SearchItem {
       this.title,
       this.url,
       @JsonKey(name: "points")
-          this.score});
+          this.score})
+      : super._();
 
   factory _$_SearchItem.fromJson(Map<String, dynamic> json) =>
       _$$_SearchItemFromJson(json);
 
   @override
-  @JsonKey(name: "objectID", fromJson: int.tryParse)
-  final int? id;
+  @JsonKey(name: "objectID", fromJson: int.parse)
+  final int id;
   @override
   @JsonKey(name: "author", defaultValue: "")
   final String author;
@@ -238,10 +239,10 @@ class _$_SearchItem implements _SearchItem {
   }
 }
 
-abstract class _SearchItem implements SearchItem {
+abstract class _SearchItem extends SearchItem {
   factory _SearchItem(
-      {@JsonKey(name: "objectID", fromJson: int.tryParse)
-          final int? id,
+      {@JsonKey(name: "objectID", fromJson: int.parse)
+          required final int id,
       @JsonKey(name: "author", defaultValue: "")
           required final String author,
       @JsonKey(name: "created_at", fromJson: DateTime.parse)
@@ -250,13 +251,14 @@ abstract class _SearchItem implements SearchItem {
       final String? url,
       @JsonKey(name: "points")
           final int? score}) = _$_SearchItem;
+  _SearchItem._() : super._();
 
   factory _SearchItem.fromJson(Map<String, dynamic> json) =
       _$_SearchItem.fromJson;
 
   @override
-  @JsonKey(name: "objectID", fromJson: int.tryParse)
-  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "objectID", fromJson: int.parse)
+  int get id => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: "author", defaultValue: "")
   String get author => throw _privateConstructorUsedError;

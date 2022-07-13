@@ -4,10 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/item_detail.dart';
 import 'package:hn_client/models/user.dart';
 
+import '../home/search/search_item.dart';
 import '../models/item.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/search_item.dart';
 
 final apiProvider = Provider((_) => API(http.Client()));
 
