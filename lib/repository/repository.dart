@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/data/api.dart';
 import 'package:hn_client/models/failure.dart';
@@ -86,9 +88,10 @@ class Repository {
     }
   }
 
-  Future<Either<Failure, List<SearchItem>>> search(String query) async {
+  Future<Either<Failure, List<SearchItem>>> search(String query,
+      [int page = 0]) async {
     try {
-      return right(await api.search(query));
+      return right(await api.search(query, page));
     } catch (e) {
       return left(NetworkFailure(message: e.toString()));
     }

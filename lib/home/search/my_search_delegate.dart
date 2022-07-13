@@ -4,6 +4,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/home/story_card.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../common/asyncstate.dart';
 import '../../models/item.dart';
 import '../../repository/repository.dart';
@@ -45,16 +46,17 @@ class SearchNotifierProvider extends StateNotifier<SearchState> {
   SearchNotifierProvider(this.repo) : super(const SearchState.loading());
   final Repository repo;
 
-  Future<void> search(String query) async {
+  Future<void> search(String query, int page) async {
     if (state != const SearchState.loading()) {
       state = const SearchState.loading();
     }
-    log("SEARCH");
-    final results = await repo.search(query);
+    final results = await repo.search(query, page);
 
     state = results.fold(
-      (l) => AsyncState.error(l.message),
-      (r) => AsyncState.data(r.toIList()),
+      (l) {
+        return SearchState.error(l.message);
+      },
+      (r) => SearchState.data(r.toIList()),
     );
   }
 }
@@ -69,27 +71,43 @@ class SearchResult extends ConsumerStatefulWidget {
 }
 
 class _SearchResultState extends ConsumerState<SearchResult> {
+  final PagingController<int, SearchItem> _pagingController =
+      PagingController(firstPageKey: 0);
   @override
   void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      ref.read(searchProvider.notifier).search(widget.query);
+    _pagingController.addPageRequestListener((pageKey) {
+      Future.delayed(Duration.zero, () {
+        _fetchResults(pageKey);
+      });
     });
+
+    super.initState();
+  }
+
+  Future<void> _fetchResults(int pageKey) async {
+    await ref.read(searchProvider.notifier).search(widget.query, pageKey);
+    final state = ref.read(searchProvider);
+
+    state.when(
+      loading: () {},
+      data: (d) {
+        _pagingController.appendPage(d.toList(), pageKey + 1);
+      },
+      error: (err) {
+        _pagingController.appendPage([], null);
+        _pagingController.error = err;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(searchProvider);
-
-    return state.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (msg) => Center(child: Text(msg)),
-      data: (data) => ListView.builder(
-        itemBuilder: (context, index) {
-          final ItemEntity item = data[index];
+    return PagedListView<int, SearchItem>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) {
           return StoryCardContent(item, visited: false);
         },
-        itemCount: data.length,
       ),
     );
   }

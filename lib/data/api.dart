@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/models/item_detail.dart';
@@ -77,18 +78,27 @@ class API {
     throw UnimplementedError();
   }
 
-  Future<List<SearchItem>> search(String query) async {
-    final response = await client.get(Uri.https(
+  Future<List<SearchItem>> search(String query, [int page = 0]) async {
+    final url = Uri.https(
       'hn.algolia.com',
       '/api/v1/search',
       {
         'query': query,
         'tags': 'story',
+        'page': '$page',
       },
-    ));
+    );
+
+    final response = await client.get(url);
+
     final Map<String, dynamic> json = jsonDecode(response.body);
     final hits =
         (json['hits'] as List).map((e) => e as Map<String, dynamic>).toList();
+
+    final nbPages = json['nbPages'] as int;
+    if (page > nbPages) {
+      throw Exception("search overflow");
+    }
 
     return hits.map((e) => SearchItem.fromJson(e)).toList();
   }

@@ -40,23 +40,23 @@ mixin _$AsyncState<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading<T> value) loading,
-    required TResult Function(_Data<T> value) data,
-    required TResult Function(_Error<T> value) error,
+    required TResult Function(Loading<T> value) loading,
+    required TResult Function(Data<T> value) data,
+    required TResult Function(Fail<T> value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -80,28 +80,27 @@ class _$AsyncStateCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<T, $Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading<T> value, $Res Function(_$_Loading<T>) then) =
-      __$$_LoadingCopyWithImpl<T, $Res>;
+abstract class _$$LoadingCopyWith<T, $Res> {
+  factory _$$LoadingCopyWith(
+          _$Loading<T> value, $Res Function(_$Loading<T>) then) =
+      __$$LoadingCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<T, $Res>
-    extends _$AsyncStateCopyWithImpl<T, $Res>
-    implements _$$_LoadingCopyWith<T, $Res> {
-  __$$_LoadingCopyWithImpl(
-      _$_Loading<T> _value, $Res Function(_$_Loading<T>) _then)
-      : super(_value, (v) => _then(v as _$_Loading<T>));
+class __$$LoadingCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
+    implements _$$LoadingCopyWith<T, $Res> {
+  __$$LoadingCopyWithImpl(
+      _$Loading<T> _value, $Res Function(_$Loading<T>) _then)
+      : super(_value, (v) => _then(v as _$Loading<T>));
 
   @override
-  _$_Loading<T> get _value => super._value as _$_Loading<T>;
+  _$Loading<T> get _value => super._value as _$Loading<T>;
 }
 
 /// @nodoc
 
-class _$_Loading<T> implements _Loading<T> {
-  const _$_Loading();
+class _$Loading<T> implements Loading<T> {
+  const _$Loading();
 
   @override
   String toString() {
@@ -111,7 +110,7 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading<T>);
+        (other.runtimeType == runtimeType && other is _$Loading<T>);
   }
 
   @override
@@ -154,9 +153,9 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading<T> value) loading,
-    required TResult Function(_Data<T> value) data,
-    required TResult Function(_Error<T> value) error,
+    required TResult Function(Loading<T> value) loading,
+    required TResult Function(Data<T> value) data,
+    required TResult Function(Fail<T> value) error,
   }) {
     return loading(this);
   }
@@ -164,9 +163,9 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
   }) {
     return loading?.call(this);
   }
@@ -174,9 +173,9 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -186,31 +185,31 @@ class _$_Loading<T> implements _Loading<T> {
   }
 }
 
-abstract class _Loading<T> implements AsyncState<T> {
-  const factory _Loading() = _$_Loading<T>;
+abstract class Loading<T> implements AsyncState<T> {
+  const factory Loading() = _$Loading<T>;
 }
 
 /// @nodoc
-abstract class _$$_DataCopyWith<T, $Res> {
-  factory _$$_DataCopyWith(_$_Data<T> value, $Res Function(_$_Data<T>) then) =
-      __$$_DataCopyWithImpl<T, $Res>;
+abstract class _$$DataCopyWith<T, $Res> {
+  factory _$$DataCopyWith(_$Data<T> value, $Res Function(_$Data<T>) then) =
+      __$$DataCopyWithImpl<T, $Res>;
   $Res call({T data});
 }
 
 /// @nodoc
-class __$$_DataCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
-    implements _$$_DataCopyWith<T, $Res> {
-  __$$_DataCopyWithImpl(_$_Data<T> _value, $Res Function(_$_Data<T>) _then)
-      : super(_value, (v) => _then(v as _$_Data<T>));
+class __$$DataCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
+    implements _$$DataCopyWith<T, $Res> {
+  __$$DataCopyWithImpl(_$Data<T> _value, $Res Function(_$Data<T>) _then)
+      : super(_value, (v) => _then(v as _$Data<T>));
 
   @override
-  _$_Data<T> get _value => super._value as _$_Data<T>;
+  _$Data<T> get _value => super._value as _$Data<T>;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_$_Data<T>(
+    return _then(_$Data<T>(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -221,8 +220,8 @@ class __$$_DataCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_Data<T> implements _Data<T> {
-  const _$_Data(this.data);
+class _$Data<T> implements Data<T> {
+  const _$Data(this.data);
 
   @override
   final T data;
@@ -236,7 +235,7 @@ class _$_Data<T> implements _Data<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Data<T> &&
+            other is _$Data<T> &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -246,8 +245,8 @@ class _$_Data<T> implements _Data<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$$_DataCopyWith<T, _$_Data<T>> get copyWith =>
-      __$$_DataCopyWithImpl<T, _$_Data<T>>(this, _$identity);
+  _$$DataCopyWith<T, _$Data<T>> get copyWith =>
+      __$$DataCopyWithImpl<T, _$Data<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -286,9 +285,9 @@ class _$_Data<T> implements _Data<T> {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading<T> value) loading,
-    required TResult Function(_Data<T> value) data,
-    required TResult Function(_Error<T> value) error,
+    required TResult Function(Loading<T> value) loading,
+    required TResult Function(Data<T> value) data,
+    required TResult Function(Fail<T> value) error,
   }) {
     return data(this);
   }
@@ -296,9 +295,9 @@ class _$_Data<T> implements _Data<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
   }) {
     return data?.call(this);
   }
@@ -306,9 +305,9 @@ class _$_Data<T> implements _Data<T> {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -318,37 +317,36 @@ class _$_Data<T> implements _Data<T> {
   }
 }
 
-abstract class _Data<T> implements AsyncState<T> {
-  const factory _Data(final T data) = _$_Data<T>;
+abstract class Data<T> implements AsyncState<T> {
+  const factory Data(final T data) = _$Data<T>;
 
   T get data => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$$_DataCopyWith<T, _$_Data<T>> get copyWith =>
+  _$$DataCopyWith<T, _$Data<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<T, $Res> {
-  factory _$$_ErrorCopyWith(
-          _$_Error<T> value, $Res Function(_$_Error<T>) then) =
-      __$$_ErrorCopyWithImpl<T, $Res>;
+abstract class _$$FailCopyWith<T, $Res> {
+  factory _$$FailCopyWith(_$Fail<T> value, $Res Function(_$Fail<T>) then) =
+      __$$FailCopyWithImpl<T, $Res>;
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
-    implements _$$_ErrorCopyWith<T, $Res> {
-  __$$_ErrorCopyWithImpl(_$_Error<T> _value, $Res Function(_$_Error<T>) _then)
-      : super(_value, (v) => _then(v as _$_Error<T>));
+class __$$FailCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
+    implements _$$FailCopyWith<T, $Res> {
+  __$$FailCopyWithImpl(_$Fail<T> _value, $Res Function(_$Fail<T>) _then)
+      : super(_value, (v) => _then(v as _$Fail<T>));
 
   @override
-  _$_Error<T> get _value => super._value as _$_Error<T>;
+  _$Fail<T> get _value => super._value as _$Fail<T>;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_$_Error<T>(
+    return _then(_$Fail<T>(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -359,8 +357,8 @@ class __$$_ErrorCopyWithImpl<T, $Res> extends _$AsyncStateCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_Error<T> implements _Error<T> {
-  const _$_Error(this.message);
+class _$Fail<T> implements Fail<T> {
+  const _$Fail(this.message);
 
   @override
   final String message;
@@ -374,7 +372,7 @@ class _$_Error<T> implements _Error<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error<T> &&
+            other is _$Fail<T> &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -384,8 +382,8 @@ class _$_Error<T> implements _Error<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
-      __$$_ErrorCopyWithImpl<T, _$_Error<T>>(this, _$identity);
+  _$$FailCopyWith<T, _$Fail<T>> get copyWith =>
+      __$$FailCopyWithImpl<T, _$Fail<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -424,9 +422,9 @@ class _$_Error<T> implements _Error<T> {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading<T> value) loading,
-    required TResult Function(_Data<T> value) data,
-    required TResult Function(_Error<T> value) error,
+    required TResult Function(Loading<T> value) loading,
+    required TResult Function(Data<T> value) data,
+    required TResult Function(Fail<T> value) error,
   }) {
     return error(this);
   }
@@ -434,9 +432,9 @@ class _$_Error<T> implements _Error<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
   }) {
     return error?.call(this);
   }
@@ -444,9 +442,9 @@ class _$_Error<T> implements _Error<T> {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Error<T> value)? error,
+    TResult Function(Loading<T> value)? loading,
+    TResult Function(Data<T> value)? data,
+    TResult Function(Fail<T> value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -456,11 +454,11 @@ class _$_Error<T> implements _Error<T> {
   }
 }
 
-abstract class _Error<T> implements AsyncState<T> {
-  const factory _Error(final String message) = _$_Error<T>;
+abstract class Fail<T> implements AsyncState<T> {
+  const factory Fail(final String message) = _$Fail<T>;
 
   String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
+  _$$FailCopyWith<T, _$Fail<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
