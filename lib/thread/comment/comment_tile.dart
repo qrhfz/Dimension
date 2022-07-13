@@ -60,7 +60,6 @@ class CommentContent extends StatelessWidget {
         /// author and comment info
         CommentInfo(comment: item),
         if (!item.collapsed && item.body != null) Body(item.id, item.body!),
-        const SizedBox(height: 8),
       ],
     );
   }
