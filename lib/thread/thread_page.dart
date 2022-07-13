@@ -88,6 +88,12 @@ class ThreadContent extends StatelessWidget {
       appBar: AppBar(
         title: Text(op.title ?? ""),
         actions: [
+          IconButton(
+            onPressed: () {
+              notifier.load();
+            },
+            icon: const Icon(Icons.refresh),
+          ),
           if (op.url != null)
             IconButton(
               onPressed: () {

@@ -24,6 +24,9 @@ class ItemDetailNotifier extends StateNotifier<ItemDetailState> {
   ItemDetail? itemTree;
 
   void load() async {
+    if (state != const ItemDetailState.loading()) {
+      state = const ItemDetailState.loading();
+    }
     final failureOrItem = await repository.getItemDetail(id);
     if (!mounted) return;
     failureOrItem.fold(
