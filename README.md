@@ -3,7 +3,7 @@ Dimension: A HackerNews Reader
 
 ## Screenshot
 
-### Desktop
+### Mobile
 ![screenshot](screenshots/mobile_front.png)
 ![screenshot](screenshots/mobile_thread.png)
 
