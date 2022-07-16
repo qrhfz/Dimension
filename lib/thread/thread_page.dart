@@ -5,6 +5,7 @@ import 'package:hn_client/models/item_detail.dart';
 
 import 'package:hn_client/thread/comment/body.dart';
 import 'package:hn_client/widgets/dot_separator.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -94,13 +95,20 @@ class ThreadContent extends StatelessWidget {
             },
             icon: const Icon(Icons.refresh),
           ),
-          if (op.url != null)
+          if (op.url != null) ...[
             IconButton(
               onPressed: () {
                 launchUrl(Uri.parse(op.url!));
               },
               icon: const Icon(Icons.open_in_new),
-            )
+            ),
+            IconButton(
+              onPressed: () {
+                Share.share(op.url!);
+              },
+              icon: const Icon(Icons.share),
+            ),
+          ]
         ],
       ),
       body: CustomScrollView(

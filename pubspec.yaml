@@ -50,6 +50,7 @@ dependencies:
   json_annotation: ^4.4.0
   path_provider: ^2.0.11
   petitparser: ^5.0.0
+  share_plus: ^4.0.10
   time_elapsed: ^0.2.6
   url_launcher: ^6.1.0
   webview_flutter: ^2.8.0
