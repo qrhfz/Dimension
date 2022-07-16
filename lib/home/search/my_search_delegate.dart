@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/home/story_card.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../common/asyncstate.dart';
-import '../../models/item.dart';
 import '../../repository/repository.dart';
 import './search_item.dart';
 
