@@ -394,13 +394,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  hn_html_parser:
-    dependency: "direct main"
-    description:
-      path: "../hn_html_parser"
-      relative: true
-    source: path
-    version: "1.0.0"
   html:
     dependency: transitive
     description:
@@ -1065,5 +1058,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.5 <3.0.0"
+  dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"

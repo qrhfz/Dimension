@@ -4,10 +4,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hn_client/util/decode_html.dart';
-import 'package:hn_html_parser/token.dart';
 import 'package:petitparser/parser.dart';
-import 'package:hn_html_parser/hn_html_parser.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../html_parser/parser.dart';
 
 class Body extends ConsumerWidget {
   const Body(this.id, this.html, {Key? key}) : super(key: key);
