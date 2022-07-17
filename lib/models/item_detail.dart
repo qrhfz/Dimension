@@ -1,12 +1,11 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hn_client/models/item.dart';
 
 part 'item_detail.freezed.dart';
 part 'item_detail.g.dart';
 
 @freezed
-class ItemDetail with _$ItemDetail implements ItemEntity {
+class ItemDetail with _$ItemDetail {
   const ItemDetail._();
 
   const factory ItemDetail({
@@ -70,9 +69,6 @@ class ItemDetail with _$ItemDetail implements ItemEntity {
 
     return copyWith(children: children?.map((e) => e.collapse(id)).toList());
   }
-
-  @override
-  int? get descendantCount => null;
 }
 
 @freezed

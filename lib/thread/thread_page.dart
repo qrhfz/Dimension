@@ -10,7 +10,7 @@ import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../item/item_detail/item_detail_notifier.dart';
-import '../item/story_notifier.dart';
+import '../item/visit_notifier.dart';
 import '../widgets/dot_separator.dart';
 import 'comment/comment_tile.dart';
 
@@ -24,7 +24,7 @@ class ThreadPage extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemDetailFamily(id));
     final notifier = ref.read(itemDetailFamily(id).notifier);
-    ref.read(storyFamily(id).notifier).visitStory();
+    ref.read(visitationFamily(id).notifier).visitStory();
 
     return state.when(
       data: (items) {
