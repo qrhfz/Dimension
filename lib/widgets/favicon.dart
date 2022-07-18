@@ -14,13 +14,28 @@ class Favicon extends StatelessWidget {
       return CachedNetworkImage(
         imageUrl: "https://${extractDomain(url!)}/favicon.ico",
         errorWidget: (ctx, s, _) {
-          return const Icon(Icons.link_rounded, size: 16);
+          return const FaviconPlaceholder();
         },
         placeholder: (ctx, s) {
-          return const Icon(Icons.link_rounded, size: 16);
+          return const FaviconPlaceholder();
         },
       );
     }
-    return const Icon(Icons.link_rounded, size: 16);
+    return const FaviconPlaceholder();
+  }
+}
+
+class FaviconPlaceholder extends StatelessWidget {
+  const FaviconPlaceholder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.link_rounded,
+      size: 16,
+      color: Colors.grey.shade700,
+    );
   }
 }
