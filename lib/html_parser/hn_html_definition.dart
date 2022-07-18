@@ -42,15 +42,13 @@ class HnHtmlDefinition extends GrammarDefinition {
         .map((value) => Token(TokenType.LINK, value));
   }
 
-  Parser linkHref() =>
-      any().starLazy(string('" rel="nofollow">')).flatten().trim();
+  Parser linkHref() => any().starLazy(string('" rel="nofollow">')).flatten();
 
-  Parser linkName() => any().starLazy(string('</a>')).flatten().trim();
+  Parser linkName() => any().starLazy(string('</a>')).flatten();
 
   Parser tag(String tag) =>
       (string('<$tag>') & ref1(innerTag, tag) & string('</$tag>'))
           .map((value) => value[1]);
 
-  Parser innerTag(String tag) =>
-      any().starLazy(string("</$tag>")).flatten().trim();
+  Parser innerTag(String tag) => any().starLazy(string("</$tag>")).flatten();
 }
