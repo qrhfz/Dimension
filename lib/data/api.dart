@@ -77,10 +77,13 @@ class API {
     throw UnimplementedError();
   }
 
-  Future<List<SearchItem>> search(String query, [int page = 0]) async {
+  Future<List<SearchItem>> search(String query, bool searchMode,
+      [int page = 0]) async {
+    final String path =
+        searchMode ? '/api/v1/search_by_date' : '/api/v1/search';
     final url = Uri.https(
       'hn.algolia.com',
-      '/api/v1/search',
+      path,
       {
         'query': query,
         'tags': 'story',

@@ -86,10 +86,11 @@ class Repository {
     }
   }
 
-  Future<Either<Failure, List<SearchItem>>> search(String query,
+  Future<Either<Failure, List<SearchItem>>> search(
+      String query, bool searchMode,
       [int page = 0]) async {
     try {
-      return right(await api.search(query, page));
+      return right(await api.search(query, searchMode, page));
     } catch (e) {
       return left(NetworkFailure(message: e.toString()));
     }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +15,25 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return null;
+    return [
+      Consumer(builder: (context, ref, child) {
+        final sortMode = ref.watch(searchModeProvider);
+        final sortModeNotifier = ref.read(searchModeProvider.notifier);
+        return PopupMenuButton<bool>(
+          icon: const Icon(Icons.sort),
+          initialValue: sortMode,
+          itemBuilder: (context) {
+            return const [
+              PopupMenuItem(child: Text('Popular'), value: false),
+              PopupMenuItem(child: Text('Newest'), value: true),
+            ];
+          },
+          onSelected: (value) {
+            sortModeNotifier.state = value;
+          },
+        );
+      })
+    ];
   }
 
   @override
@@ -34,21 +54,30 @@ class MySearchDelegate extends SearchDelegate {
 
 typedef SearchState = AsyncState<IList<SearchItem>>;
 
+final searchModeProvider = StateProvider<bool>((ref) => false);
 final searchProvider =
     StateNotifierProvider<SearchNotifierProvider, SearchState>((ref) {
   final repo = ref.read(repositoryProvider);
-  return SearchNotifierProvider(repo);
+  return SearchNotifierProvider(repo, ref);
 });
 
 class SearchNotifierProvider extends StateNotifier<SearchState> {
-  SearchNotifierProvider(this.repo) : super(const SearchState.loading());
+  SearchNotifierProvider(this.repo, this.ref)
+      : super(const SearchState.loading());
+
+  final StateNotifierProviderRef<SearchNotifierProvider, SearchState> ref;
   final Repository repo;
 
   Future<void> search(String query, int page) async {
+    final searchMode = ref.read(searchModeProvider);
     if (state != const SearchState.loading()) {
       state = const SearchState.loading();
     }
-    final results = await repo.search(query, page);
+    final results = await repo.search(
+      query,
+      searchMode,
+      page,
+    );
 
     state = results.fold(
       (l) {
@@ -100,6 +129,12 @@ class _SearchResultState extends ConsumerState<SearchResult> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(searchModeProvider, (previous, next) async {
+      if (previous != next) {
+        _pagingController.refresh();
+        await _fetchResults(0);
+      }
+    });
     return PagedListView<int, SearchItem>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
