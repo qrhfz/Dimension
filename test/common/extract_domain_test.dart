@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hn_client/common/extract_domain.dart';
+import '/common/extract_domain.dart';
 
 void main() {
   test("given a valid url return domain name", () {

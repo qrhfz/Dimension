@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/repository/repository.dart';
-import 'package:hn_client/item/item_state.dart';
+import '/repository/repository.dart';
+import '/item/item_state.dart';
 
 import '../models/item.dart';
 

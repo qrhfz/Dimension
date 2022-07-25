@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/models/failure.dart';
-import 'package:hn_client/home/story_card.dart';
+import '/models/failure.dart';
+import '/home/story_card.dart';
 
 import './widgets/my_nav_rail.dart';
 import 'home_notifier.dart';

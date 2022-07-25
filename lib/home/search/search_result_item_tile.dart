@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hn_client/home/search/search_item.dart';
-import 'package:hn_client/widgets/favicon.dart';
+import '/home/search/search_item.dart';
+import '/widgets/favicon.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 

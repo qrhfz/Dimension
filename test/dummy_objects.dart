@@ -1,5 +1,5 @@
-import 'package:hn_client/models/item.dart';
-import 'package:hn_client/models/user.dart';
+import '/models/item.dart';
+import '/models/user.dart';
 
 const testJsonStory = {
   "by": "dhouston",

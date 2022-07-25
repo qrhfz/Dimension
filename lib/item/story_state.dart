@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:hn_client/item/item_state.dart';
+import '/item/item_state.dart';
 
 class StoryState extends Equatable {
   final ItemState item;

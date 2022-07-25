@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/repository/repository.dart';
+import '/repository/repository.dart';
 
 final visitationFamily = StateNotifierProvider.family<VisitNotifier, bool, int>(
   (ref, id) {

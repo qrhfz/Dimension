@@ -1,10 +1,10 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/models/item_detail.dart';
+import '/models/item_detail.dart';
 
-import 'package:hn_client/thread/comment/body.dart';
-import 'package:hn_client/widgets/dot_separator.dart';
+import '/thread/comment/body.dart';
+import '/widgets/dot_separator.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';

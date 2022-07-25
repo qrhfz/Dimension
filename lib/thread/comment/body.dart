@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/util/decode_html.dart';
+import '/util/decode_html.dart';
 import 'package:petitparser/parser.dart';
 import 'package:url_launcher/url_launcher.dart';
 

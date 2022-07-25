@@ -1,6 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hn_client/models/item_detail.dart';
+import '/models/item_detail.dart';
 
 part 'item_detail_state.freezed.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/data/api.dart';
-import 'package:hn_client/models/failure.dart';
-import 'package:hn_client/models/item.dart';
+import '/data/api.dart';
+import '/models/failure.dart';
+import '/models/item.dart';
 import 'package:dartz/dartz.dart';
-import 'package:hn_client/models/item_detail.dart';
+import '/models/item_detail.dart';
 import '../data/db.dart';
 import '../home/search/search_item.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/models/user.dart';
+import '/models/item_detail.dart';
+import '/models/user.dart';
 
 import '../home/search/search_item.dart';
 import '../models/item.dart';

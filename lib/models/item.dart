@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hn_client/common/time_converter.dart';
+import '/common/time_converter.dart';
 
 part 'item.freezed.dart';
 part 'item.g.dart';

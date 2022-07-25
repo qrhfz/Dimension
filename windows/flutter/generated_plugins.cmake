@@ -3,9 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  connectivity_plus_windows
   isar_flutter_libs
-  network_info_plus_windows
   url_launcher_windows
 )
 

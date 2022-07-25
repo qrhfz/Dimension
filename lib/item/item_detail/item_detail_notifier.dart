@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/models/item_detail.dart';
+import '/models/item_detail.dart';
 
 import '../../../repository/repository.dart';
 import 'item_detail_state.dart';

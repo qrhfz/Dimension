@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/common/time_converter.dart';
-import 'package:hn_client/models/item_detail.dart';
-import 'package:hn_client/thread/comment/body.dart';
+import '/common/time_converter.dart';
+import '/models/item_detail.dart';
+import '/thread/comment/body.dart';
 
 import '../../widgets/dot_separator.dart';
 

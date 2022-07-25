@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/thread/thread_page.dart';
-import 'package:hn_client/home/home_page.dart';
+import 'thread/thread_page.dart';
+import 'home/home_page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hn_client/home/home_state.dart';
+import 'home/home_state.dart';
 
 void main() async {
   runApp(MyApp());

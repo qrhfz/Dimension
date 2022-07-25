@@ -52,3 +52,5 @@ AppDir
 appimage-build
 *.AppImage
 *.AppImage.zsync
+
+keystore.properties

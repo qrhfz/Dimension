@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hn_client/item/item_notifier.dart';
-import 'package:hn_client/thread/thread_page.dart';
-import 'package:hn_client/item/visit_notifier.dart';
-import 'package:hn_client/widgets/favicon.dart';
+import '/item/item_notifier.dart';
+import '/thread/thread_page.dart';
+import '/item/visit_notifier.dart';
+import '/widgets/favicon.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 

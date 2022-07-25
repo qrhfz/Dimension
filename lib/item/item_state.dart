@@ -1,4 +1,4 @@
-import 'package:hn_client/common/asyncstate.dart';
-import 'package:hn_client/models/item.dart';
+import '/common/asyncstate.dart';
+import '/models/item.dart';
 
 typedef ItemState = AsyncState<Item>;

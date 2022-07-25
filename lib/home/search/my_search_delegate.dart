@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hn_client/home/search/search_result_item_tile.dart';
+import '/home/search/search_result_item_tile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../common/asyncstate.dart';
 import '../../item/visit_notifier.dart';
