@@ -30,7 +30,7 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'id': instance.id,
       'by': instance.author,
       'time': instance.createdAt.toIso8601String(),
-      'type': _$ItemTypeEnumMap[instance.type],
+      'type': _$ItemTypeEnumMap[instance.type]!,
       'deleted': instance.isDeleted,
       'dead': instance.isDead,
       'poll': instance.pollId,
