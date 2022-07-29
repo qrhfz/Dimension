@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData.dark(),
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
       ),
     );
   }

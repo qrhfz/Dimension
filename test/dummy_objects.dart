@@ -1,5 +1,5 @@
-import '/models/item.dart';
-import '/models/user.dart';
+import 'package:dimension/models/item.dart';
+import 'package:dimension/models/user.dart';
 
 const testJsonStory = {
   "by": "dhouston",
