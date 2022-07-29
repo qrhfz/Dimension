@@ -128,49 +128,52 @@ class ThreadContent extends StatelessWidget {
           ]
         ],
       ),
-      body: CustomScrollView(
-        cacheExtent: 240,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.all(8.0),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                Text(
-                  op.title ?? "",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Row(
-                  children: [
-                    Text(op.author),
-                    const Icon(
-                      Icons.arrow_drop_up_sharp,
-                      size: 24,
-                      color: Colors.grey,
-                    ),
-                    Text((op.score ?? 0).toString()),
-                    dotSeparator,
-                    Text(
-                      TimeElapsed.fromDateTime(op.createdAt),
-                    ),
-                  ],
-                ),
-                if (op.bodyData.isNotEmpty) Body(op.id, op.bodyData)
-              ]),
+      body: RefreshIndicator(
+        onRefresh: () async => refresh(),
+        child: CustomScrollView(
+          cacheExtent: 240,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(8.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  Text(
+                    op.title ?? "",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Row(
+                    children: [
+                      Text(op.author),
+                      const Icon(
+                        Icons.arrow_drop_up_sharp,
+                        size: 24,
+                        color: Colors.grey,
+                      ),
+                      Text((op.score ?? 0).toString()),
+                      dotSeparator,
+                      Text(
+                        TimeElapsed.fromDateTime(op.createdAt),
+                      ),
+                    ],
+                  ),
+                  if (op.bodyData.isNotEmpty) Body(op.id, op.bodyData)
+                ]),
+              ),
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final comment = comments[index];
-                return CommentTile(
-                  item: comment,
-                  onCollapse: collapseComment,
-                );
-              },
-              childCount: comments.length,
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final comment = comments[index];
+                  return CommentTile(
+                    item: comment,
+                    onCollapse: collapseComment,
+                  );
+                },
+                childCount: comments.length,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
