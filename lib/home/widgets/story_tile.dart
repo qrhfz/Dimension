@@ -8,12 +8,12 @@ import '/widgets/favicon.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../common/extract_domain.dart';
-import '../models/item.dart';
+import '../../common/extract_domain.dart';
+import '../../models/item.dart';
 
-class StoryCard extends ConsumerWidget {
+class StoryTile extends ConsumerWidget {
   final int id;
-  const StoryCard(this.id, {Key? key}) : super(key: key);
+  const StoryTile(this.id, {Key? key}) : super(key: key);
 
   @override
   Widget build(context, ref) {
@@ -64,8 +64,10 @@ class StoryCardContent extends StatelessWidget {
                     text: TextSpan(
                       text: item.title ?? "no title",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: visited ? FontWeight.w400 : FontWeight.w500,
+                        color: visited
+                            ? Theme.of(context).textTheme.caption?.color
+                            : Theme.of(context).textTheme.bodyText2?.color,
+                        fontWeight: FontWeight.w500,
                       ),
                       children: [
                         TextSpan(

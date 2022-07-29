@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/models/failure.dart';
-import '/home/story_card.dart';
+import 'widgets/story_tile.dart';
 
 import './widgets/my_nav_rail.dart';
 import 'home_notifier.dart';
 import 'home_state.dart';
-import 'my_search_button.dart';
+import 'widgets/my_search_button.dart';
 import 'widgets/my_bottom_nav.dart';
 
 const homeContentTypes = [
@@ -94,7 +94,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       itemCount: ids.length,
       itemBuilder: (ctx, index) {
         final id = ids[index];
-        return StoryCard(id);
+        return StoryTile(id);
       },
     );
   }
