@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dimension/data/api_exceptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/models/item_detail.dart';
 import '/models/user.dart';
@@ -69,6 +70,10 @@ class API {
   Future<ItemDetail> getItemDetail(int id) async {
     final response =
         await client.get(Uri.https('hn.algolia.com', '/api/v1/items/$id'));
+
+    if (response.statusCode == 404) {
+      throw ItemNotFoundException();
+    }
     final Map<String, dynamic> json = jsonDecode(response.body);
     return ItemDetail.fromJson(json);
   }

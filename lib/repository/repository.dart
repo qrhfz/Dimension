@@ -1,3 +1,4 @@
+import 'package:dimension/data/api_exceptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/data/api.dart';
 import '/models/failure.dart';
@@ -81,8 +82,10 @@ class Repository {
   Future<Either<Failure, ItemDetail>> getItemDetail(int id) async {
     try {
       return right(await api.getItemDetail(id));
-    } catch (e) {
-      return left(NetworkFailure());
+    } on ItemNotFoundException catch (e) {
+      return left(NetworkFailure(message: e.message));
+    } on Exception catch (e) {
+      return left(NetworkFailure(message: e.toString()));
     }
   }
 
