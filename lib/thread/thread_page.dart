@@ -26,6 +26,14 @@ class ThreadPage extends ConsumerWidget {
     final notifier = ref.read(itemDetailFamily(id).notifier);
     ref.read(visitationFamily(id).notifier).visitStory();
 
+    void refresh() {
+      notifier.load();
+    }
+
+    void collapseComment(int id) {
+      notifier.collapse(id);
+    }
+
     return state.when(
       data: (items) {
         final op = items.first;
@@ -33,11 +41,12 @@ class ThreadPage extends ConsumerWidget {
         return ThreadContent(
           op: op,
           comments: comments,
-          notifier: notifier,
+          refresh: refresh,
+          collapseComment: collapseComment,
         );
       },
+      error: (msg) => ThreadError(msg, refresh: refresh),
       loading: () => const ThreadLoading(),
-      error: (msg) => ThreadError(msg),
     );
   }
 }
@@ -45,13 +54,22 @@ class ThreadPage extends ConsumerWidget {
 class ThreadError extends StatelessWidget {
   const ThreadError(
     this.message, {
-    Key? key,
-  }) : super(key: key);
+    required this.refresh,
+    super.key,
+  });
   final String message;
+  final Function() refresh;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: refresh,
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
       body: Center(child: Text(message)),
     );
   }
@@ -59,8 +77,8 @@ class ThreadError extends StatelessWidget {
 
 class ThreadLoading extends StatelessWidget {
   const ThreadLoading({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +90,17 @@ class ThreadLoading extends StatelessWidget {
 }
 
 class ThreadContent extends StatelessWidget {
-  const ThreadContent({
-    Key? key,
-    required this.op,
-    required this.comments,
-    required this.notifier,
-  }) : super(key: key);
+  const ThreadContent(
+      {required this.op,
+      required this.comments,
+      required this.refresh,
+      required this.collapseComment,
+      super.key});
 
   final FlatItemDetail op;
   final IList<FlatItemDetail> comments;
-  final ItemDetailNotifier notifier;
+  final Function() refresh;
+  final Function(int) collapseComment;
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +109,7 @@ class ThreadContent extends StatelessWidget {
         title: Text(op.title ?? ""),
         actions: [
           IconButton(
-            onPressed: () {
-              notifier.load();
-            },
+            onPressed: refresh,
             icon: const Icon(Icons.refresh),
           ),
           if (op.url != null) ...[
@@ -146,10 +163,9 @@ class ThreadContent extends StatelessWidget {
               (context, index) {
                 final comment = comments[index];
                 return CommentTile(
-                    item: comment,
-                    onCollapse: (int id) {
-                      notifier.collapse(id);
-                    });
+                  item: comment,
+                  onCollapse: collapseComment,
+                );
               },
               childCount: comments.length,
             ),
