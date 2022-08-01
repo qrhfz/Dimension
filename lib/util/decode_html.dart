@@ -6,6 +6,7 @@ String decodeHtml(String html) {
     "&quot;": '"',
     "&lt;": "<",
     "&gt;": ">",
+    "&#62;": ">",
     "&amp;": "&"
   };
 

@@ -38,8 +38,10 @@ class SearchResultItemTile extends StatelessWidget {
                     text: TextSpan(
                       text: item.title ?? "no title",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: visited ? FontWeight.w400 : FontWeight.w500,
+                        color: visited
+                            ? Theme.of(context).textTheme.caption?.color
+                            : Theme.of(context).colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
                       ),
                       children: [
                         TextSpan(
