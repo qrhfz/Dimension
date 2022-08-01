@@ -41,11 +41,22 @@ class MyApp extends StatelessWidget {
         routes: [
           GoRoute(
             path: 'item',
-            builder: (context, state) {
+            pageBuilder: (context, state) {
               final id = int.parse(state.queryParams['id']!);
-              log("$id");
-              return ThreadPage(id);
+              return MaterialPage(
+                key: ValueKey(id),
+                child: ThreadPage(
+                  id,
+                ),
+              );
             },
+            // builder: (context, state) {
+            //   final id = int.parse(state.queryParams['id']!);
+            //   return ThreadPage(
+            //     id,
+            //     key: Key("$id"),
+            //   );
+            // },
           ),
         ],
       ),

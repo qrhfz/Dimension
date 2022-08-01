@@ -1,6 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '/models/item_detail.dart';
 
 import '/thread/comment/body.dart';
@@ -18,7 +19,7 @@ class ThreadPage extends ConsumerWidget {
   static String routeBuilder(int id) => "/item?id=$id";
 
   final int id;
-  const ThreadPage(this.id, {Key? key}) : super(key: key);
+  const ThreadPage(this.id, {super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -115,7 +116,8 @@ class ThreadContent extends StatelessWidget {
           if (op.url != null) ...[
             IconButton(
               onPressed: () {
-                launchUrl(Uri.parse(op.url!));
+                launchUrl(Uri.parse(op.url!),
+                    mode: LaunchMode.externalApplication);
               },
               icon: const Icon(Icons.open_in_new),
             ),
@@ -137,10 +139,38 @@ class ThreadContent extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  Text(
-                    op.title ?? "",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                  if (op.title != null && op.title!.isNotEmpty)
+                    Text(
+                      op.title!,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  if (op.storyId != null)
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.cyan.shade200),
+                        color: Colors.cyan.shade50,
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        child: Text(
+                          "Read the whole story",
+                          style: TextStyle(
+                            color: Colors.cyan.shade900,
+                          ),
+                        ),
+                        onTap: () {
+                          final id = op.storyId;
+                          if (id == null) return;
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (_) => ThreadPage(id),
+                          //   ),
+                          // );
+                          GoRouter.of(context)
+                              .push(ThreadPage.routeBuilder(id));
+                        },
+                      ),
+                    ),
                   Row(
                     children: [
                       Text(op.author),
