@@ -44,12 +44,41 @@ class _HomePageState extends ConsumerState<HomePage> {
     final notifier = ref.read(homeNotifierProvider.notifier);
     final currentIndex = homeContentTypes.indexOf(state.contentType);
 
+    Widget loading(_) => const Center(child: CircularProgressIndicator());
+
+    Widget data(HomeContentType type, List<int> ids) {
+      return RefreshIndicator(
+        onRefresh: () async {
+          notifier.refresh();
+        },
+        child: ListView.builder(
+          itemCount: ids.length,
+          itemBuilder: (ctx, index) {
+            final id = ids[index];
+            return StoryTile(id);
+          },
+        ),
+      );
+    }
+
+    Widget error(_, Failure failure) {
+      return Center(child: Text(failure.message));
+    }
+
     return LayoutBuilder(builder: (context, constraint) {
       if (constraint.maxWidth >= 800) {
         return Scaffold(
           appBar: AppBar(
             title: Text(state.contentType.name),
-            actions: const [SearchButton()],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  notifier.refresh();
+                },
+                icon: const Icon(Icons.refresh),
+              ),
+              const SearchButton()
+            ],
           ),
           body: Row(
             children: [
@@ -72,7 +101,15 @@ class _HomePageState extends ConsumerState<HomePage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(state.contentType.name),
-          actions: const [SearchButton()],
+          actions: [
+            IconButton(
+              onPressed: () {
+                notifier.refresh();
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+            const SearchButton()
+          ],
         ),
         body: state.when(
           loading: loading,
@@ -85,21 +122,5 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       );
     });
-  }
-
-  Widget loading(_) => const Center(child: CircularProgressIndicator());
-
-  Widget data(HomeContentType type, List<int> ids) {
-    return ListView.builder(
-      itemCount: ids.length,
-      itemBuilder: (ctx, index) {
-        final id = ids[index];
-        return StoryTile(id);
-      },
-    );
-  }
-
-  Widget error(_, Failure failure) {
-    return Center(child: Text(failure.message));
   }
 }

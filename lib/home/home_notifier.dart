@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dimension/item/item_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/repository/repository.dart';
 
@@ -8,13 +9,14 @@ import 'home_state.dart';
 final homeNotifierProvider =
     StateNotifierProvider<HomeNotifier, HomeState>((ref) {
   final repository = ref.read(repositoryProvider);
-  return HomeNotifier(repository);
+  return HomeNotifier(repository, ref);
 });
 
 class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
+  final StateNotifierProviderRef<HomeNotifier, HomeState> ref;
 
-  HomeNotifier(this.repository)
+  HomeNotifier(this.repository, this.ref)
       : super(const HomeState.loading(HomeContentType.top));
 
   Future<void> load(HomeContentType type) async {
@@ -50,5 +52,18 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   Future<void> setType(HomeContentType type) async {
     load(type);
+  }
+
+  void refresh() {
+    state.maybeWhen(
+      data: (type, ids) {
+        for (var id in ids) {
+          ref.refresh(itemFamily(id));
+        }
+      },
+      orElse: () {},
+    );
+
+    load(state.contentType);
   }
 }
