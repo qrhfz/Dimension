@@ -19,6 +19,7 @@ class Body extends ConsumerWidget {
     final tokens = ref.watch(tokenFamily(html));
 
     return BodyText(tokens: tokens);
+    // return Text(html);
   }
 }
 
@@ -66,17 +67,17 @@ InlineSpan ChildTextSpan(Token token, BuildContext context) {
       }
       return TextSpan(children: children);
     case TokenType.TEXT:
-      return TextSpan(text: token.value.toString());
+      return TextSpan(text: decodeHtml(token.value.toString()));
     case TokenType.ITALIC:
       return TextSpan(
-        text: token.value.toString(),
+        text: decodeHtml(token.value.toString()),
         style: const TextStyle(fontStyle: FontStyle.italic),
       );
     case TokenType.LINK:
       final text = (token.value as List)[1];
       final url = (token.value as List)[0];
       return TextSpan(
-        text: text,
+        text: decodeHtml(text),
         onEnter: (e) => log("enter"),
         style: const TextStyle(color: Colors.blue),
         recognizer: TapGestureRecognizer()
@@ -87,25 +88,25 @@ InlineSpan ChildTextSpan(Token token, BuildContext context) {
       );
     case TokenType.CODE:
       return TextSpan(
-        text: token.value.toString(),
+        text: decodeHtml(token.value.toString()),
         style: const TextStyle(fontFamily: "monospace"),
       );
     case TokenType.PRE:
       return const TextSpan();
     default:
-      return TextSpan(text: token.toString());
+      return TextSpan(text: decodeHtml(token.toString()));
   }
 }
 
 final tokenFamily = Provider.family<List<Token>, String>((ref, html) {
   final parser = ref.read(parserProvider);
-  final result = parser.parse(decodeHtml(html));
+  final result = parser.parse(html);
 
   if (result.isFailure) {
     return [];
   }
-  final value = result.value as List;
-  final List<Token> tokens = value.map((e) => e as Token).toList();
+  final tokens = (result.value as List).cast<Token>();
+
   return tokens;
 });
 
