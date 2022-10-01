@@ -7,8 +7,9 @@ import '../../common/asyncstate.dart';
 import '../../item/visit_notifier.dart';
 import '../../repository/repository.dart';
 import './search_item.dart';
+import 'search.dart' as cs;
 
-class MySearchDelegate extends SearchDelegate {
+class MySearchDelegate extends cs.SearchDelegate {
   MySearchDelegate();
 
   @override
