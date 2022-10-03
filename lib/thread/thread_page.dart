@@ -24,8 +24,8 @@ class ThreadPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final state = ref.watch(itemDetailFamily(id));
-    final notifier = ref.read(itemDetailFamily(id).notifier);
-    ref.read(visitationFamily(id).notifier).visitStory();
+    final notifier = ref.watch(itemDetailFamily(id).notifier);
+    ref.watch(visitationFamily(id).notifier).visitStory();
 
     void refresh() {
       notifier.load();

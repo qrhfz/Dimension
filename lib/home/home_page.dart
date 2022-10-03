@@ -18,9 +18,7 @@ const homeContentTypes = [
 ];
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({this.initialType = HomeContentType.top, Key? key})
-      : super(key: key);
-  final HomeContentType initialType;
+  const HomePage({super.key});
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -28,14 +26,13 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   void onIndexChange(int index, HomeNotifier notifier) {
-    notifier.load(homeContentTypes[index]);
+    notifier.load();
   }
 
   @override
   Widget build(context) {
-    final provider = homeNotifierProvider(widget.initialType);
-    final state = ref.watch(provider);
-    final notifier = ref.read(provider.notifier);
+    final state = ref.watch(homeNotifierProvider);
+    final notifier = ref.watch(homeNotifierProvider.notifier);
     final currentIndex = homeContentTypes.indexOf(state.contentType);
 
     return LayoutBuilder(builder: (context, constraint) {
@@ -43,7 +40,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         return _HomeDesktopContent(
           state: state,
           onNavigate: (index) {
-            notifier.load(homeContentTypes[index]);
+            ref.watch(homeContentTypeProvider.notifier).state =
+                homeContentTypes[index];
           },
           currentIndex: currentIndex,
           onRefresh: () {
@@ -56,7 +54,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         state: state,
         currentIndex: currentIndex,
         onNavigate: (index) {
-          notifier.load(homeContentTypes[index]);
+          notifier.load();
         },
         onRefresh: () {
           notifier.refresh();

@@ -3,7 +3,7 @@ import '../../html_parser/parser.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final tokenFamily = Provider.family<List<Token>, String>((ref, html) {
-  final parser = ref.read(parserProvider);
+  final parser = ref.watch(parserProvider);
   final result = parser.parse(html);
 
   if (result.isFailure) {

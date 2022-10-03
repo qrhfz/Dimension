@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dimension/home/home_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'thread/thread_page.dart';
@@ -56,31 +57,54 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/best',
         builder: (context, state) {
-          return const HomePage(initialType: HomeContentType.best);
+          return ProviderScope(overrides: [
+            homeContentTypeProvider.overrideWithValue(
+              StateController(HomeContentType.best),
+            )
+          ], child: const HomePage());
         },
       ),
       GoRoute(
         path: '/ask',
         builder: (context, state) {
-          return const HomePage(initialType: HomeContentType.ask);
+          return ProviderScope(overrides: [
+            homeContentTypeProvider.overrideWithValue(
+              StateController(HomeContentType.ask),
+            )
+          ], child: const HomePage());
         },
       ),
       GoRoute(
         path: '/jobs',
         builder: (context, state) {
-          return const HomePage(initialType: HomeContentType.job);
+          return ProviderScope(overrides: [
+            homeContentTypeProvider.overrideWithValue(
+              StateController(HomeContentType.job),
+            )
+          ], child: const HomePage());
         },
       ),
       GoRoute(
         path: '/show',
         builder: (context, state) {
-          return const HomePage(initialType: HomeContentType.show);
+          return ProviderScope(overrides: [
+            homeContentTypeProvider.overrideWithValue(
+              StateController(HomeContentType.show),
+            )
+          ], child: const HomePage());
         },
       ),
       GoRoute(
         path: '/newest',
         builder: (context, state) {
-          return const HomePage(initialType: HomeContentType.new_);
+          return ProviderScope(
+            overrides: [
+              homeContentTypeProvider.overrideWithValue(
+                StateController(HomeContentType.new_),
+              )
+            ],
+            child: const HomePage(),
+          );
         },
       ),
     ],

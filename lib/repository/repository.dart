@@ -9,8 +9,8 @@ import '../data/db.dart';
 import '../home/search/search_item.dart';
 
 final repositoryProvider = Provider((ref) {
-  final api = ref.read(apiProvider);
-  final db = ref.read(dbProvider);
+  final api = ref.watch(apiProvider);
+  final db = ref.watch(dbProvider);
   return Repository(api: api, db: db);
 });
 
