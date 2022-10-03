@@ -6,18 +6,22 @@ import '/repository/repository.dart';
 import '../models/failure.dart';
 import 'home_state.dart';
 
-final homeNotifierProvider =
-    StateNotifierProvider<HomeNotifier, HomeState>((ref) {
-  final repository = ref.read(repositoryProvider);
-  return HomeNotifier(repository, ref);
-});
+final homeNotifierProvider = StateNotifierProvider.autoDispose
+    .family<HomeNotifier, HomeState, HomeContentType>(
+  (ref, type) {
+    final repository = ref.read(repositoryProvider);
+    return HomeNotifier(repository, ref, type);
+  },
+);
 
 class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
-  final StateNotifierProviderRef<HomeNotifier, HomeState> ref;
+  final AutoDisposeStateNotifierProviderRef<HomeNotifier, HomeState> ref;
 
-  HomeNotifier(this.repository, this.ref)
-      : super(const HomeState.loading(HomeContentType.top));
+  HomeNotifier(this.repository, this.ref, HomeContentType type)
+      : super(HomeState.loading(type)) {
+    load(type);
+  }
 
   Future<void> load(HomeContentType type) async {
     state = HomeState.loading(type);
@@ -48,10 +52,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
       (failure) => HomeState.error(type, failure),
       (ids) => HomeState.data(type, ids),
     );
-  }
-
-  Future<void> setType(HomeContentType type) async {
-    load(type);
   }
 
   void refresh() {

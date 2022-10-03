@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:dimension/common/extract_thread_id.dart';
+import 'package:dimension/thread/comment/providers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../thread_page.dart';
 import '/util/decode_html.dart';
-import 'package:petitparser/parser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../html_parser/parser.dart';
@@ -81,7 +84,14 @@ InlineSpan ChildTextSpan(Token token, BuildContext context) {
         onEnter: (e) => log("enter"),
         style: const TextStyle(color: Colors.blue),
         recognizer: TapGestureRecognizer()
-          ..onTap = () => launchUrl(Uri.parse(url)),
+          ..onTap = () {
+            final id = extractThreadId(url);
+            if (id == null) {
+              launchUrl(Uri.parse(decodeHtml(url)));
+            } else {
+              GoRouter.of(context).go(ThreadPage.routeBuilder(id));
+            }
+          },
 
         /// hack to reduce recognizer width to minimum
         children: const [TextSpan(text: "\u200b")],
@@ -97,21 +107,3 @@ InlineSpan ChildTextSpan(Token token, BuildContext context) {
       return TextSpan(text: decodeHtml(token.toString()));
   }
 }
-
-final tokenFamily = Provider.family<List<Token>, String>((ref, html) {
-  final parser = ref.read(parserProvider);
-  final result = parser.parse(html);
-
-  if (result.isFailure) {
-    return [];
-  }
-  final tokens = (result.value as List).cast<Token>();
-
-  return tokens;
-});
-
-final parserProvider = Provider<Parser>((ref) {
-  final def = HnHtmlDefinition();
-  final parser = def.build();
-  return parser;
-});

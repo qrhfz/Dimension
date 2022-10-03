@@ -118,13 +118,8 @@ class StoryCardContent extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () async {
-            final url = item.url;
-            if (url != null) {
-              launchUrl(Uri.parse(url));
-            } else {
-              GoRouter.of(context).go(ThreadPage.routeBuilder(item.id));
-            }
+          onTap: () {
+            openItemUrl(context);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -142,6 +137,15 @@ class StoryCardContent extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void openItemUrl(BuildContext context) {
+    final url = item.url;
+    if (url != null) {
+      launchUrl(Uri.parse(url));
+    } else {
+      GoRouter.of(context).go(ThreadPage.routeBuilder(item.id));
+    }
   }
 }
 

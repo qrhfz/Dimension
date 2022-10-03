@@ -50,13 +50,6 @@ class MyApp extends StatelessWidget {
                 ),
               );
             },
-            // builder: (context, state) {
-            //   final id = int.parse(state.queryParams['id']!);
-            //   return ThreadPage(
-            //     id,
-            //     key: Key("$id"),
-            //   );
-            // },
           ),
         ],
       ),
