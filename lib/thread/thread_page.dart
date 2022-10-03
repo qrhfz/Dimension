@@ -12,7 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../item/item_detail/item_detail_notifier.dart';
 import '../item/visit_notifier.dart';
-import '../widgets/dot_separator.dart';
 import 'comment/comment_tile.dart';
 
 class ThreadPage extends ConsumerWidget {

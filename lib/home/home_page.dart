@@ -153,7 +153,6 @@ class _HomeMobileContent extends StatelessWidget {
         onTap: (index) => onNavigate,
       ),
     );
-    ;
   }
 }
 
