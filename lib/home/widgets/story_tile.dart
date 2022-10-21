@@ -1,3 +1,4 @@
+import 'package:dimension/common/time_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +6,6 @@ import '/item/item_notifier.dart';
 import '/thread/thread_page.dart';
 import '/item/visit_notifier.dart';
 import '/widgets/favicon.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/extract_domain.dart';
@@ -106,9 +106,7 @@ class StoryCardContent extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          "${TimeElapsed.fromDateTime(item.createdAt)} ago",
-                        ),
+                        Text(formatTime(item.createdAt)),
                       ],
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../common/time_converter.dart';
 import '/models/item_detail.dart';
 
 import '/thread/comment/body.dart';
@@ -181,7 +182,7 @@ class ThreadContent extends StatelessWidget {
                       Text((op.score ?? 0).toString()),
                       dotSeparator,
                       Text(
-                        TimeElapsed.fromDateTime(op.createdAt),
+                        formatTime(op.createdAt),
                       ),
                     ],
                   ),
