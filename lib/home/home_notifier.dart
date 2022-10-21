@@ -6,20 +6,27 @@ import '/repository/repository.dart';
 import '../models/failure.dart';
 import 'home_state.dart';
 
-final homeNotifierProvider =
-    StateNotifierProvider<HomeNotifier, HomeState>((ref) {
-  final repository = ref.read(repositoryProvider);
-  return HomeNotifier(repository, ref);
-});
+final homeContentTypeProvider = StateProvider((ref) => HomeContentType.top);
+
+final homeNotifierProvider = StateNotifierProvider<HomeNotifier, HomeState>(
+  (ref) {
+    final repository = ref.watch(repositoryProvider);
+    final type = ref.watch(homeContentTypeProvider);
+    return HomeNotifier(repository, ref, type);
+  },
+);
 
 class HomeNotifier extends StateNotifier<HomeState> {
   final Repository repository;
-  final StateNotifierProviderRef<HomeNotifier, HomeState> ref;
+  final Ref ref;
+  final HomeContentType type;
 
-  HomeNotifier(this.repository, this.ref)
-      : super(const HomeState.loading(HomeContentType.top));
+  HomeNotifier(this.repository, this.ref, this.type)
+      : super(HomeState.loading(type)) {
+    load();
+  }
 
-  Future<void> load(HomeContentType type) async {
+  Future<void> load() async {
     state = HomeState.loading(type);
     late final Either<Failure, List<int>> failureOrIDs;
 
@@ -43,15 +50,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
         failureOrIDs = await repository.getShowStoryIds();
         break;
     }
-
+    if (!mounted) return;
     state = failureOrIDs.fold(
       (failure) => HomeState.error(type, failure),
       (ids) => HomeState.data(type, ids),
     );
-  }
-
-  Future<void> setType(HomeContentType type) async {
-    load(type);
   }
 
   void refresh() {
@@ -64,6 +67,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
       orElse: () {},
     );
 
-    load(state.contentType);
+    load();
   }
 }

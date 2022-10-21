@@ -7,7 +7,7 @@ import 'item_detail_state.dart';
 final itemDetailFamily =
     StateNotifierProvider.family<ItemDetailNotifier, ItemDetailState, int>(
   (ref, id) {
-    final repository = ref.read(repositoryProvider);
+    final repository = ref.watch(repositoryProvider);
 
     return ItemDetailNotifier(id: id, repository: repository);
   },

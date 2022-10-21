@@ -3,7 +3,7 @@ import '/repository/repository.dart';
 
 final visitationFamily = StateNotifierProvider.family<VisitNotifier, bool, int>(
   (ref, id) {
-    final repository = ref.read(repositoryProvider);
+    final repository = ref.watch(repositoryProvider);
     return VisitNotifier(id: id, repository: repository);
   },
 );

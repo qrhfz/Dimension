@@ -1,8 +1,8 @@
+import 'package:dimension/common/time_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '/home/search/search_item.dart';
 import '/widgets/favicon.dart';
-import 'package:time_elapsed/time_elapsed.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/extract_domain.dart';
@@ -74,7 +74,7 @@ class SearchResultItemTile extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "${TimeElapsed.fromDateTime(item.createdAt)} ago",
+                          formatTime(item.createdAt),
                         ),
                       ],
                     ),

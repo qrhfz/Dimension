@@ -17,7 +17,7 @@ class MySearchDelegate extends cs.SearchDelegate {
     return [
       Consumer(builder: (context, ref, child) {
         final sortMode = ref.watch(searchModeProvider);
-        final sortModeNotifier = ref.read(searchModeProvider.notifier);
+        final sortModeNotifier = ref.watch(searchModeProvider.notifier);
         return PopupMenuButton<bool>(
           icon: const Icon(Icons.sort),
           initialValue: sortMode,
@@ -56,7 +56,7 @@ typedef SearchState = AsyncState<IList<SearchItem>>;
 final searchModeProvider = StateProvider<bool>((ref) => false);
 final searchProvider =
     StateNotifierProvider<SearchNotifierProvider, SearchState>((ref) {
-  final repo = ref.read(repositoryProvider);
+  final repo = ref.watch(repositoryProvider);
   return SearchNotifierProvider(repo, ref);
 });
 
@@ -68,7 +68,7 @@ class SearchNotifierProvider extends StateNotifier<SearchState> {
   final Repository repo;
 
   Future<void> search(String query, int page) async {
-    final searchMode = ref.read(searchModeProvider);
+    final searchMode = ref.watch(searchModeProvider);
     if (state != const SearchState.loading()) {
       state = const SearchState.loading();
     }
@@ -111,8 +111,8 @@ class _SearchResultState extends ConsumerState<SearchResult> {
   }
 
   Future<void> _fetchResults(int pageKey) async {
-    await ref.read(searchProvider.notifier).search(widget.query, pageKey);
-    final state = ref.read(searchProvider);
+    await ref.watch(searchProvider.notifier).search(widget.query, pageKey);
+    final state = ref.watch(searchProvider);
 
     state.when(
       loading: () {},

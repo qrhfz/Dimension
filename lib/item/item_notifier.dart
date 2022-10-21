@@ -6,7 +6,7 @@ import '../models/item.dart';
 
 final itemFamily = StateNotifierProvider.family<ItemNotifier, ItemState, int>(
   (ref, id) {
-    final repository = ref.read(repositoryProvider);
+    final repository = ref.watch(repositoryProvider);
 
     return ItemNotifier(id: id, repository: repository, ref: ref);
   },
@@ -24,8 +24,8 @@ class ItemNotifier extends StateNotifier<ItemState> {
   int? findAncestor(Item item) {
     final parentId = item.parentId;
     if (parentId == null) return id;
-    final parentNotifier = ref.read(itemFamily(parentId).notifier);
-    final parentState = ref.read(itemFamily(parentId));
+    final parentNotifier = ref.watch(itemFamily(parentId).notifier);
+    final parentState = ref.watch(itemFamily(parentId));
 
     return parentNotifier.findAncestor(parentState.maybeWhen(
       data: (i) => i,
